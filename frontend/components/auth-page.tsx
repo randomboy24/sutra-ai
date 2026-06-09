@@ -13,12 +13,9 @@ import {
 import { AuthDivider } from "@/components/auth-divider";
 import { FloatingPaths } from "@/components/floating-paths";
 import { ChevronLeftIcon, AtSignIcon } from "lucide-react";
+import Link from "next/link";
 
-interface AuthPageProps {
-	onBack?: () => void;
-}
-
-export function AuthPage({ onBack }: AuthPageProps) {
+export function AuthPage() {
 	return (
 		<main className="relative md:h-screen md:overflow-hidden lg:grid lg:grid-cols-2">
 			<div className="relative hidden h-full flex-col border-r bg-secondary p-10 lg:flex dark:bg-secondary/20">
@@ -51,11 +48,13 @@ export function AuthPage({ onBack }: AuthPageProps) {
 					<div className="absolute top-0 right-0 h-320 w-60 -translate-y-87.5 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,--theme(--color-foreground/.04)_0,--theme(--color-foreground/.01)_80%,transparent_100%)]" />
 				</div>
 				<Button
+					asChild
 					className="absolute top-7 left-5"
 					variant="ghost"
-					onClick={onBack}
 				>
-					<ChevronLeftIcon data-icon="inline-start" />Home
+					<Link href="/">
+						<ChevronLeftIcon data-icon="inline-start" />Home
+					</Link>
 				</Button>
 
 				<div className="mx-auto space-y-4 sm:w-sm">

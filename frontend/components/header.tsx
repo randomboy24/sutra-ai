@@ -7,12 +7,9 @@ import { Button } from "@/components/ui/button";
 import { DesktopNav } from "@/components/desktop-nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
+import Link from "next/link";
 
-interface HeaderProps {
-	onAuthClick?: () => void;
-}
-
-export function Header({ onAuthClick }: HeaderProps) {
+export function Header() {
 	const scrolled = useScroll(10);
 
 	return (
@@ -34,11 +31,15 @@ export function Header({ onAuthClick }: HeaderProps) {
 				</div>
 				<div className="flex items-center gap-3">
 					<div className="hidden items-center gap-2 md:flex">
-						<Button variant="outline" onClick={onAuthClick}>Sign In</Button>
-						<Button onClick={onAuthClick}>Get Started</Button>
+						<Button asChild variant="outline">
+							<Link href="/auth">Sign In</Link>
+						</Button>
+						<Button asChild>
+							<Link href="/auth">Get Started</Link>
+						</Button>
 					</div>
 					<ThemeToggle />
-					<MobileNav onAuthClick={onAuthClick} />
+					<MobileNav />
 				</div>
 			</nav>
 		</header>

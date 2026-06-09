@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon, PhoneCallIcon } from "lucide-react";
 import AvatarStackDemo from "@/src/components/shadcn-space/avatar/avatar-08";
+import Link from "next/link";
 
-export function HeroSection({ onGetStarted }: { onGetStarted?: () => void }) {
+export function HeroSection() {
 	return (
 		<section className="mx-auto w-full max-w-5xl overflow-hidden pt-16">
 			{/* Shades */}
@@ -68,9 +69,11 @@ export function HeroSection({ onGetStarted }: { onGetStarted?: () => void }) {
 							Schedule Partner Demo
 						</Button>
 					</a>
-					<Button onClick={onGetStarted} className="cursor-pointer">
-						Start Free Trial{" "}
-						<ArrowRightIcon data-icon="inline-end" />
+					<Button asChild className="cursor-pointer">
+						<Link href="/auth">
+							Start Free Trial{" "}
+							<ArrowRightIcon data-icon="inline-end" />
+						</Link>
 					</Button>
 				</div>
 			</div>

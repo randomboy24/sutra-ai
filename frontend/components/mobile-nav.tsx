@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Button } from "@/components/ui/button";
@@ -5,18 +7,10 @@ import { Portal, PortalBackdrop } from "@/components/portal";
 import { companyLinks, companyLinks2, productLinks } from "@/components/nav-links";
 import { LinkItem } from "@/components/sheard";
 import { XIcon, MenuIcon } from "lucide-react";
+import Link from "next/link";
 
-interface MobileNavProps {
-	onAuthClick?: () => void;
-}
-
-export function MobileNav({ onAuthClick }: MobileNavProps) {
+export function MobileNav() {
 	const [open, setOpen] = React.useState(false);
-
-	const handleAuthClick = () => {
-		setOpen(false);
-		onAuthClick?.();
-	};
 
 	return (
 		<div className="md:hidden">
@@ -84,10 +78,16 @@ export function MobileNav({ onAuthClick }: MobileNavProps) {
 							))}
 						</div>
 						<div className="mt-5 flex flex-col gap-2">
-							<Button className="w-full" variant="outline" onClick={handleAuthClick}>
-								Sign In
+							<Button asChild className="w-full" variant="outline">
+								<Link href="/auth" onClick={() => setOpen(false)}>
+									Sign In
+								</Link>
 							</Button>
-							<Button className="w-full" onClick={handleAuthClick}>Get Started</Button>
+							<Button asChild className="w-full">
+								<Link href="/auth" onClick={() => setOpen(false)}>
+									Get Started
+								</Link>
+							</Button>
 						</div>
 					</div>
 				</Portal>

@@ -5,8 +5,9 @@ import { ArrowRight } from "lucide-react";
 import createGlobe, { COBEOptions } from "cobe"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
+import Link from "next/link";
 
-export default function Featured_05({ onJoinToday }: { onJoinToday?: () => void }) {
+export default function Featured_05() {
   return (
     <section className="relative w-full mx-auto overflow-hidden rounded-3xl bg-muted border border-gray-200 dark:border-gray-800 shadow-md px-6 py-16 md:px-16 md:py-24 mt-48">
       <div className="flex flex-col-reverse items-center justify-between gap-10 md:flex-row">
@@ -17,11 +18,13 @@ export default function Featured_05({ onJoinToday }: { onJoinToday?: () => void 
           <p className="mt-4 text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             Empower your institutions and students with an autonomous success copilot. Sutra AI constantly assesses understanding, provides board-level mock simulators, and drives direct academic improvement.
           </p>
-          <Button 
-            onClick={onJoinToday}
+          <Button
+            asChild
             className="mt-6 inline-flex items-center gap-2 rounded-full bg-foreground px-5 py-2 text-sm font-semibold text-background transition hover:bg-foreground/90 cursor-pointer"
           >
-            Join Today <ArrowRight className="h-4 w-4" />
+            <Link href="/auth">
+              Join Today <ArrowRight className="h-4 w-4" />
+            </Link>
           </Button>
         </div>
         <div className="relative h-[180px] w-full max-w-xl">
