@@ -35,6 +35,32 @@ class Student(Base):
         nullable=True
     )
 
+    class_level: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )
+
+    board: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )
+
+    stream: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )
+
+    science_group: Mapped[str | None] = mapped_column(
+        String,
+        nullable=True
+    )
+
+    onboarding_complete: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False
+    )
+
     user = relationship(
         "User",
         back_populates="student"
