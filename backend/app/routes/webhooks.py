@@ -11,6 +11,34 @@ from app.models.student import Student
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 
+CLASS_LEVELS = {"10th", "12th"}
+BOARDS = {"CBSE"}
+STREAMS = {"science", "commerce"}
+SCIENCE_GROUPS = {"pcb", "pcm", "pcmb"}
+
+
+def is_student_onboarding_complete(
+    student_type: str,
+    class_level: str | None,
+    board: str | None,
+    stream: str | None,
+    science_group: str | None,
+) -> bool:
+    if student_type != "individual":
+        return False
+
+    if class_level not in CLASS_LEVELS or board not in BOARDS:
+        return False
+
+    if stream not in STREAMS:
+        return False
+
+    if stream == "commerce":
+        return True
+
+    return science_group in SCIENCE_GROUPS
+
+
 @router.post("/clerk")
 async def clerk_webhook(request: Request):
     payload = await request.body()
@@ -46,7 +74,17 @@ async def clerk_webhook(request: Request):
     board = metadata.get("board")
     stream = metadata.get("stream")
     science_group = metadata.get("science_group")
-    onboarding_complete = metadata.get("onboarding_complete", False)
+
+    if stream != "science":
+        science_group = None
+
+    onboarding_complete = is_student_onboarding_complete(
+        student_type=student_type,
+        class_level=class_level,
+        board=board,
+        stream=stream,
+        science_group=science_group,
+    )
 
     db = SessionLocal()
 
