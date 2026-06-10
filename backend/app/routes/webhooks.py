@@ -57,33 +57,38 @@ async def clerk_webhook(request: Request):
             .first()
         )
 
-        if existing_user:
-            return {"success": True, "message": "User already exists"}
-
-        user = User(
+        user = existing_user or User(
             clerk_user_id=clerk_user_id,
             email=email,
             role=role,
         )
 
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        if not existing_user:
+            db.add(user)
+            db.flush()
 
         if role == "student":
-            student = Student(
-                user_id=user.id,
-                full_name=data.get("first_name") or "New Student",
-                is_individual=student_type == "individual",
-                class_level=class_level,
-                board=board,
-                stream=stream,
-                science_group=science_group,
-                onboarding_complete=bool(onboarding_complete),
+            existing_student = (
+                db.query(Student)
+                .filter(Student.user_id == user.id)
+                .first()
             )
 
-            db.add(student)
-            db.commit()
+            if not existing_student:
+                student = Student(
+                    user_id=user.id,
+                    full_name=data.get("first_name") or "New Student",
+                    is_individual=student_type == "individual",
+                    class_level=class_level,
+                    board=board,
+                    stream=stream,
+                    science_group=science_group,
+                    onboarding_complete=bool(onboarding_complete),
+                )
+
+                db.add(student)
+
+        db.commit()
 
         return {"success": True}
 
