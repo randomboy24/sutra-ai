@@ -419,6 +419,7 @@ function SignupWizard({ onBackToChoice }: { onBackToChoice: () => void }) {
               value={password}
             />
           </label>
+          <div id="clerk-captcha" />
           <Button className="h-10 w-full" disabled={!isLoaded || isSubmitting} type="submit">
             {isSubmitting ? "Creating account..." : "Create account"}
           </Button>
