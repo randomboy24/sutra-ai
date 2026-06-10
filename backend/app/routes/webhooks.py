@@ -42,6 +42,11 @@ async def clerk_webhook(request: Request):
 
     role = metadata.get("role", "student")
     student_type = metadata.get("student_type", "individual")
+    class_level = metadata.get("class_level")
+    board = metadata.get("board")
+    stream = metadata.get("stream")
+    science_group = metadata.get("science_group")
+    onboarding_complete = metadata.get("onboarding_complete", False)
 
     db = SessionLocal()
 
@@ -70,6 +75,11 @@ async def clerk_webhook(request: Request):
                 user_id=user.id,
                 full_name=data.get("first_name") or "New Student",
                 is_individual=student_type == "individual",
+                class_level=class_level,
+                board=board,
+                stream=stream,
+                science_group=science_group,
+                onboarding_complete=bool(onboarding_complete),
             )
 
             db.add(student)
