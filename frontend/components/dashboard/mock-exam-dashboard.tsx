@@ -12,6 +12,7 @@ import {
   FlameIcon,
   Layers3Icon,
   ListChecksIcon,
+  MenuIcon,
   PlayIcon,
   RotateCcwIcon,
   SearchIcon,
@@ -324,6 +325,7 @@ const dashboardSections: {
 
 export function MockExamDashboard() {
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
@@ -500,6 +502,14 @@ export function MockExamDashboard() {
     }
   };
 
+  const selectSection = (sectionId: DashboardSection) => {
+    setActiveSection(sectionId);
+    setMobileMenuOpen(false);
+  };
+
+  const activeSectionConfig =
+    dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0];
+
   if (mode === "exam" && activeQuestion) {
     return (
       <main className="min-h-screen bg-background text-foreground">
@@ -640,10 +650,20 @@ export function MockExamDashboard() {
       <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
-            <Logo className="h-5 w-28 shrink-0" />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-9 w-9 lg:hidden"
+              onClick={() => setMobileMenuOpen((open) => !open)}
+              aria-expanded={mobileMenuOpen}
+              aria-label="Open dashboard sections"
+            >
+              <MenuIcon className="h-5 w-5" />
+            </Button>
+            <Logo className="hidden h-5 w-28 shrink-0 sm:block" />
             <div className="hidden h-6 w-px bg-border sm:block" />
-            <div className="hidden min-w-0 sm:block">
-              <p className="truncate text-sm font-medium">Dashboard</p>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium">{activeSectionConfig.label}</p>
               <p className="truncate text-muted-foreground text-xs">CBSE 12th Science</p>
             </div>
           </div>
@@ -652,6 +672,21 @@ export function MockExamDashboard() {
             <UserButton />
           </div>
         </div>
+
+        {mobileMenuOpen ? (
+          <div className="border-t bg-background px-4 py-3 lg:hidden">
+            <div className="grid gap-2">
+              {dashboardSections.map((section) => (
+                <MobileSectionButton
+                  key={section.id}
+                  section={section}
+                  active={activeSection === section.id}
+                  onClick={() => selectSection(section.id)}
+                />
+              ))}
+            </div>
+          </div>
+        ) : null}
       </header>
 
       <div className="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-5 lg:grid-cols-[240px_1fr] lg:px-8">
@@ -663,7 +698,7 @@ export function MockExamDashboard() {
                 icon={section.icon}
                 label={section.label}
                 active={activeSection === section.id}
-                onClick={() => setActiveSection(section.id)}
+                onClick={() => selectSection(section.id)}
               />
             ))}
           </nav>
@@ -675,13 +710,13 @@ export function MockExamDashboard() {
             <h1 className="font-bold text-2xl tracking-wide sm:text-3xl">Choose what to work on</h1>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="hidden gap-3 sm:grid sm:grid-cols-2 xl:grid-cols-4">
             {dashboardSections.map((section) => (
               <DashboardSectionCard
                 key={section.id}
                 section={section}
                 active={activeSection === section.id}
-                onClick={() => setActiveSection(section.id)}
+                onClick={() => selectSection(section.id)}
               />
             ))}
           </div>
@@ -1036,6 +1071,38 @@ function QuestionPreview({ questions, selectedChapter }: { questions: Question[]
         )}
       </div>
     </aside>
+  );
+}
+
+function MobileSectionButton({
+  section,
+  active,
+  onClick,
+}: {
+  section: (typeof dashboardSections)[number];
+  active: boolean;
+  onClick: () => void;
+}) {
+  const Icon = section.icon;
+
+  return (
+    <button
+      className={`flex min-h-12 items-center gap-3 rounded-lg border px-3 py-2 text-left transition-colors ${
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground"
+      }`}
+      onClick={onClick}
+      type="button"
+    >
+      <Icon className="h-4 w-4 shrink-0" />
+      <div className="min-w-0">
+        <p className="truncate text-sm font-medium">{section.label}</p>
+        <p className={`truncate text-xs ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
+          {section.description}
+        </p>
+      </div>
+    </button>
   );
 }
 
