@@ -20,7 +20,7 @@ import {
   TimerIcon,
   TrophyIcon,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
@@ -296,6 +296,11 @@ export function MockExamDashboard() {
   const [examLength, setExamLength] = useState<ExamLength>("standard");
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [seenQuestionIds, setSeenQuestionIds] = useState<Set<string>>(new Set());
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [sessionNotice, setSessionNotice] = useState("");
+  const modeRef = useRef(mode);
+  const allowFullscreenExitRef = useRef(false);
 
   const selectedSubject = subjects.find((subject) => subject.id === subjectId) ?? subjects[0];
   const selectedChapter = selectedSubject.chapters.find((chapter) => chapter.id === chapterId) ?? selectedSubject.chapters[0];
@@ -316,7 +321,62 @@ export function MockExamDashboard() {
   const examQuestions = rankedQuestions.slice(0, examLengthConfig[examLength].questions);
   const activeQuestion = examQuestions[activeQuestionIndex];
   const answeredCount = examQuestions.filter((question) => answers[question.id] !== undefined).length;
+  const seenCount = examQuestions.filter((question) => seenQuestionIds.has(question.id)).length;
   const result = calculateResult(examQuestions, answers);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "exam") return;
+
+    if (remainingSeconds <= 0) {
+      completeExam();
+      return;
+    }
+
+    const timerId = window.setTimeout(() => {
+      setRemainingSeconds((current) => Math.max(0, current - 1));
+    }, 1000);
+
+    return () => window.clearTimeout(timerId);
+  }, [mode, remainingSeconds]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (modeRef.current !== "exam") return;
+
+      event.preventDefault();
+      event.returnValue = "Your active mock exam will be cancelled.";
+    };
+
+    const handleVisibilityChange = () => {
+      if (modeRef.current === "exam" && document.visibilityState === "hidden") {
+        cancelExam("Mock cancelled because the exam tab was left before submission.");
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      if (
+        modeRef.current === "exam" &&
+        !document.fullscreenElement &&
+        !allowFullscreenExitRef.current
+      ) {
+        cancelExam("Mock cancelled because fullscreen mode was exited before submission.");
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
 
   const changeSubject = (nextSubjectId: string) => {
     const nextSubject = subjects.find((subject) => subject.id === nextSubjectId) ?? subjects[0];
@@ -340,17 +400,205 @@ export function MockExamDashboard() {
     );
   };
 
-  const startExam = () => {
+  const openQuestion = (index: number) => {
+    const nextQuestion = examQuestions[index];
+
+    if (!nextQuestion) return;
+
+    setActiveQuestionIndex(index);
+    setSeenQuestionIds((current) => new Set(current).add(nextQuestion.id));
+  };
+
+  const startExam = async () => {
     setAnswers({});
+    setSessionNotice("");
     setActiveQuestionIndex(0);
+    setSeenQuestionIds(examQuestions[0] ? new Set([examQuestions[0].id]) : new Set());
+    setRemainingSeconds(examLengthConfig[examLength].minutes * 60);
+    allowFullscreenExitRef.current = false;
+
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      setSessionNotice("Fullscreen could not be started by the browser. The mock is still locked to this tab.");
+    }
+
     setMode("exam");
   };
 
-  const resetExam = () => {
-    setAnswers({});
-    setActiveQuestionIndex(0);
-    setMode("setup");
+  const completeExam = () => {
+    allowFullscreenExitRef.current = true;
+    setMode("results");
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    }
   };
+
+  const cancelExam = (message = "Mock cancelled.") => {
+    allowFullscreenExitRef.current = true;
+    setAnswers({});
+    setSeenQuestionIds(new Set());
+    setRemainingSeconds(0);
+    setActiveQuestionIndex(0);
+    setSessionNotice(message);
+    setMode("setup");
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    }
+  };
+
+  const resetExam = () => {
+    allowFullscreenExitRef.current = true;
+    setAnswers({});
+    setSeenQuestionIds(new Set());
+    setRemainingSeconds(0);
+    setActiveQuestionIndex(0);
+    setSessionNotice("");
+    setMode("setup");
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    }
+  };
+
+  if (mode === "exam" && activeQuestion) {
+    return (
+      <main className="min-h-screen bg-background text-foreground">
+        <div className="flex min-h-screen flex-col">
+          <header className="border-b bg-background px-5 py-4">
+            <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                  Locked mock exam
+                </p>
+                <h1 className="font-semibold text-xl">{selectedChapter.name}</h1>
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <div className={`flex items-center gap-2 rounded-lg border px-3 py-2 font-mono text-sm ${remainingSeconds <= 300 ? "border-destructive/40 bg-destructive/10 text-destructive" : "bg-card"}`}>
+                  <TimerIcon className="h-4 w-4" />
+                  {formatSeconds(remainingSeconds)}
+                </div>
+                <Button variant="outline" className="gap-2" onClick={() => cancelExam("Mock cancelled by the student before submission.")}>
+                  <ArrowLeftIcon className="h-4 w-4" />
+                  Cancel mock
+                </Button>
+              </div>
+            </div>
+          </header>
+
+          <section className="mx-auto grid w-full max-w-7xl flex-1 gap-6 px-5 py-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+            <div className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+              <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                    Question {activeQuestionIndex + 1} of {examQuestions.length}
+                  </p>
+                  <h2 className="mt-2 font-semibold text-xl leading-snug">{activeQuestion.prompt}</h2>
+                </div>
+                <div className="flex shrink-0 flex-wrap gap-2 text-xs">
+                  <Badge>{activeQuestion.difficulty}</Badge>
+                  <Badge>{activeQuestion.frequency}% frequency</Badge>
+                </div>
+              </div>
+
+              <div className="mt-5 grid gap-3">
+                {activeQuestion.options.map((option, index) => {
+                  const selected = answers[activeQuestion.id] === index;
+                  return (
+                    <button
+                      key={option}
+                      className={`rounded-lg border px-4 py-4 text-left text-sm transition-colors ${
+                        selected
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "bg-background hover:bg-accent hover:text-accent-foreground"
+                      }`}
+                      onClick={() => setAnswers((current) => ({ ...current, [activeQuestion.id]: index }))}
+                      type="button"
+                    >
+                      <span className="mr-2 font-mono text-xs">{String.fromCharCode(65 + index)}.</span>
+                      {option}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-6 flex items-center justify-between border-t pt-5">
+                <Button
+                  variant="outline"
+                  className="gap-2"
+                  disabled={activeQuestionIndex === 0}
+                  onClick={() => openQuestion(Math.max(0, activeQuestionIndex - 1))}
+                >
+                  <ArrowLeftIcon className="h-4 w-4" />
+                  Previous
+                </Button>
+                {activeQuestionIndex === examQuestions.length - 1 ? (
+                  <Button className="gap-2" onClick={completeExam}>
+                    Submit exam
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                ) : (
+                  <Button
+                    className="gap-2"
+                    onClick={() => openQuestion(Math.min(examQuestions.length - 1, activeQuestionIndex + 1))}
+                  >
+                    Next
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <aside className="rounded-lg border bg-card p-4 shadow-sm shadow-black/5">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-semibold">Questions</h2>
+                  <p className="text-muted-foreground text-sm">{answeredCount} answered · {seenCount} seen</p>
+                </div>
+                <ClipboardListIcon className="h-5 w-5 text-muted-foreground" />
+              </div>
+
+              <div className="mt-4 grid grid-cols-5 gap-2">
+                {examQuestions.map((question, index) => {
+                  const answered = answers[question.id] !== undefined;
+                  const seen = seenQuestionIds.has(question.id);
+                  const active = index === activeQuestionIndex;
+                  return (
+                    <button
+                      key={question.id}
+                      className={`h-11 rounded-lg border text-sm transition-colors ${getQuestionTileClass({ active, answered, seen })}`}
+                      onClick={() => openQuestion(index)}
+                      type="button"
+                    >
+                      {index + 1}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-5 grid gap-2 text-xs">
+                <LegendItem className="border-primary bg-primary text-primary-foreground" label="Current" />
+                <LegendItem className="border-emerald-500/60 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" label="Answered" />
+                <LegendItem className="border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300" label="Seen" />
+                <LegendItem className="border-border bg-background text-muted-foreground" label="Unseen" />
+              </div>
+
+              <div className="mt-5 rounded-lg border bg-background p-3 text-sm">
+                <p className="font-medium">Exam lock</p>
+                <p className="mt-1 text-muted-foreground">
+                  Leaving this tab or exiting fullscreen before submission cancels the active mock.
+                </p>
+              </div>
+            </aside>
+          </section>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -387,6 +635,12 @@ export function MockExamDashboard() {
             <Metric icon={Layers3Icon} label="Question pool" value={String(rankedQuestions.length)} detail="Filtered by selection" />
             <Metric icon={TrophyIcon} label="Target score" value="80%" detail="Recommended benchmark" />
           </div>
+
+          {sessionNotice ? (
+            <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-amber-800 text-sm dark:text-amber-200">
+              {sessionNotice}
+            </div>
+          ) : null}
 
           {mode === "setup" ? (
             <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
@@ -507,20 +761,20 @@ export function MockExamDashboard() {
                     variant="outline"
                     className="gap-2"
                     disabled={activeQuestionIndex === 0}
-                    onClick={() => setActiveQuestionIndex((index) => Math.max(0, index - 1))}
+                    onClick={() => openQuestion(Math.max(0, activeQuestionIndex - 1))}
                   >
                     <ArrowLeftIcon className="h-4 w-4" />
                     Previous
                   </Button>
                   {activeQuestionIndex === examQuestions.length - 1 ? (
-                    <Button className="gap-2" onClick={() => setMode("results")}>
+                    <Button className="gap-2" onClick={completeExam}>
                       Submit exam
                       <ChevronRightIcon className="h-4 w-4" />
                     </Button>
                   ) : (
                     <Button
                       className="gap-2"
-                      onClick={() => setActiveQuestionIndex((index) => Math.min(examQuestions.length - 1, index + 1))}
+                      onClick={() => openQuestion(Math.min(examQuestions.length - 1, activeQuestionIndex + 1))}
                     >
                       Next
                       <ChevronRightIcon className="h-4 w-4" />
@@ -548,7 +802,7 @@ export function MockExamDashboard() {
                               ? "border-emerald-500/60 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
                               : "bg-background hover:bg-accent"
                         }`}
-                        onClick={() => setActiveQuestionIndex(index)}
+                        onClick={() => openQuestion(index)}
                         type="button"
                       >
                         {index + 1}
@@ -770,6 +1024,36 @@ function ResultStat({ label, value }: { label: string; value: string }) {
       <p className="mt-1 font-semibold">{value}</p>
     </div>
   );
+}
+
+function LegendItem({ className, label }: { className: string; label: string }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className={`h-4 w-4 rounded border ${className}`} />
+      <span className="text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+function getQuestionTileClass({
+  active,
+  answered,
+  seen,
+}: {
+  active: boolean;
+  answered: boolean;
+  seen: boolean;
+}) {
+  if (active) return "border-primary bg-primary text-primary-foreground";
+  if (answered) return "border-emerald-500/60 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
+  if (seen) return "border-amber-500/60 bg-amber-500/10 text-amber-700 dark:text-amber-300";
+  return "bg-background text-muted-foreground hover:bg-accent hover:text-accent-foreground";
+}
+
+function formatSeconds(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
 function questionScore(question: Question) {
