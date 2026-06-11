@@ -23,6 +23,7 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 type Unit = {
@@ -60,6 +61,7 @@ type Question = {
 
 type ExamMode = "setup" | "exam" | "results";
 type ExamLength = "short" | "standard" | "full";
+type DashboardSection = "mock" | "study-plan" | "progress" | "practice";
 
 const subjects: Subject[] = [
   {
@@ -288,7 +290,40 @@ const examLengthConfig: Record<ExamLength, { label: string; questions: number; m
   full: { label: "Full practice", questions: 8, minutes: 60 },
 };
 
+const dashboardSections: {
+  id: DashboardSection;
+  label: string;
+  description: string;
+  icon: typeof BookOpenCheckIcon;
+}[] = [
+  {
+    id: "mock",
+    label: "Mock Exam",
+    description: "Build PYQ-ranked tests by chapter and unit.",
+    icon: BookOpenCheckIcon,
+  },
+  {
+    id: "study-plan",
+    label: "Study Plan",
+    description: "Daily tasks and revision schedule.",
+    icon: TargetIcon,
+  },
+  {
+    id: "progress",
+    label: "Progress",
+    description: "Scores, weak topics, and readiness trends.",
+    icon: BarChart3Icon,
+  },
+  {
+    id: "practice",
+    label: "Practice Sets",
+    description: "Focused drills from recent mistakes.",
+    icon: ListChecksIcon,
+  },
+];
+
 export function MockExamDashboard() {
+  const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
@@ -602,47 +637,71 @@ export function MockExamDashboard() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <header className="border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-          <div className="flex items-center gap-4">
-            <Logo className="h-5 w-28" />
+      <header className="sticky top-0 z-20 border-b bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-5 lg:px-8">
+          <div className="flex min-w-0 items-center gap-3">
+            <Logo className="h-5 w-28 shrink-0" />
             <div className="hidden h-6 w-px bg-border sm:block" />
-            <p className="hidden text-muted-foreground text-sm sm:block">Student dashboard</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden rounded-lg border bg-card px-3 py-1.5 text-sm lg:block">
-              CBSE 12th Science
+            <div className="hidden min-w-0 sm:block">
+              <p className="truncate text-sm font-medium">Dashboard</p>
+              <p className="truncate text-muted-foreground text-xs">CBSE 12th Science</p>
             </div>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <ThemeToggle />
             <UserButton />
           </div>
         </div>
       </header>
 
-      <div className="mx-auto grid max-w-7xl gap-6 px-5 py-6 lg:grid-cols-[240px_1fr] lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-5 px-4 py-5 sm:px-5 lg:grid-cols-[240px_1fr] lg:px-8">
         <aside className="hidden lg:block">
-          <nav className="sticky top-6 space-y-2">
-            <NavItem icon={BookOpenCheckIcon} label="Mock Exam" active />
-            <NavItem icon={TargetIcon} label="Study Plan" />
-            <NavItem icon={BarChart3Icon} label="Progress" />
-            <NavItem icon={ListChecksIcon} label="Practice Sets" />
+          <nav className="sticky top-24 space-y-2">
+            {dashboardSections.map((section) => (
+              <NavItem
+                key={section.id}
+                icon={section.icon}
+                label={section.label}
+                active={activeSection === section.id}
+                onClick={() => setActiveSection(section.id)}
+              />
+            ))}
           </nav>
         </aside>
 
-        <section className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-4">
-            <Metric icon={FlameIcon} label="PYQ priority" value="High" detail="Ranked by frequency" />
-            <Metric icon={Clock3Icon} label="Suggested time" value={`${examLengthConfig[examLength].minutes}m`} detail={examLengthConfig[examLength].label} />
-            <Metric icon={Layers3Icon} label="Question pool" value={String(rankedQuestions.length)} detail="Filtered by selection" />
-            <Metric icon={TrophyIcon} label="Target score" value="80%" detail="Recommended benchmark" />
+        <section className="space-y-5">
+          <div className="space-y-2">
+            <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Learning workspace</p>
+            <h1 className="font-bold text-2xl tracking-wide sm:text-3xl">Choose what to work on</h1>
           </div>
 
-          {sessionNotice ? (
-            <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-amber-800 text-sm dark:text-amber-200">
-              {sessionNotice}
-            </div>
-          ) : null}
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {dashboardSections.map((section) => (
+              <DashboardSectionCard
+                key={section.id}
+                section={section}
+                active={activeSection === section.id}
+                onClick={() => setActiveSection(section.id)}
+              />
+            ))}
+          </div>
 
-          {mode === "setup" ? (
+          {activeSection === "mock" ? (
+            <>
+              <div className="grid gap-3 md:grid-cols-4">
+                <Metric icon={FlameIcon} label="PYQ priority" value="High" detail="Ranked by frequency" />
+                <Metric icon={Clock3Icon} label="Suggested time" value={`${examLengthConfig[examLength].minutes}m`} detail={examLengthConfig[examLength].label} />
+                <Metric icon={Layers3Icon} label="Question pool" value={String(rankedQuestions.length)} detail="Filtered by selection" />
+                <Metric icon={TrophyIcon} label="Target score" value="80%" detail="Recommended benchmark" />
+              </div>
+
+              {sessionNotice ? (
+                <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-amber-800 text-sm dark:text-amber-200">
+                  {sessionNotice}
+                </div>
+              ) : null}
+
+              {mode === "setup" ? (
             <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
               <section className="rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5">
                 <div className="flex flex-col gap-1">
@@ -878,6 +937,10 @@ export function MockExamDashboard() {
               </div>
             </section>
           ) : null}
+            </>
+          ) : (
+            <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />
+          )}
         </section>
       </div>
     </main>
@@ -976,6 +1039,60 @@ function QuestionPreview({ questions, selectedChapter }: { questions: Question[]
   );
 }
 
+function DashboardSectionCard({
+  section,
+  active,
+  onClick,
+}: {
+  section: (typeof dashboardSections)[number];
+  active: boolean;
+  onClick: () => void;
+}) {
+  const Icon = section.icon;
+
+  return (
+    <button
+      className={`min-h-28 rounded-lg border p-4 text-left shadow-sm shadow-black/5 transition-colors ${
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground"
+      }`}
+      onClick={onClick}
+      type="button"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <Icon className="h-5 w-5 shrink-0" />
+        {active ? <CheckCircle2Icon className="h-4 w-4 shrink-0" /> : null}
+      </div>
+      <p className="mt-4 font-semibold">{section.label}</p>
+      <p className={`mt-1 text-sm ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
+        {section.description}
+      </p>
+    </button>
+  );
+}
+
+function SectionPlaceholder({ section }: { section: (typeof dashboardSections)[number] }) {
+  const Icon = section.icon;
+
+  return (
+    <section className="rounded-lg border bg-card p-6 shadow-sm shadow-black/5">
+      <div className="flex items-start gap-4">
+        <div className="rounded-lg border bg-background p-3">
+          <Icon className="h-5 w-5 text-muted-foreground" />
+        </div>
+        <div>
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Coming next</p>
+          <h2 className="mt-1 font-semibold text-xl">{section.label}</h2>
+          <p className="mt-2 max-w-2xl text-muted-foreground text-sm">
+            This section is reserved in the dashboard shell. Mock Exam is the active feature being built first, and this area will become the dedicated {section.label.toLowerCase()} workspace later.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Metric({
   icon: Icon,
   label,
@@ -999,12 +1116,23 @@ function Metric({
   );
 }
 
-function NavItem({ icon: Icon, label, active = false }: { icon: typeof BookOpenCheckIcon; label: string; active?: boolean }) {
+function NavItem({
+  icon: Icon,
+  label,
+  active = false,
+  onClick,
+}: {
+  icon: typeof BookOpenCheckIcon;
+  label: string;
+  active?: boolean;
+  onClick?: () => void;
+}) {
   return (
     <button
       className={`flex h-10 w-full items-center gap-3 rounded-lg px-3 text-left text-sm transition-colors ${
         active ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
       }`}
+      onClick={onClick}
       type="button"
     >
       <Icon className="h-4 w-4" />
