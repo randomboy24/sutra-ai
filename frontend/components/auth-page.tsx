@@ -111,6 +111,7 @@ function AuthContent({
             },
           }}
           fallbackRedirectUrl="/dashboard"
+          routing="hash"
           signUpUrl="/auth"
         />
         <Button variant="ghost" className="w-full" onClick={() => setMode("choice")}>
