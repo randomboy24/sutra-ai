@@ -964,7 +964,7 @@ export function MockExamDashboard() {
 }
 
 export function MockExamFlow() {
-  const [setupStep, setSetupStep] = useState<SetupStep>("subject");
+  const [setupStep, setSetupStep] = useState<SetupStep>("intro");
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
@@ -1112,7 +1112,7 @@ export function MockExamFlow() {
     setRemainingSeconds(0);
     setActiveQuestionIndex(0);
     setMode("setup");
-    setSetupStep("subject");
+    setSetupStep("intro");
 
     if (document.fullscreenElement) {
       void document.exitFullscreen();
@@ -1227,6 +1227,7 @@ export function MockExamFlow() {
           examLength={examLength}
           examQuestions={examQuestions}
           rankedQuestions={rankedQuestions}
+          onBegin={() => setSetupStep("subject")}
           onChooseSubject={chooseSubject}
           onChooseChapter={chooseChapter}
           onToggleUnit={toggleUnit}
@@ -1255,6 +1256,7 @@ function MockSetupQuestion({
   examLength,
   examQuestions,
   rankedQuestions,
+  onBegin,
   onChooseSubject,
   onChooseChapter,
   onToggleUnit,
@@ -1271,6 +1273,7 @@ function MockSetupQuestion({
   examLength: ExamLength;
   examQuestions: Question[];
   rankedQuestions: Question[];
+  onBegin: () => void;
   onChooseSubject: (subjectId: string) => void;
   onChooseChapter: (chapterId: string) => void;
   onToggleUnit: (unitId: string) => void;
@@ -1283,6 +1286,19 @@ function MockSetupQuestion({
   const selectedUnitNames = selectedUnitIds.length
     ? selectedChapter.units.filter((unit) => selectedUnitIds.includes(unit.id)).map((unit) => unit.name).join(", ")
     : "Full chapter";
+
+  if (setupStep === "intro") {
+    return (
+      <div className="flex min-h-[320px] flex-col items-center justify-center text-center">
+        <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock exam</p>
+        <h1 className="mt-3 font-bold text-3xl tracking-wide">Ready for a PYQ mock?</h1>
+        <Button className="mt-8 h-11 min-w-48 gap-2" onClick={onBegin}>
+          <PlayIcon className="h-4 w-4" />
+          Start Mock Exam
+        </Button>
+      </div>
+    );
+  }
 
   if (setupStep === "subject") {
     return (
