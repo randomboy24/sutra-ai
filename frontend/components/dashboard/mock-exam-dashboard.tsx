@@ -1197,7 +1197,7 @@ export function MockExamFlow() {
                 const selected = answers[activeQuestion.id] === index;
                 return (
                   <button
-                    key={option}
+                    key={`${activeQuestion.id}-${index}`}
                     className={`rounded-lg border px-4 py-4 text-left text-sm transition-colors ${
                       selected ? "border-primary bg-primary text-primary-foreground" : "bg-background hover:bg-accent"
                     }`}
