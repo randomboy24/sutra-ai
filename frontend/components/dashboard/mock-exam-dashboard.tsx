@@ -63,6 +63,7 @@ type Question = {
 type ExamMode = "setup" | "exam" | "results";
 type ExamLength = "short" | "standard" | "full";
 type DashboardSection = "mock" | "study-plan" | "progress" | "practice";
+type SetupStep = "intro" | "subject" | "chapter" | "units" | "length" | "confirm";
 
 const subjects: Subject[] = [
   {
@@ -327,6 +328,7 @@ export function MockExamDashboard() {
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
+  const [setupStep, setSetupStep] = useState<SetupStep>("intro");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
   const [selectedUnitIds, setSelectedUnitIds] = useState<string[]>([]);
@@ -424,11 +426,21 @@ export function MockExamDashboard() {
     setActiveQuestionIndex(0);
   };
 
+  const chooseSubject = (nextSubjectId: string) => {
+    changeSubject(nextSubjectId);
+    setSetupStep("chapter");
+  };
+
   const changeChapter = (nextChapterId: string) => {
     setChapterId(nextChapterId);
     setSelectedUnitIds([]);
     setAnswers({});
     setActiveQuestionIndex(0);
+  };
+
+  const chooseChapter = (nextChapterId: string) => {
+    changeChapter(nextChapterId);
+    setSetupStep("units");
   };
 
   const toggleUnit = (unitId: string) => {
@@ -444,6 +456,13 @@ export function MockExamDashboard() {
 
     setActiveQuestionIndex(index);
     setSeenQuestionIds((current) => new Set(current).add(nextQuestion.id));
+  };
+
+  const cancelSetup = () => {
+    setSetupStep("intro");
+    setSelectedUnitIds([]);
+    setExamLength("standard");
+    setSessionNotice("");
   };
 
   const startExam = async () => {
@@ -463,6 +482,10 @@ export function MockExamDashboard() {
     }
 
     setMode("exam");
+  };
+
+  const startConfirmedExam = () => {
+    void startExam();
   };
 
   const completeExam = () => {
@@ -495,6 +518,7 @@ export function MockExamDashboard() {
     setRemainingSeconds(0);
     setActiveQuestionIndex(0);
     setSessionNotice("");
+    setSetupStep("intro");
     setMode("setup");
 
     if (document.fullscreenElement) {
@@ -737,82 +761,32 @@ export function MockExamDashboard() {
               ) : null}
 
               {mode === "setup" ? (
-            <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-              <section className="rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5">
-                <div className="flex flex-col gap-1">
-                  <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock exam builder</p>
-                  <h1 className="font-bold text-2xl tracking-wide">Create a PYQ-focused test</h1>
-                  <p className="text-muted-foreground text-sm">
-                    Pick a chapter, optionally narrow it to units, and Sutra AI will prioritize frequently asked and important questions.
-                  </p>
-                </div>
-
-                <div className="mt-6 space-y-6">
-                  <SelectorGroup title="Subject" icon={SearchIcon}>
-                    <SegmentedOptions
-                      options={subjects.map((subject) => ({ id: subject.id, label: subject.name }))}
-                      value={subjectId}
-                      onChange={changeSubject}
-                    />
-                  </SelectorGroup>
-
-                  <SelectorGroup title="Chapter" icon={BookOpenCheckIcon}>
-                    <SegmentedOptions
-                      options={selectedSubject.chapters.map((chapter) => ({ id: chapter.id, label: chapter.name }))}
-                      value={chapterId}
-                      onChange={changeChapter}
-                    />
-                  </SelectorGroup>
-
-                  <SelectorGroup title="Units" icon={Layers3Icon} description="Leave units unselected to include the full chapter.">
-                    <div className="grid gap-2 sm:grid-cols-2">
-                      {selectedChapter.units.map((unit) => {
-                        const selected = selectedUnitIds.includes(unit.id);
-                        return (
-                          <button
-                            key={unit.id}
-                            className={`flex min-h-12 items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
-                              selected
-                                ? "border-primary bg-primary text-primary-foreground"
-                                : "bg-background hover:bg-accent hover:text-accent-foreground"
-                            }`}
-                            onClick={() => toggleUnit(unit.id)}
-                            type="button"
-                          >
-                            <span>{unit.name}</span>
-                            {selected ? <CheckCircle2Icon className="h-4 w-4" /> : null}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </SelectorGroup>
-
-                  <SelectorGroup title="Exam length" icon={TimerIcon}>
-                    <SegmentedOptions
-                      options={Object.entries(examLengthConfig).map(([id, config]) => ({
-                        id,
-                        label: `${config.label} - ${config.questions} Qs`,
-                      }))}
-                      value={examLength}
-                      onChange={(value) => setExamLength(value as ExamLength)}
-                    />
-                  </SelectorGroup>
-                </div>
-
-                <div className="mt-6 flex flex-col gap-3 border-t pt-5 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="text-muted-foreground text-sm">
-                    {examQuestions.length} questions ready from {rankedQuestions.length} matching PYQs.
-                  </div>
-                  <Button className="h-10 gap-2" disabled={!examQuestions.length} onClick={startExam}>
-                    <PlayIcon className="h-4 w-4" />
-                    Start mock exam
-                  </Button>
-                </div>
-              </section>
-
-              <QuestionPreview questions={examQuestions} selectedChapter={selectedChapter.name} />
-            </div>
-          ) : null}
+                <MockSetupWizard
+                  setupStep={setupStep}
+                  selectedSubject={selectedSubject}
+                  selectedChapter={selectedChapter}
+                  selectedUnitIds={selectedUnitIds}
+                  examLength={examLength}
+                  examQuestions={examQuestions}
+                  rankedQuestions={rankedQuestions}
+                  onBegin={() => setSetupStep("subject")}
+                  onChooseSubject={chooseSubject}
+                  onChooseChapter={chooseChapter}
+                  onToggleUnit={toggleUnit}
+                  onUseFullChapter={() => {
+                    setSelectedUnitIds([]);
+                    setSetupStep("length");
+                  }}
+                  onUnitsNext={() => setSetupStep("length")}
+                  onChooseLength={(value) => {
+                    setExamLength(value);
+                    setSetupStep("confirm");
+                  }}
+                  onBack={() => setSetupStep(getPreviousSetupStep(setupStep))}
+                  onCancel={cancelSetup}
+                  onStartExam={startConfirmedExam}
+                />
+              ) : null}
 
           {mode === "exam" && activeQuestion ? (
             <section className="grid gap-6 xl:grid-cols-[1fr_280px]">
@@ -982,6 +956,213 @@ export function MockExamDashboard() {
   );
 }
 
+function MockSetupWizard({
+  setupStep,
+  selectedSubject,
+  selectedChapter,
+  selectedUnitIds,
+  examLength,
+  examQuestions,
+  rankedQuestions,
+  onBegin,
+  onChooseSubject,
+  onChooseChapter,
+  onToggleUnit,
+  onUseFullChapter,
+  onUnitsNext,
+  onChooseLength,
+  onBack,
+  onCancel,
+  onStartExam,
+}: {
+  setupStep: SetupStep;
+  selectedSubject: Subject;
+  selectedChapter: Chapter;
+  selectedUnitIds: string[];
+  examLength: ExamLength;
+  examQuestions: Question[];
+  rankedQuestions: Question[];
+  onBegin: () => void;
+  onChooseSubject: (subjectId: string) => void;
+  onChooseChapter: (chapterId: string) => void;
+  onToggleUnit: (unitId: string) => void;
+  onUseFullChapter: () => void;
+  onUnitsNext: () => void;
+  onChooseLength: (length: ExamLength) => void;
+  onBack: () => void;
+  onCancel: () => void;
+  onStartExam: () => void;
+}) {
+  const selectedUnitNames = selectedUnitIds.length
+    ? selectedChapter.units.filter((unit) => selectedUnitIds.includes(unit.id)).map((unit) => unit.name)
+    : ["Full chapter"];
+
+  return (
+    <section className="rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5">
+      {setupStep === "intro" ? (
+        <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+          <div>
+            <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock exam</p>
+            <h2 className="mt-1 font-bold text-2xl tracking-wide">Start a PYQ-focused mock</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground text-sm">
+              Sutra AI will ask a few quick questions, then build a locked mock from high-frequency and important PYQs.
+            </p>
+          </div>
+          <Button className="h-11 gap-2 md:w-52" onClick={onBegin}>
+            <PlayIcon className="h-4 w-4" />
+            Start Mock Exam
+          </Button>
+        </div>
+      ) : null}
+
+      {setupStep === "subject" ? (
+        <WizardStepShell
+          eyebrow="Step 1 of 5"
+          title="Which subject do you want to test?"
+          onBack={onCancel}
+          backLabel="Cancel"
+        >
+          <SegmentedOptions
+            options={subjects.map((subject) => ({ id: subject.id, label: subject.name }))}
+            value={selectedSubject.id}
+            onChange={onChooseSubject}
+          />
+        </WizardStepShell>
+      ) : null}
+
+      {setupStep === "chapter" ? (
+        <WizardStepShell eyebrow="Step 2 of 5" title="Choose a chapter" onBack={onBack}>
+          <SegmentedOptions
+            options={selectedSubject.chapters.map((chapter) => ({ id: chapter.id, label: chapter.name }))}
+            value={selectedChapter.id}
+            onChange={onChooseChapter}
+          />
+        </WizardStepShell>
+      ) : null}
+
+      {setupStep === "units" ? (
+        <WizardStepShell
+          eyebrow="Step 3 of 5"
+          title="Choose units"
+          description="Select specific units or use the full chapter."
+          onBack={onBack}
+        >
+          <div className="grid gap-2 sm:grid-cols-2">
+            {selectedChapter.units.map((unit) => {
+              const selected = selectedUnitIds.includes(unit.id);
+              return (
+                <button
+                  key={unit.id}
+                  className={`flex min-h-12 items-center justify-between rounded-lg border px-3 py-2 text-left text-sm transition-colors ${
+                    selected
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "bg-background hover:bg-accent hover:text-accent-foreground"
+                  }`}
+                  onClick={() => onToggleUnit(unit.id)}
+                  type="button"
+                >
+                  <span>{unit.name}</span>
+                  {selected ? <CheckCircle2Icon className="h-4 w-4" /> : null}
+                </button>
+              );
+            })}
+          </div>
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-between">
+            <Button variant="outline" onClick={onUseFullChapter}>Use full chapter</Button>
+            <Button onClick={onUnitsNext}>Continue</Button>
+          </div>
+        </WizardStepShell>
+      ) : null}
+
+      {setupStep === "length" ? (
+        <WizardStepShell eyebrow="Step 4 of 5" title="Pick exam length" onBack={onBack}>
+          <SegmentedOptions
+            options={Object.entries(examLengthConfig).map(([id, config]) => ({
+              id,
+              label: `${config.label} - ${config.questions} Qs`,
+            }))}
+            value={examLength}
+            onChange={(value) => onChooseLength(value as ExamLength)}
+          />
+        </WizardStepShell>
+      ) : null}
+
+      {setupStep === "confirm" ? (
+        <WizardStepShell
+          eyebrow="Step 5 of 5"
+          title="Ready to start?"
+          description="The mock will enter fullscreen and leaving the tab cancels the session."
+          onBack={onBack}
+        >
+          <div className="grid gap-3 sm:grid-cols-2">
+            <SummaryItem label="Subject" value={selectedSubject.name} />
+            <SummaryItem label="Chapter" value={selectedChapter.name} />
+            <SummaryItem label="Units" value={selectedUnitNames.join(", ")} />
+            <SummaryItem label="Length" value={`${examLengthConfig[examLength].label} · ${examLengthConfig[examLength].minutes}m`} />
+          </div>
+          <QuestionPreview compact questions={examQuestions} selectedChapter={selectedChapter.name} />
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-muted-foreground text-sm">
+              {examQuestions.length} questions ready from {rankedQuestions.length} matching PYQs.
+            </p>
+            <Button className="h-10 gap-2" disabled={!examQuestions.length} onClick={onStartExam}>
+              <PlayIcon className="h-4 w-4" />
+              Start Exam
+            </Button>
+          </div>
+        </WizardStepShell>
+      ) : null}
+    </section>
+  );
+}
+
+function WizardStepShell({
+  eyebrow,
+  title,
+  description,
+  backLabel = "Back",
+  onBack,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+  backLabel?: string;
+  onBack: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">{eyebrow}</p>
+          <h2 className="mt-1 font-bold text-2xl tracking-wide">{title}</h2>
+          {description ? <p className="mt-2 text-muted-foreground text-sm">{description}</p> : null}
+        </div>
+        <Button variant="ghost" onClick={onBack}>{backLabel}</Button>
+      </div>
+      <div className="mt-6">{children}</div>
+    </div>
+  );
+}
+
+function SummaryItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-lg border bg-background p-3">
+      <p className="text-muted-foreground text-xs">{label}</p>
+      <p className="mt-1 font-medium">{value}</p>
+    </div>
+  );
+}
+
+function getPreviousSetupStep(step: SetupStep): SetupStep {
+  if (step === "chapter") return "subject";
+  if (step === "units") return "chapter";
+  if (step === "length") return "units";
+  if (step === "confirm") return "length";
+  return "intro";
+}
+
 function SelectorGroup({
   title,
   description,
@@ -1034,9 +1215,9 @@ function SegmentedOptions({
   );
 }
 
-function QuestionPreview({ questions, selectedChapter }: { questions: Question[]; selectedChapter: string }) {
+function QuestionPreview({ questions, selectedChapter, compact = false }: { questions: Question[]; selectedChapter: string; compact?: boolean }) {
   return (
-    <aside className="rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5">
+    <aside className={`${compact ? "mt-5" : ""} rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">PYQ ranking</p>
@@ -1049,7 +1230,7 @@ function QuestionPreview({ questions, selectedChapter }: { questions: Question[]
       </p>
       <div className="mt-5 space-y-3">
         {questions.length ? (
-          questions.map((question, index) => (
+          questions.slice(0, compact ? 3 : questions.length).map((question, index) => (
             <div key={question.id} className="rounded-lg border bg-background p-3">
               <div className="flex items-start justify-between gap-3">
                 <p className="font-medium text-sm leading-snug">
