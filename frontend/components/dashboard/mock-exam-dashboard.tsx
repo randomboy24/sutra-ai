@@ -21,6 +21,7 @@ import {
   TimerIcon,
   TrophyIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Logo } from "@/components/logo";
@@ -325,7 +326,8 @@ const dashboardSections: {
 ];
 
 export function MockExamDashboard() {
-  const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
+  const router = useRouter();
+  const [activeSection, setActiveSection] = useState<DashboardSection>("study-plan");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
   const [setupStep, setSetupStep] = useState<SetupStep>("intro");
@@ -527,6 +529,11 @@ export function MockExamDashboard() {
   };
 
   const selectSection = (sectionId: DashboardSection) => {
+    if (sectionId === "mock") {
+      router.push("/dashboard/mock-exam");
+      return;
+    }
+
     setActiveSection(sectionId);
     setMobileMenuOpen(false);
   };
@@ -953,6 +960,449 @@ export function MockExamDashboard() {
         </section>
       </div>
     </main>
+  );
+}
+
+export function MockExamFlow() {
+  const [setupStep, setSetupStep] = useState<SetupStep>("subject");
+  const [mode, setMode] = useState<ExamMode>("setup");
+  const [subjectId, setSubjectId] = useState(subjects[0].id);
+  const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
+  const [selectedUnitIds, setSelectedUnitIds] = useState<string[]>([]);
+  const [examLength, setExamLength] = useState<ExamLength>("standard");
+  const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [seenQuestionIds, setSeenQuestionIds] = useState<Set<string>>(new Set());
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const modeRef = useRef(mode);
+  const allowFullscreenExitRef = useRef(false);
+
+  const selectedSubject = subjects.find((subject) => subject.id === subjectId) ?? subjects[0];
+  const selectedChapter = selectedSubject.chapters.find((chapter) => chapter.id === chapterId) ?? selectedSubject.chapters[0];
+
+  const rankedQuestions = useMemo(() => {
+    const unitFilter = selectedUnitIds.length ? selectedUnitIds : selectedChapter.units.map((unit) => unit.id);
+
+    return questions
+      .filter(
+        (question) =>
+          question.subjectId === selectedSubject.id &&
+          question.chapterId === selectedChapter.id &&
+          unitFilter.includes(question.unitId),
+      )
+      .sort((a, b) => questionScore(b) - questionScore(a));
+  }, [selectedChapter, selectedSubject.id, selectedUnitIds]);
+
+  const examQuestions = rankedQuestions.slice(0, examLengthConfig[examLength].questions);
+  const activeQuestion = examQuestions[activeQuestionIndex];
+  const answeredCount = examQuestions.filter((question) => answers[question.id] !== undefined).length;
+  const seenCount = examQuestions.filter((question) => seenQuestionIds.has(question.id)).length;
+  const result = calculateResult(examQuestions, answers);
+
+  useEffect(() => {
+    modeRef.current = mode;
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode !== "exam") return;
+
+    if (remainingSeconds <= 0) {
+      completeExam();
+      return;
+    }
+
+    const timerId = window.setTimeout(() => {
+      setRemainingSeconds((current) => Math.max(0, current - 1));
+    }, 1000);
+
+    return () => window.clearTimeout(timerId);
+  }, [mode, remainingSeconds]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (modeRef.current !== "exam") return;
+
+      event.preventDefault();
+      event.returnValue = "Your active mock exam will be cancelled.";
+    };
+
+    const handleVisibilityChange = () => {
+      if (modeRef.current === "exam" && document.visibilityState === "hidden") {
+        cancelExam();
+      }
+    };
+
+    const handleFullscreenChange = () => {
+      if (modeRef.current === "exam" && !document.fullscreenElement && !allowFullscreenExitRef.current) {
+        cancelExam();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const chooseSubject = (nextSubjectId: string) => {
+    const nextSubject = subjects.find((subject) => subject.id === nextSubjectId) ?? subjects[0];
+    setSubjectId(nextSubject.id);
+    setChapterId(nextSubject.chapters[0].id);
+    setSelectedUnitIds([]);
+    setSetupStep("chapter");
+  };
+
+  const chooseChapter = (nextChapterId: string) => {
+    setChapterId(nextChapterId);
+    setSelectedUnitIds([]);
+    setSetupStep("units");
+  };
+
+  const toggleUnit = (unitId: string) => {
+    setSelectedUnitIds((current) =>
+      current.includes(unitId) ? current.filter((id) => id !== unitId) : [...current, unitId],
+    );
+  };
+
+  const openQuestion = (index: number) => {
+    const nextQuestion = examQuestions[index];
+
+    if (!nextQuestion) return;
+
+    setActiveQuestionIndex(index);
+    setSeenQuestionIds((current) => new Set(current).add(nextQuestion.id));
+  };
+
+  const startExam = async () => {
+    setAnswers({});
+    setActiveQuestionIndex(0);
+    setSeenQuestionIds(examQuestions[0] ? new Set([examQuestions[0].id]) : new Set());
+    setRemainingSeconds(examLengthConfig[examLength].minutes * 60);
+    allowFullscreenExitRef.current = false;
+
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      }
+    } catch {
+      // Browser denied fullscreen. Continue with the locked tab behavior.
+    }
+
+    setMode("exam");
+  };
+
+  const completeExam = () => {
+    allowFullscreenExitRef.current = true;
+    setMode("results");
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    }
+  };
+
+  const cancelExam = () => {
+    allowFullscreenExitRef.current = true;
+    setAnswers({});
+    setSeenQuestionIds(new Set());
+    setRemainingSeconds(0);
+    setActiveQuestionIndex(0);
+    setMode("setup");
+    setSetupStep("subject");
+
+    if (document.fullscreenElement) {
+      void document.exitFullscreen();
+    }
+  };
+
+  if (mode === "results") {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background p-5 text-foreground">
+        <section className="w-full max-w-xl rounded-lg border bg-card p-6 shadow-sm shadow-black/5">
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock result</p>
+          <h1 className="mt-2 font-bold text-4xl tracking-wide">{result.percentage}%</h1>
+          <p className="mt-2 text-muted-foreground text-sm">
+            {result.correct} correct, {result.incorrect} incorrect, {result.skipped} skipped
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <ResultStat label="Accuracy" value={`${result.percentage}%`} />
+            <ResultStat label="Attempted" value={`${result.attempted}/${examQuestions.length}`} />
+            <ResultStat label="PYQ coverage" value={`${examQuestions.length} key Qs`} />
+          </div>
+          <Button className="mt-6 w-full" onClick={cancelExam}>Create another mock</Button>
+        </section>
+      </main>
+    );
+  }
+
+  if (mode === "exam" && activeQuestion) {
+    return (
+      <main className="min-h-screen bg-background text-foreground">
+        <section className="mx-auto grid min-h-screen w-full max-w-7xl gap-5 px-4 py-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+            <div className="flex items-start justify-between gap-4 border-b pb-4">
+              <div>
+                <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                  Question {activeQuestionIndex + 1} of {examQuestions.length}
+                </p>
+                <h1 className="mt-2 font-semibold text-xl leading-snug">{activeQuestion.prompt}</h1>
+              </div>
+              <div className={`shrink-0 rounded-lg border px-3 py-2 font-mono text-sm ${remainingSeconds <= 300 ? "border-destructive/40 bg-destructive/10 text-destructive" : "bg-background"}`}>
+                {formatSeconds(remainingSeconds)}
+              </div>
+            </div>
+
+            <div className="mt-5 grid gap-3">
+              {activeQuestion.options.map((option, index) => {
+                const selected = answers[activeQuestion.id] === index;
+                return (
+                  <button
+                    key={option}
+                    className={`rounded-lg border px-4 py-4 text-left text-sm transition-colors ${
+                      selected ? "border-primary bg-primary text-primary-foreground" : "bg-background hover:bg-accent"
+                    }`}
+                    onClick={() => setAnswers((current) => ({ ...current, [activeQuestion.id]: index }))}
+                    type="button"
+                  >
+                    <span className="mr-2 font-mono text-xs">{String.fromCharCode(65 + index)}.</span>
+                    {option}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="mt-6 flex items-center justify-between border-t pt-5">
+              <Button variant="outline" disabled={activeQuestionIndex === 0} onClick={() => openQuestion(activeQuestionIndex - 1)}>
+                Back
+              </Button>
+              {activeQuestionIndex === examQuestions.length - 1 ? (
+                <Button onClick={completeExam}>Submit</Button>
+              ) : (
+                <Button onClick={() => openQuestion(activeQuestionIndex + 1)}>Next</Button>
+              )}
+            </div>
+          </div>
+
+          <aside className="rounded-lg border bg-card p-4 shadow-sm shadow-black/5">
+            <div className="flex items-center justify-between">
+              <h2 className="font-semibold">Questions</h2>
+              <span className="text-muted-foreground text-sm">{answeredCount} answered · {seenCount} seen</span>
+            </div>
+            <div className="mt-4 grid grid-cols-5 gap-2">
+              {examQuestions.map((question, index) => {
+                const answered = answers[question.id] !== undefined;
+                const seen = seenQuestionIds.has(question.id);
+                const active = index === activeQuestionIndex;
+                return (
+                  <button
+                    key={question.id}
+                    className={`h-11 rounded-lg border text-sm transition-colors ${getQuestionTileClass({ active, answered, seen })}`}
+                    onClick={() => openQuestion(index)}
+                    type="button"
+                  >
+                    {index + 1}
+                  </button>
+                );
+              })}
+            </div>
+            <Button variant="outline" className="mt-5 w-full" onClick={cancelExam}>Cancel mock</Button>
+          </aside>
+        </section>
+      </main>
+    );
+  }
+
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-background p-5 text-foreground">
+      <section className="w-full max-w-xl">
+        <MockSetupQuestion
+          setupStep={setupStep}
+          selectedSubject={selectedSubject}
+          selectedChapter={selectedChapter}
+          selectedUnitIds={selectedUnitIds}
+          examLength={examLength}
+          examQuestions={examQuestions}
+          rankedQuestions={rankedQuestions}
+          onChooseSubject={chooseSubject}
+          onChooseChapter={chooseChapter}
+          onToggleUnit={toggleUnit}
+          onUseFullChapter={() => {
+            setSelectedUnitIds([]);
+            setSetupStep("length");
+          }}
+          onUnitsNext={() => setSetupStep("length")}
+          onChooseLength={(value) => {
+            setExamLength(value);
+            setSetupStep("confirm");
+          }}
+          onBack={() => setSetupStep(getPreviousSetupStep(setupStep))}
+          onStartExam={() => void startExam()}
+        />
+      </section>
+    </main>
+  );
+}
+
+function MockSetupQuestion({
+  setupStep,
+  selectedSubject,
+  selectedChapter,
+  selectedUnitIds,
+  examLength,
+  examQuestions,
+  rankedQuestions,
+  onChooseSubject,
+  onChooseChapter,
+  onToggleUnit,
+  onUseFullChapter,
+  onUnitsNext,
+  onChooseLength,
+  onBack,
+  onStartExam,
+}: {
+  setupStep: SetupStep;
+  selectedSubject: Subject;
+  selectedChapter: Chapter;
+  selectedUnitIds: string[];
+  examLength: ExamLength;
+  examQuestions: Question[];
+  rankedQuestions: Question[];
+  onChooseSubject: (subjectId: string) => void;
+  onChooseChapter: (chapterId: string) => void;
+  onToggleUnit: (unitId: string) => void;
+  onUseFullChapter: () => void;
+  onUnitsNext: () => void;
+  onChooseLength: (length: ExamLength) => void;
+  onBack: () => void;
+  onStartExam: () => void;
+}) {
+  const selectedUnitNames = selectedUnitIds.length
+    ? selectedChapter.units.filter((unit) => selectedUnitIds.includes(unit.id)).map((unit) => unit.name).join(", ")
+    : "Full chapter";
+
+  if (setupStep === "subject") {
+    return (
+      <MinimalStep eyebrow="Step 1 of 5" title="Which subject do you want to practice?">
+        <ChoiceList options={subjects.map((subject) => ({ id: subject.id, label: subject.name }))} value={selectedSubject.id} onChange={onChooseSubject} />
+      </MinimalStep>
+    );
+  }
+
+  if (setupStep === "chapter") {
+    return (
+      <MinimalStep eyebrow="Step 2 of 5" title="Which chapter should the mock focus on?" onBack={onBack}>
+        <ChoiceList options={selectedSubject.chapters.map((chapter) => ({ id: chapter.id, label: chapter.name }))} value={selectedChapter.id} onChange={onChooseChapter} />
+      </MinimalStep>
+    );
+  }
+
+  if (setupStep === "units") {
+    return (
+      <MinimalStep eyebrow="Step 3 of 5" title="Any specific units?" onBack={onBack}>
+        <div className="grid gap-2">
+          {selectedChapter.units.map((unit) => {
+            const selected = selectedUnitIds.includes(unit.id);
+            return (
+              <button
+                key={unit.id}
+                className={`min-h-12 rounded-lg border px-4 py-3 text-left text-sm transition-colors ${
+                  selected ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-accent"
+                }`}
+                onClick={() => onToggleUnit(unit.id)}
+                type="button"
+              >
+                {unit.name}
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <Button variant="outline" onClick={onUseFullChapter}>Use full chapter</Button>
+          <Button onClick={onUnitsNext}>Continue</Button>
+        </div>
+      </MinimalStep>
+    );
+  }
+
+  if (setupStep === "length") {
+    return (
+      <MinimalStep eyebrow="Step 4 of 5" title="How long should the mock be?" onBack={onBack}>
+        <ChoiceList
+          options={Object.entries(examLengthConfig).map(([id, config]) => ({ id, label: `${config.label} · ${config.questions} questions` }))}
+          value={examLength}
+          onChange={(value) => onChooseLength(value as ExamLength)}
+        />
+      </MinimalStep>
+    );
+  }
+
+  return (
+    <MinimalStep eyebrow="Step 5 of 5" title="Ready to start?" onBack={onBack}>
+      <div className="space-y-2 rounded-lg border bg-card p-4 text-sm">
+        <p><span className="text-muted-foreground">Subject:</span> {selectedSubject.name}</p>
+        <p><span className="text-muted-foreground">Chapter:</span> {selectedChapter.name}</p>
+        <p><span className="text-muted-foreground">Units:</span> {selectedUnitNames}</p>
+        <p><span className="text-muted-foreground">Length:</span> {examLengthConfig[examLength].label}</p>
+        <p><span className="text-muted-foreground">Questions:</span> {examQuestions.length} from {rankedQuestions.length} matching PYQs</p>
+      </div>
+      <Button className="mt-4 h-11 w-full" disabled={!examQuestions.length} onClick={onStartExam}>Start exam</Button>
+    </MinimalStep>
+  );
+}
+
+function MinimalStep({
+  eyebrow,
+  title,
+  onBack,
+  children,
+}: {
+  eyebrow: string;
+  title: string;
+  onBack?: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <div className="mb-8 flex items-center justify-between gap-4">
+        <div>
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">{eyebrow}</p>
+          <h1 className="mt-2 font-bold text-3xl tracking-wide">{title}</h1>
+        </div>
+        {onBack ? <Button variant="ghost" onClick={onBack}>Back</Button> : null}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function ChoiceList({
+  options,
+  value,
+  onChange,
+}: {
+  options: { id: string; label: string }[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  return (
+    <div className="grid gap-2">
+      {options.map((option) => (
+        <button
+          key={option.id}
+          className={`min-h-12 rounded-lg border px-4 py-3 text-left text-sm transition-colors ${
+            value === option.id ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:bg-accent"
+          }`}
+          onClick={() => onChange(option.id)}
+          type="button"
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
   );
 }
 
