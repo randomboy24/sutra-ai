@@ -2,6 +2,7 @@
 
 import { UserButton } from "@clerk/nextjs";
 import {
+  AlertTriangleIcon,
   ArrowLeftIcon,
   BarChart3Icon,
   BookOpenCheckIcon,
@@ -65,6 +66,7 @@ type ExamMode = "setup" | "exam" | "results";
 type ExamLength = "short" | "standard" | "full";
 type DashboardSection = "mock" | "study-plan" | "progress" | "practice";
 type SetupStep = "intro" | "subject" | "chapter" | "units" | "length" | "confirm";
+type MockCancellationReason = "tab-switch" | "fullscreen-exit" | "manual";
 
 const subjects: Subject[] = [
   {
@@ -340,6 +342,7 @@ export function MockExamDashboard() {
   const [seenQuestionIds, setSeenQuestionIds] = useState<Set<string>>(new Set());
   const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [sessionNotice, setSessionNotice] = useState("");
+  const [cancellationReason, setCancellationReason] = useState<MockCancellationReason | null>(null);
   const modeRef = useRef(mode);
   const allowFullscreenExitRef = useRef(false);
 
@@ -368,6 +371,27 @@ export function MockExamDashboard() {
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get("section");
+    const reason = params.get("mock_cancelled");
+
+    if (section === "mock") {
+      setActiveSection("mock");
+      setSetupStep("intro");
+      setMode("setup");
+    }
+
+    if (isMockCancellationReason(reason)) {
+      setCancellationReason(reason);
+      setSessionNotice(getMockCancellationMessage(reason));
+    }
+
+    if (section === "mock" || reason) {
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     if (mode !== "exam") return;
@@ -959,11 +983,19 @@ export function MockExamDashboard() {
           )}
         </section>
       </div>
+
+      {cancellationReason ? (
+        <MockCancellationModal
+          reason={cancellationReason}
+          onClose={() => setCancellationReason(null)}
+        />
+      ) : null}
     </main>
   );
 }
 
 export function MockExamFlow() {
+  const router = useRouter();
   const [setupStep, setSetupStep] = useState<SetupStep>("subject");
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
@@ -1028,13 +1060,13 @@ export function MockExamFlow() {
 
     const handleVisibilityChange = () => {
       if (modeRef.current === "exam" && document.visibilityState === "hidden") {
-        cancelExam();
+        cancelExam("tab-switch");
       }
     };
 
     const handleFullscreenChange = () => {
       if (modeRef.current === "exam" && !document.fullscreenElement && !allowFullscreenExitRef.current) {
-        cancelExam();
+        cancelExam("fullscreen-exit");
       }
     };
 
@@ -1105,7 +1137,7 @@ export function MockExamFlow() {
     }
   };
 
-  const cancelExam = () => {
+  const cancelExam = (reason?: MockCancellationReason) => {
     allowFullscreenExitRef.current = true;
     setAnswers({});
     setSeenQuestionIds(new Set());
@@ -1116,6 +1148,10 @@ export function MockExamFlow() {
 
     if (document.fullscreenElement) {
       void document.exitFullscreen();
+    }
+
+    if (reason) {
+      router.replace(`/dashboard?section=mock&mock_cancelled=${reason}`);
     }
   };
 
@@ -1133,7 +1169,7 @@ export function MockExamFlow() {
             <ResultStat label="Attempted" value={`${result.attempted}/${examQuestions.length}`} />
             <ResultStat label="PYQ coverage" value={`${examQuestions.length} key Qs`} />
           </div>
-          <Button className="mt-6 w-full" onClick={cancelExam}>Create another mock</Button>
+          <Button className="mt-6 w-full" onClick={() => cancelExam()}>Create another mock</Button>
         </section>
       </main>
     );
@@ -1209,7 +1245,7 @@ export function MockExamFlow() {
                 );
               })}
             </div>
-            <Button variant="outline" className="mt-5 w-full" onClick={cancelExam}>Cancel mock</Button>
+            <Button variant="outline" className="mt-5 w-full" onClick={() => cancelExam("manual")}>Cancel mock</Button>
           </aside>
         </section>
       </main>
@@ -1244,6 +1280,52 @@ export function MockExamFlow() {
         />
       </section>
     </main>
+  );
+}
+
+function isMockCancellationReason(value: string | null): value is MockCancellationReason {
+  return value === "tab-switch" || value === "fullscreen-exit" || value === "manual";
+}
+
+function getMockCancellationMessage(reason: MockCancellationReason) {
+  if (reason === "tab-switch") {
+    return "Your mock exam was cancelled because you switched tabs or left the exam window before submitting.";
+  }
+
+  if (reason === "fullscreen-exit") {
+    return "Your mock exam was cancelled because fullscreen mode was exited before submitting.";
+  }
+
+  return "Your mock exam was cancelled before submission.";
+}
+
+function MockCancellationModal({
+  reason,
+  onClose,
+}: {
+  reason: MockCancellationReason;
+  onClose: () => void;
+}) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 px-4 backdrop-blur-sm">
+      <div
+        className="w-full max-w-md rounded-lg border bg-card p-5 text-card-foreground shadow-lg shadow-black/10"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="mock-cancelled-title"
+      >
+        <div className="flex items-start gap-3">
+          <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-2 text-destructive">
+            <AlertTriangleIcon className="h-5 w-5" />
+          </div>
+          <div className="min-w-0">
+            <h2 id="mock-cancelled-title" className="font-semibold text-lg">Mock exam cancelled</h2>
+            <p className="mt-2 text-muted-foreground text-sm">{getMockCancellationMessage(reason)}</p>
+          </div>
+        </div>
+        <Button className="mt-5 w-full" onClick={onClose}>Got it</Button>
+      </div>
+    </div>
   );
 }
 
