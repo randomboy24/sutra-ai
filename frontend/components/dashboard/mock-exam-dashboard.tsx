@@ -529,13 +529,13 @@ export function MockExamDashboard() {
   };
 
   const selectSection = (sectionId: DashboardSection) => {
-    if (sectionId === "mock") {
-      router.push("/dashboard/mock-exam");
-      return;
-    }
-
     setActiveSection(sectionId);
     setMobileMenuOpen(false);
+
+    if (sectionId === "mock") {
+      setSetupStep("intro");
+      setMode("setup");
+    }
   };
 
   const activeSectionConfig =
@@ -776,7 +776,7 @@ export function MockExamDashboard() {
                   examLength={examLength}
                   examQuestions={examQuestions}
                   rankedQuestions={rankedQuestions}
-                  onBegin={() => setSetupStep("subject")}
+                  onBegin={() => router.push("/dashboard/mock-exam")}
                   onChooseSubject={chooseSubject}
                   onChooseChapter={chooseChapter}
                   onToggleUnit={toggleUnit}
@@ -964,7 +964,7 @@ export function MockExamDashboard() {
 }
 
 export function MockExamFlow() {
-  const [setupStep, setSetupStep] = useState<SetupStep>("intro");
+  const [setupStep, setSetupStep] = useState<SetupStep>("subject");
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
@@ -1112,7 +1112,7 @@ export function MockExamFlow() {
     setRemainingSeconds(0);
     setActiveQuestionIndex(0);
     setMode("setup");
-    setSetupStep("intro");
+    setSetupStep("subject");
 
     if (document.fullscreenElement) {
       void document.exitFullscreen();
@@ -1227,7 +1227,6 @@ export function MockExamFlow() {
           examLength={examLength}
           examQuestions={examQuestions}
           rankedQuestions={rankedQuestions}
-          onBegin={() => setSetupStep("subject")}
           onChooseSubject={chooseSubject}
           onChooseChapter={chooseChapter}
           onToggleUnit={toggleUnit}
@@ -1256,7 +1255,6 @@ function MockSetupQuestion({
   examLength,
   examQuestions,
   rankedQuestions,
-  onBegin,
   onChooseSubject,
   onChooseChapter,
   onToggleUnit,
@@ -1273,7 +1271,6 @@ function MockSetupQuestion({
   examLength: ExamLength;
   examQuestions: Question[];
   rankedQuestions: Question[];
-  onBegin: () => void;
   onChooseSubject: (subjectId: string) => void;
   onChooseChapter: (chapterId: string) => void;
   onToggleUnit: (unitId: string) => void;
@@ -1287,18 +1284,6 @@ function MockSetupQuestion({
     ? selectedChapter.units.filter((unit) => selectedUnitIds.includes(unit.id)).map((unit) => unit.name).join(", ")
     : "Full chapter";
 
-  if (setupStep === "intro") {
-    return (
-      <div className="flex min-h-[320px] flex-col items-center justify-center text-center">
-        <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock exam</p>
-        <h1 className="mt-3 font-bold text-3xl tracking-wide">Ready for a PYQ mock?</h1>
-        <Button className="mt-8 h-11 min-w-48 gap-2" onClick={onBegin}>
-          <PlayIcon className="h-4 w-4" />
-          Start Mock Exam
-        </Button>
-      </div>
-    );
-  }
 
   if (setupStep === "subject") {
     return (
@@ -1469,7 +1454,7 @@ function MockSetupWizard({
         <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
           <div>
             <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Mock exam</p>
-            <h2 className="mt-1 font-bold text-2xl tracking-wide">Start a PYQ-focused mock</h2>
+            <h2 className="mt-1 font-bold text-2xl tracking-wide">Ready for a PYQ mock?</h2>
             <p className="mt-2 max-w-2xl text-muted-foreground text-sm">
               Sutra AI will ask a few quick questions, then build a locked mock from high-frequency and important PYQs.
             </p>
