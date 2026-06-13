@@ -33,6 +33,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@clerk/nextjs";
+import { useExamReadiness } from "@/hooks/use-exam-readiness";
+import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 
 type Unit = {
   id: string;
@@ -442,7 +445,7 @@ const dashboardSections: {
   },
 ];
 
-const dashboardStats = [
+const staticDashboardStats = [
   { label: "Academic Health", value: "82", detail: "Stable", icon: HeartPulseIcon },
   { label: "Exam Readiness", value: "74%", detail: "Physics focus", icon: GaugeIcon },
   { label: "Weak Concepts", value: "3", detail: "Needs revision", icon: BrainCircuitIcon },
@@ -451,6 +454,21 @@ const dashboardStats = [
 
 export function MockExamDashboard() {
   const router = useRouter();
+  const { user } = useUser();
+  const readiness = useExamReadiness(user?.id);
+
+  const dashboardStats = useMemo(() => {
+    if (readiness.data) {
+      return [
+        { label: "Academic Health", value: "82", detail: "Stable", icon: HeartPulseIcon },
+        { label: "Exam Readiness", value: `${Math.round(readiness.data.readiness_score)}%`, detail: `${readiness.data.confidence_level} confidence`, icon: GaugeIcon },
+        { label: "Weak Concepts", value: String(readiness.data.weak_chapters.length), detail: "Needs revision", icon: BrainCircuitIcon },
+        { label: "Today's Plan", value: "5", detail: "Tasks queued", icon: CalendarClockIcon },
+      ];
+    }
+    return staticDashboardStats;
+  }, [readiness.data]);
+
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
@@ -1111,6 +1129,14 @@ export function MockExamDashboard() {
             </section>
           ) : null}
             </>
+          ) : activeSection === "readiness" ? (
+            <ExamReadinessPanel
+              readinessData={readiness.data}
+              loading={readiness.loading}
+              error={readiness.error}
+              clerkUserId={user?.id}
+              refetch={readiness.refetch}
+            />
           ) : (
             <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />
           )}
