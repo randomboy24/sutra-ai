@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.auth.verify import get_current_user
 from app.database import SessionLocal
 from app.models.user import User
 from app.models.student import Student
@@ -13,12 +14,14 @@ from app.schemas.health import (
 router = APIRouter(prefix="/api/health", tags=["health"])
 
 
-@router.post("/seed/{clerk_user_id}", response_model=SeedHealthResponse)
-def seed_health_data(clerk_user_id: str, body: SeedHealthRequest):
-    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
+@router.post("/seed", response_model=SeedHealthResponse)
+async def seed_health_data(
+    body: SeedHealthRequest,
+    verified_user_id: str = Depends(get_current_user),
+):
     db = SessionLocal()
     try:
-        user = db.query(User).filter(User.clerk_user_id == clerk_user_id).first()
+        user = db.query(User).filter(User.clerk_user_id == verified_user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
@@ -65,12 +68,13 @@ def seed_health_data(clerk_user_id: str, body: SeedHealthRequest):
         db.close()
 
 
-@router.get("/{clerk_user_id}", response_model=HealthResponse)
-def get_health(clerk_user_id: str):
-    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
+@router.get("", response_model=HealthResponse)
+async def get_health(
+    verified_user_id: str = Depends(get_current_user),
+):
     db = SessionLocal()
     try:
-        user = db.query(User).filter(User.clerk_user_id == clerk_user_id).first()
+        user = db.query(User).filter(User.clerk_user_id == verified_user_id).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
 
@@ -88,7 +92,7 @@ def get_health(clerk_user_id: str):
 
         return HealthResponse(
             student_id=health.student_id,
-            clerk_user_id=clerk_user_id,
+            clerk_user_id=verified_user_id,
             health_score=health.health_score,
             trend=health.trend,
             study_hours_week=health.study_hours_week,
