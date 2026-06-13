@@ -1,14 +1,14 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class SeedReadinessRequest(BaseModel):
-    readiness_score: float = 74.0
-    predicted_score: float = 68.5
+    readiness_score: float = Field(default=74.0, ge=0, le=100)
+    predicted_score: float = Field(default=68.5, ge=0, le=100)
     weak_chapters: list[str] = ["Electrostatics", "Organic Chemistry Basics"]
     strong_chapters: list[str] = ["Probability", "Calculus"]
-    syllabus_coverage: float = 65.0
+    syllabus_coverage: float = Field(default=65.0, ge=0, le=100)
     confidence_level: str = "medium"
 
 
