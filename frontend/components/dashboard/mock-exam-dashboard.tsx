@@ -2,25 +2,30 @@
 
 import { UserButton } from "@clerk/nextjs";
 import {
+  ActivityIcon,
   AlertTriangleIcon,
   ArrowLeftIcon,
-  BarChart3Icon,
   BookOpenCheckIcon,
+  BrainCircuitIcon,
+  CalendarClockIcon,
   CheckCircle2Icon,
   ChevronRightIcon,
   ClipboardListIcon,
   Clock3Icon,
+  DatabaseIcon,
+  FileCheck2Icon,
   FlameIcon,
+  GaugeIcon,
+  HeartPulseIcon,
   Layers3Icon,
-  ListChecksIcon,
   MenuIcon,
   PlayIcon,
   RotateCcwIcon,
-  SearchIcon,
+  ShieldAlertIcon,
   SparklesIcon,
-  TargetIcon,
   TimerIcon,
   TrophyIcon,
+  WandSparklesIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -64,9 +69,19 @@ type Question = {
 
 type ExamMode = "setup" | "exam" | "results";
 type ExamLength = "short" | "standard" | "full";
-type DashboardSection = "mock" | "study-plan" | "progress" | "practice";
+type DashboardSection =
+  | "academic-health"
+  | "weakness"
+  | "study-plan"
+  | "intervention"
+  | "mock"
+  | "readiness"
+  | "paper-evaluator"
+  | "question-bank"
+  | "adaptive";
 type SetupStep = "intro" | "subject" | "chapter" | "units" | "length" | "confirm";
 type MockCancellationReason = "tab-switch" | "fullscreen-exit" | "manual";
+type FeatureStatus = "Active" | "Next" | "Planned";
 
 const subjects: Subject[] = [
   {
@@ -298,38 +313,145 @@ const examLengthConfig: Record<ExamLength, { label: string; questions: number; m
 const dashboardSections: {
   id: DashboardSection;
   label: string;
+  shortLabel: string;
   description: string;
+  owner: "Jatin" | "Krish" | "Shared";
+  status: FeatureStatus;
+  stage: string;
   icon: typeof BookOpenCheckIcon;
+  accent: string;
+  signals: string[];
+  nextMilestone: string;
 }[] = [
   {
-    id: "mock",
-    label: "Mock Exam",
-    description: "Build PYQ-ranked tests by chapter and unit.",
-    icon: BookOpenCheckIcon,
+    id: "academic-health",
+    label: "Academic Health",
+    shortLabel: "Health",
+    description: "A live score from tests, attendance, study consistency, and revision rhythm.",
+    owner: "Krish",
+    status: "Planned",
+    stage: "Agentic Feature #1",
+    icon: HeartPulseIcon,
+    accent: "from-rose-500/20 via-transparent to-emerald-500/10",
+    signals: ["Score trend", "Study time", "Revision frequency"],
+    nextMilestone: "Create the health-score formula and demo trend data.",
+  },
+  {
+    id: "weakness",
+    label: "Weakness Detection",
+    shortLabel: "Weakness",
+    description: "Find root-cause learning gaps from repeated mistakes across concepts.",
+    owner: "Jatin",
+    status: "Next",
+    stage: "Agentic Feature #2",
+    icon: BrainCircuitIcon,
+    accent: "from-violet-500/20 via-transparent to-sky-500/10",
+    signals: ["Wrong-answer clusters", "Root cause", "Prerequisite gaps"],
+    nextMilestone: "Map mock mistakes to chapter, unit, and prerequisite concepts.",
   },
   {
     id: "study-plan",
-    label: "Study Plan",
-    description: "Daily tasks and revision schedule.",
-    icon: TargetIcon,
+    label: "Autonomous Study Planner",
+    shortLabel: "Study Plan",
+    description: "Rebuild daily plans from exams, weak areas, available hours, and learning speed.",
+    owner: "Krish",
+    status: "Planned",
+    stage: "Agentic Feature #3",
+    icon: CalendarClockIcon,
+    accent: "from-amber-500/20 via-transparent to-lime-500/10",
+    signals: ["Exam dates", "Study hours", "Task rebalance"],
+    nextMilestone: "Add a simple generated day plan from readiness and weak chapters.",
   },
   {
-    id: "progress",
-    label: "Progress",
-    description: "Scores, weak topics, and readiness trends.",
-    icon: BarChart3Icon,
+    id: "intervention",
+    label: "AI Intervention Engine",
+    shortLabel: "Intervention",
+    description: "Act when students disappear, struggle, or overload instead of waiting for humans.",
+    owner: "Jatin",
+    status: "Planned",
+    stage: "Agentic Feature #4",
+    icon: ShieldAlertIcon,
+    accent: "from-red-500/20 via-transparent to-orange-500/10",
+    signals: ["Inactivity", "Reduced workload", "Mentor alert"],
+    nextMilestone: "Create rule-based demo interventions for inactivity and low scores.",
   },
   {
-    id: "practice",
-    label: "Practice Sets",
-    description: "Focused drills from recent mistakes.",
-    icon: ListChecksIcon,
+    id: "mock",
+    label: "Dynamic Mock Test Generator",
+    shortLabel: "Mock Exam",
+    description: "Generate board-style mocks from board, standard, subject, chapter, and unit choices.",
+    owner: "Shared",
+    status: "Active",
+    stage: "Examination Feature #1",
+    icon: BookOpenCheckIcon,
+    accent: "from-cyan-500/20 via-transparent to-emerald-500/10",
+    signals: ["PYQ ranking", "Fullscreen lock", "Question states"],
+    nextMilestone: "Connect the frontend flow to the real question-bank API.",
   },
+  {
+    id: "readiness",
+    label: "Exam Readiness Score",
+    shortLabel: "Readiness",
+    description: "Predict preparedness, expected marks, weak chapters, and confidence level.",
+    owner: "Krish",
+    status: "Planned",
+    stage: "Examination Feature #2",
+    icon: GaugeIcon,
+    accent: "from-blue-500/20 via-transparent to-teal-500/10",
+    signals: ["Preparedness", "Predicted score", "Confidence"],
+    nextMilestone: "Derive readiness from mock accuracy, coverage, and weak chapters.",
+  },
+  {
+    id: "paper-evaluator",
+    label: "AI Paper Evaluator",
+    shortLabel: "Evaluator",
+    description: "Evaluate uploaded answer sheets for correctness, presentation, and missing points.",
+    owner: "Jatin",
+    status: "Planned",
+    stage: "Examination Feature #3",
+    icon: FileCheck2Icon,
+    accent: "from-fuchsia-500/20 via-transparent to-indigo-500/10",
+    signals: ["Upload", "Marking scheme", "Feedback"],
+    nextMilestone: "Prototype a PDF upload review screen with mocked evaluation output.",
+  },
+  {
+    id: "question-bank",
+    label: "Personalized Question Bank",
+    shortLabel: "Question Bank",
+    description: "Recommend practice questions from mistakes, weak concepts, and board pattern.",
+    owner: "Krish",
+    status: "Planned",
+    stage: "Examination Feature #4",
+    icon: DatabaseIcon,
+    accent: "from-emerald-500/20 via-transparent to-yellow-500/10",
+    signals: ["Mistakes", "Board pattern", "Practice queue"],
+    nextMilestone: "Create the PYQ schema and seed enough questions for recommendation demos.",
+  },
+  {
+    id: "adaptive",
+    label: "Adaptive Exam Simulator",
+    shortLabel: "Adaptive",
+    description: "Adjust difficulty during tests to discover the student's true capability level.",
+    owner: "Jatin",
+    status: "Planned",
+    stage: "Examination Feature #5",
+    icon: WandSparklesIcon,
+    accent: "from-purple-500/20 via-transparent to-cyan-500/10",
+    signals: ["Difficulty shift", "Ability estimate", "Adaptive path"],
+    nextMilestone: "Add difficulty bands and next-question selection rules after mock APIs exist.",
+  },
+];
+
+const dashboardStats = [
+  { label: "Academic Health", value: "82", detail: "Stable", icon: HeartPulseIcon },
+  { label: "Exam Readiness", value: "74%", detail: "Physics focus", icon: GaugeIcon },
+  { label: "Weak Concepts", value: "3", detail: "Needs revision", icon: BrainCircuitIcon },
+  { label: "Today's Plan", value: "5", detail: "Tasks queued", icon: CalendarClockIcon },
 ];
 
 export function MockExamDashboard() {
   const router = useRouter();
-  const [activeSection, setActiveSection] = useState<DashboardSection>("study-plan");
+  const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
   const [setupStep, setSetupStep] = useState<SetupStep>("intro");
@@ -751,7 +873,7 @@ export function MockExamDashboard() {
               <NavItem
                 key={section.id}
                 icon={section.icon}
-                label={section.label}
+                label={section.shortLabel}
                 active={activeSection === section.id}
                 onClick={() => selectSection(section.id)}
               />
@@ -759,13 +881,22 @@ export function MockExamDashboard() {
           </nav>
         </aside>
 
-        <section className="space-y-5">
-          <div className="space-y-2">
-            <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Learning workspace</p>
-            <h1 className="font-bold text-2xl tracking-wide sm:text-3xl">Choose what to work on</h1>
+        <section className="space-y-6">
+          <DashboardHero activeSection={activeSectionConfig} />
+
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+            {dashboardStats.map((stat) => (
+              <Metric
+                key={stat.label}
+                icon={stat.icon}
+                label={stat.label}
+                value={stat.value}
+                detail={stat.detail}
+              />
+            ))}
           </div>
 
-          <div className="hidden gap-3 sm:grid sm:grid-cols-2 xl:grid-cols-4">
+          <div className="hidden gap-3 sm:grid sm:grid-cols-2 xl:grid-cols-3">
             {dashboardSections.map((section) => (
               <DashboardSectionCard
                 key={section.id}
@@ -778,6 +909,8 @@ export function MockExamDashboard() {
 
           {activeSection === "mock" ? (
             <>
+              <FeatureWorkspaceHeader section={activeSectionConfig} />
+
               <div className="grid gap-3 md:grid-cols-4">
                 <Metric icon={FlameIcon} label="PYQ priority" value="High" detail="Ranked by frequency" />
                 <Metric icon={Clock3Icon} label="Suggested time" value={`${examLengthConfig[examLength].minutes}m`} detail={examLengthConfig[examLength].label} />
@@ -1696,29 +1829,6 @@ function getPreviousSetupStep(step: SetupStep): SetupStep {
   return "intro";
 }
 
-function SelectorGroup({
-  title,
-  description,
-  icon: Icon,
-  children,
-}: {
-  title: string;
-  description?: string;
-  icon: typeof SearchIcon;
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="space-y-3">
-      <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4 text-muted-foreground" />
-        <h2 className="font-semibold">{title}</h2>
-      </div>
-      {description ? <p className="text-muted-foreground text-sm">{description}</p> : null}
-      {children}
-    </section>
-  );
-}
-
 function SegmentedOptions({
   options,
   value,
@@ -1788,6 +1898,113 @@ function QuestionPreview({ questions, selectedChapter, compact = false }: { ques
   );
 }
 
+function DashboardHero({ activeSection }: { activeSection: (typeof dashboardSections)[number] }) {
+  const ActiveIcon = activeSection.icon;
+
+  return (
+    <section className="relative overflow-hidden rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5 sm:p-6">
+      <div className={`absolute inset-0 bg-gradient-to-br ${activeSection.accent}`} />
+      <FeatureSignalArt />
+      <div className="relative grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusPill status={activeSection.status} />
+            <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs backdrop-blur">
+              Owner: {activeSection.owner}
+            </span>
+            <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs backdrop-blur">
+              {activeSection.stage}
+            </span>
+          </div>
+          <h1 className="mt-5 max-w-2xl font-bold text-3xl tracking-wide sm:text-4xl">
+            Sutra AI command center
+          </h1>
+          <p className="mt-3 max-w-3xl text-muted-foreground text-sm leading-6 sm:text-base">
+            A shared feature hub for agentic learning, exam preparation, and the mock-test engine. Use this as the common starting point for frontend and backend work.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {activeSection.signals.map((signal) => (
+              <span key={signal} className="rounded-md border bg-background/70 px-2.5 py-1.5 text-xs backdrop-blur">
+                {signal}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-lg border bg-background/75 p-4 backdrop-blur">
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Active workspace</p>
+          <div className="mt-3 flex items-start gap-3">
+            <div className="rounded-lg border bg-card p-2">
+              <ActiveIcon className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-semibold">{activeSection.label}</h2>
+              <p className="mt-1 text-muted-foreground text-sm">{activeSection.nextMilestone}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FeatureSignalArt() {
+  return (
+    <svg
+      className="pointer-events-none absolute right-0 top-0 h-full w-1/2 min-w-80 text-foreground/10"
+      fill="none"
+      viewBox="0 0 420 260"
+      aria-hidden="true"
+    >
+      <path d="M46 168 C100 88 164 219 225 122 S333 58 390 111" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M76 207 C139 127 193 245 260 151 S350 98 404 146" stroke="currentColor" strokeDasharray="5 7" strokeWidth="1.5" />
+      {[62, 146, 225, 302, 376].map((cx, index) => (
+        <circle key={cx} cx={cx} cy={[151, 128, 122, 91, 105][index]} r="5" className="fill-background stroke-current" />
+      ))}
+      <rect x="260" y="36" width="104" height="58" rx="8" className="fill-background/60 stroke-current" />
+      <path d="M280 57h52M280 73h34" stroke="currentColor" />
+    </svg>
+  );
+}
+
+function FeatureWorkspaceHeader({ section }: { section: (typeof dashboardSections)[number] }) {
+  const Icon = section.icon;
+
+  return (
+    <section className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start gap-3">
+          <div className="rounded-lg border bg-background p-3">
+            <Icon className="h-5 w-5" />
+          </div>
+          <div>
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusPill status={section.status} />
+              <span className="text-muted-foreground text-xs">{section.owner}</span>
+            </div>
+            <h2 className="mt-2 font-bold text-2xl tracking-wide">{section.label}</h2>
+            <p className="mt-1 max-w-2xl text-muted-foreground text-sm">{section.description}</p>
+          </div>
+        </div>
+        <div className="rounded-lg border bg-background p-3 text-sm sm:w-64">
+          <p className="font-medium">Next milestone</p>
+          <p className="mt-1 text-muted-foreground">{section.nextMilestone}</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function StatusPill({ status }: { status: FeatureStatus }) {
+  const className =
+    status === "Active"
+      ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+      : status === "Next"
+        ? "border-blue-500/40 bg-blue-500/10 text-blue-700 dark:text-blue-300"
+        : "border-border bg-background text-muted-foreground";
+
+  return <span className={`rounded-md border px-2 py-1 text-xs ${className}`}>{status}</span>;
+}
+
 function MobileSectionButton({
   section,
   active,
@@ -1801,21 +2018,22 @@ function MobileSectionButton({
 
   return (
     <button
-      className={`flex min-h-12 items-center gap-3 rounded-lg border px-3 py-2 text-left transition-colors ${
+      className={`flex min-h-12 items-center gap-3 rounded-lg border px-3 py-2 text-left transition-all duration-200 ${
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground"
+          ? "border-primary bg-primary text-primary-foreground shadow-sm shadow-black/10"
+          : "bg-card text-card-foreground hover:-translate-y-0.5 hover:bg-accent hover:text-accent-foreground"
       }`}
       onClick={onClick}
       type="button"
     >
       <Icon className="h-4 w-4 shrink-0" />
-      <div className="min-w-0">
-        <p className="truncate text-sm font-medium">{section.label}</p>
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-medium">{section.shortLabel}</p>
         <p className={`truncate text-xs ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
-          {section.description}
+          {section.owner} · {section.status}
         </p>
       </div>
+      {active ? <CheckCircle2Icon className="h-4 w-4 shrink-0" /> : null}
     </button>
   );
 }
@@ -1833,22 +2051,34 @@ function DashboardSectionCard({
 
   return (
     <button
-      className={`min-h-28 rounded-lg border p-4 text-left shadow-sm shadow-black/5 transition-colors ${
+      className={`group relative min-h-48 overflow-hidden rounded-lg border p-4 text-left shadow-sm shadow-black/5 transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:shadow-black/10 ${
         active
           ? "border-primary bg-primary text-primary-foreground"
-          : "bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground"
+          : "bg-card text-card-foreground hover:border-foreground/20"
       }`}
       onClick={onClick}
       type="button"
     >
-      <div className="flex items-start justify-between gap-3">
-        <Icon className="h-5 w-5 shrink-0" />
-        {active ? <CheckCircle2Icon className="h-4 w-4 shrink-0" /> : null}
+      <div className={`absolute inset-0 bg-gradient-to-br ${section.accent} opacity-80 transition-opacity group-hover:opacity-100`} />
+      <div className="relative flex h-full flex-col">
+        <div className="flex items-start justify-between gap-3">
+          <div className={`rounded-lg border p-2 ${active ? "border-primary-foreground/20 bg-primary-foreground/10" : "bg-background/70"}`}>
+            <Icon className="h-5 w-5 shrink-0" />
+          </div>
+          <StatusPill status={section.status} />
+        </div>
+        <div className="mt-4 flex-1">
+<p className={`text-xs ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{section.stage}</p>
+          <p className="mt-1 font-semibold leading-snug">{section.label}</p>
+          <p className={`mt-2 text-sm leading-5 ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
+            {section.description}
+          </p>
+        </div>
+        <div className="mt-4 flex items-center justify-between gap-3 text-xs">
+          <span className={active ? "text-primary-foreground/80" : "text-muted-foreground"}>{section.owner}</span>
+          <ChevronRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+        </div>
       </div>
-      <p className="mt-4 font-semibold">{section.label}</p>
-      <p className={`mt-1 text-sm ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
-        {section.description}
-      </p>
     </button>
   );
 }
@@ -1857,19 +2087,52 @@ function SectionPlaceholder({ section }: { section: (typeof dashboardSections)[n
   const Icon = section.icon;
 
   return (
-    <section className="rounded-lg border bg-card p-6 shadow-sm shadow-black/5">
-      <div className="flex items-start gap-4">
-        <div className="rounded-lg border bg-background p-3">
-          <Icon className="h-5 w-5 text-muted-foreground" />
-        </div>
-        <div>
-          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Coming next</p>
-          <h2 className="mt-1 font-semibold text-xl">{section.label}</h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground text-sm">
-            This section is reserved in the dashboard shell. Mock Exam is the active feature being built first, and this area will become the dedicated {section.label.toLowerCase()} workspace later.
-          </p>
+    <section className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div className="relative overflow-hidden rounded-lg border bg-card p-6 shadow-sm shadow-black/5">
+        <div className={`absolute inset-0 bg-gradient-to-br ${section.accent}`} />
+        <div className="relative">
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusPill status={section.status} />
+            <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs backdrop-blur">
+              Owner: {section.owner}
+            </span>
+            <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs backdrop-blur">
+              {section.stage}
+            </span>
+          </div>
+          <div className="mt-5 flex items-start gap-4">
+            <div className="rounded-lg border bg-background/80 p-3 backdrop-blur">
+              <Icon className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="font-bold text-2xl tracking-wide">{section.label}</h2>
+              <p className="mt-2 max-w-2xl text-muted-foreground text-sm leading-6">{section.description}</p>
+            </div>
+          </div>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            {section.signals.map((signal) => (
+              <div key={signal} className="rounded-lg border bg-background/75 p-3 backdrop-blur">
+                <p className="text-muted-foreground text-xs">Signal</p>
+                <p className="mt-1 font-medium text-sm">{signal}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+      <aside className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+        <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Build note</p>
+        <h3 className="mt-2 font-semibold">Next useful slice</h3>
+        <p className="mt-2 text-muted-foreground text-sm leading-6">{section.nextMilestone}</p>
+        <div className="mt-5 rounded-lg border bg-background p-3">
+          <div className="flex items-center gap-2 text-sm">
+            <ActivityIcon className="h-4 w-4 text-muted-foreground" />
+            <span className="font-medium">Demo state ready</span>
+          </div>
+          <p className="mt-2 text-muted-foreground text-xs">
+            This panel is intentionally reserved so backend and agent work can plug into a stable UI contract.
+          </p>
+        </div>
+      </aside>
     </section>
   );
 }
@@ -1886,7 +2149,7 @@ function Metric({
   detail: string;
 }) {
   return (
-    <div className="rounded-lg border bg-card p-4 shadow-sm shadow-black/5">
+    <div className="min-h-28 rounded-lg border bg-card p-4 shadow-sm shadow-black/5 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md hover:shadow-black/10">
       <div className="flex items-center justify-between gap-3">
         <p className="text-muted-foreground text-sm">{label}</p>
         <Icon className="h-4 w-4 text-muted-foreground" />
@@ -1916,8 +2179,8 @@ function NavItem({
       onClick={onClick}
       type="button"
     >
-      <Icon className="h-4 w-4" />
-      {label}
+      <Icon className="h-4 w-4 shrink-0" />
+      <span className="truncate">{label}</span>
     </button>
   );
 }
