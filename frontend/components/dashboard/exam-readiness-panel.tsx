@@ -116,6 +116,7 @@ export function ExamReadinessPanel({
     if (!clerkUserId) return;
     setSeeding(true);
     setSeedError(null);
+    setSeeded(false);
     try {
       await seedReadinessForUser(clerkUserId);
       setSeeded(true);
