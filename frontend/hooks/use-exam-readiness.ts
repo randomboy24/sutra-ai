@@ -14,7 +14,12 @@ export function useExamReadiness(clerkUserId: string | null | undefined) {
     setError(null);
     try {
       const result = await fetchReadinessData(clerkUserId);
-      setData(result);
+      if (result === null) {
+        setData(null);
+        setError(null);
+      } else {
+        setData(result);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load readiness data");
       setData(null);

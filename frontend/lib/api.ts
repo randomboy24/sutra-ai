@@ -27,8 +27,11 @@ export interface SeedReadinessResponse {
   message: string;
 }
 
-export async function fetchReadinessData(clerkUserId: string): Promise<ReadinessData> {
+export async function fetchReadinessData(clerkUserId: string): Promise<ReadinessData | null> {
   const res = await fetch(`${API_BASE}/api/readiness/${encodeURIComponent(clerkUserId)}`);
+  if (res.status === 404) {
+    return null;
+  }
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Failed to fetch readiness data" }));
     throw new Error(error.detail || `HTTP ${res.status}`);
