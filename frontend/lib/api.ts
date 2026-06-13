@@ -51,8 +51,14 @@ export interface SeedReadinessResponse {
   message: string;
 }
 
-export async function fetchHealthData(clerkUserId: string): Promise<HealthData | null> {
-  const res = await fetch(`${API_BASE}/api/health/${encodeURIComponent(clerkUserId)}`);
+function authHeaders(token?: string): Record<string, string> {
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+export async function fetchHealthData(token?: string): Promise<HealthData | null> {
+  const res = await fetch(`${API_BASE}/api/health`, {
+    headers: authHeaders(token),
+  });
   if (res.status === 404) {
     return null;
   }
@@ -64,12 +70,15 @@ export async function fetchHealthData(clerkUserId: string): Promise<HealthData |
 }
 
 export async function seedHealthData(
-  clerkUserId: string,
   data: SeedHealthData = {},
+  token?: string,
 ): Promise<SeedHealthResponse> {
-  const res = await fetch(`${API_BASE}/api/health/seed/${encodeURIComponent(clerkUserId)}`, {
+  const res = await fetch(`${API_BASE}/api/health/seed`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) {
@@ -79,8 +88,10 @@ export async function seedHealthData(
   return res.json();
 }
 
-export async function fetchReadinessData(clerkUserId: string): Promise<ReadinessData | null> {
-  const res = await fetch(`${API_BASE}/api/readiness/${encodeURIComponent(clerkUserId)}`);
+export async function fetchReadinessData(token?: string): Promise<ReadinessData | null> {
+  const res = await fetch(`${API_BASE}/api/readiness`, {
+    headers: authHeaders(token),
+  });
   if (res.status === 404) {
     return null;
   }
@@ -92,12 +103,15 @@ export async function fetchReadinessData(clerkUserId: string): Promise<Readiness
 }
 
 export async function seedReadinessData(
-  clerkUserId: string,
   data: SeedReadinessData = {},
+  token?: string,
 ): Promise<SeedReadinessResponse> {
-  const res = await fetch(`${API_BASE}/api/readiness/seed/${encodeURIComponent(clerkUserId)}`, {
+  const res = await fetch(`${API_BASE}/api/readiness/seed`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
     body: JSON.stringify(data),
   });
   if (!res.ok) {

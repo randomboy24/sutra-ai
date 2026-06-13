@@ -12,6 +12,7 @@ import {
   SparklesIcon,
   BrainCircuitIcon,
 } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { seedReadinessForUser } from "@/hooks/use-exam-readiness";
@@ -108,17 +109,20 @@ export function ExamReadinessPanel({
   clerkUserId,
   refetch,
 }: ExamReadinessPanelProps) {
+  const { getToken } = useAuth();
   const [seeding, setSeeding] = useState(false);
   const [seeded, setSeeded] = useState(false);
   const [seedError, setSeedError] = useState<string | null>(null);
 
   const handleSeed = async () => {
     if (!clerkUserId) return;
+    const token = await getToken();
+    if (!token) return;
     setSeeding(true);
     setSeedError(null);
     setSeeded(false);
     try {
-      await seedReadinessForUser(clerkUserId);
+      await seedReadinessForUser(token);
       setSeeded(true);
       refetch();
     } catch (err) {
