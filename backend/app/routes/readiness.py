@@ -17,6 +17,7 @@ router = APIRouter(prefix="/api/readiness", tags=["readiness"])
 
 @router.post("/seed/{clerk_user_id}", response_model=SeedReadinessResponse)
 def seed_readiness_data(clerk_user_id: str, body: SeedReadinessRequest):
+    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
     db = SessionLocal()
     try:
         user = (
@@ -69,11 +70,11 @@ def seed_readiness_data(clerk_user_id: str, body: SeedReadinessRequest):
     except HTTPException:
         db.rollback()
         raise
-    except Exception as e:
+    except Exception:
         db.rollback()
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to seed readiness data: {str(e)}",
+            detail="An unexpected error occurred while seeding readiness data",
         )
     finally:
         db.close()
@@ -81,6 +82,7 @@ def seed_readiness_data(clerk_user_id: str, body: SeedReadinessRequest):
 
 @router.get("/{clerk_user_id}", response_model=ReadinessResponse)
 def get_readiness(clerk_user_id: str):
+    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
     db = SessionLocal()
     try:
         user = (
@@ -121,11 +123,11 @@ def get_readiness(clerk_user_id: str):
     except HTTPException:
         db.rollback()
         raise
-    except Exception as e:
+    except Exception:
         db.rollback()
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to fetch readiness data: {str(e)}",
+            detail="An unexpected error occurred while fetching readiness data",
         )
     finally:
         db.close()
