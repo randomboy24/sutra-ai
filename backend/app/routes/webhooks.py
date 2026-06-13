@@ -11,6 +11,34 @@ from app.models.student import Student
 router = APIRouter(prefix="/webhooks", tags=["webhooks"])
 
 
+CLASS_LEVELS = {"10th", "12th"}
+BOARDS = {"CBSE"}
+STREAMS = {"science", "commerce"}
+SCIENCE_GROUPS = {"pcb", "pcm", "pcmb"}
+
+
+def is_student_onboarding_complete(
+    student_type: str,
+    class_level: str | None,
+    board: str | None,
+    stream: str | None,
+    science_group: str | None,
+) -> bool:
+    if student_type != "individual":
+        return False
+
+    if class_level not in CLASS_LEVELS or board not in BOARDS:
+        return False
+
+    if stream not in STREAMS:
+        return False
+
+    if stream == "commerce":
+        return True
+
+    return science_group in SCIENCE_GROUPS
+
+
 @router.post("/clerk")
 async def clerk_webhook(request: Request):
     payload = await request.body()
@@ -42,6 +70,21 @@ async def clerk_webhook(request: Request):
 
     role = metadata.get("role", "student")
     student_type = metadata.get("student_type", "individual")
+    class_level = metadata.get("class_level")
+    board = metadata.get("board")
+    stream = metadata.get("stream")
+    science_group = metadata.get("science_group")
+
+    if stream != "science":
+        science_group = None
+
+    onboarding_complete = is_student_onboarding_complete(
+        student_type=student_type,
+        class_level=class_level,
+        board=board,
+        stream=stream,
+        science_group=science_group,
+    )
 
     db = SessionLocal()
 
@@ -52,28 +95,38 @@ async def clerk_webhook(request: Request):
             .first()
         )
 
-        if existing_user:
-            return {"success": True, "message": "User already exists"}
-
-        user = User(
+        user = existing_user or User(
             clerk_user_id=clerk_user_id,
             email=email,
             role=role,
         )
 
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        if not existing_user:
+            db.add(user)
+            db.flush()
 
         if role == "student":
-            student = Student(
-                user_id=user.id,
-                full_name=data.get("first_name") or "New Student",
-                is_individual=student_type == "individual",
+            existing_student = (
+                db.query(Student)
+                .filter(Student.user_id == user.id)
+                .first()
             )
 
-            db.add(student)
-            db.commit()
+            if not existing_student:
+                student = Student(
+                    user_id=user.id,
+                    full_name=data.get("first_name") or "New Student",
+                    is_individual=student_type == "individual",
+                    class_level=class_level,
+                    board=board,
+                    stream=stream,
+                    science_group=science_group,
+                    onboarding_complete=bool(onboarding_complete),
+                )
+
+                db.add(student)
+
+        db.commit()
 
         return {"success": True}
 

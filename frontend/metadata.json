@@ -1,0 +1,6 @@
+{
+  "name": "Sutra AI",
+  "description": "An autonomous academic success copilot & personalized learning platform designed to continuously diagnose, plan, intervene, and improve student performance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
