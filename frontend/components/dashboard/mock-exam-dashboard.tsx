@@ -2068,7 +2068,7 @@ function DashboardSectionCard({
           <StatusPill status={section.status} />
         </div>
         <div className="mt-4 flex-1">
-          <p className="text-muted-foreground text-xs">{section.stage}</p>
+<p className={`text-xs ${active ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{section.stage}</p>
           <p className="mt-1 font-semibold leading-snug">{section.label}</p>
           <p className={`mt-2 text-sm leading-5 ${active ? "text-primary-foreground/75" : "text-muted-foreground"}`}>
             {section.description}
