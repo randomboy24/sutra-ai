@@ -65,3 +65,9 @@ class Student(Base):
         "User",
         back_populates="student"
     )
+
+    exam_readiness = relationship(
+        "ExamReadiness",
+        back_populates="student",
+        uselist=False
+    )
