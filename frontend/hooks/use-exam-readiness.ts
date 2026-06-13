@@ -11,6 +11,7 @@ export function useExamReadiness(clerkUserId: string | null | undefined) {
 
   const fetchData = useCallback(async () => {
     if (!clerkUserId) {
+      requestIdRef.current += 1;
       setData(null);
       setError(null);
       setLoading(false);
