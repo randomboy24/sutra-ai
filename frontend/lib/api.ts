@@ -25,8 +25,11 @@ export interface SeedHealthResponse {
   message: string;
 }
 
-export async function fetchHealthData(clerkUserId: string): Promise<HealthData> {
+export async function fetchHealthData(clerkUserId: string): Promise<HealthData | null> {
   const res = await fetch(`${API_BASE}/api/health/${encodeURIComponent(clerkUserId)}`);
+  if (res.status === 404) {
+    return null;
+  }
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Failed to fetch health data" }));
     throw new Error(error.detail || `HTTP ${res.status}`);
