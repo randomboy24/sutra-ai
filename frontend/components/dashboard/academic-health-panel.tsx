@@ -78,16 +78,18 @@ export function AcademicHealthPanel({
 }: AcademicHealthPanelProps) {
   const [seeding, setSeeding] = useState(false);
   const [seeded, setSeeded] = useState(false);
+  const [seedError, setSeedError] = useState<string | null>(null);
 
   const handleSeed = async () => {
     if (!clerkUserId) return;
     setSeeding(true);
+    setSeedError(null);
     try {
       await seedHealthForUser(clerkUserId);
       setSeeded(true);
       refetch();
-    } catch {
-      // error handled silently — refetch will surface it
+    } catch (err) {
+      setSeedError(err instanceof Error ? err.message : "Failed to seed demo data");
     } finally {
       setSeeding(false);
     }
@@ -144,7 +146,12 @@ export function AcademicHealthPanel({
           >
             {seeding ? "Seeding..." : "Seed Demo Data"}
           </Button>
-          {seeded ? (
+            {seedError ? (
+              <div className="rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-red-800 text-sm dark:text-red-200">
+                {seedError}
+              </div>
+            ) : null}
+            {seeded ? (
             <div className="rounded-lg border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-emerald-800 text-sm dark:text-emerald-200">
               Demo health data seeded! Refresh to see your dashboard stats update.
             </div>
