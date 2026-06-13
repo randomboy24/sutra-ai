@@ -33,7 +33,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { useUser } from "@clerk/nextjs";
 import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
