@@ -330,7 +330,7 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
 Backend:
 
 ```env
-DATABASE_URL=postgresql_psycopg://username:password@localhost:5432/dbname
+DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/dbname
 CLERK_WEBHOOK_SECRET=
 ```
 
