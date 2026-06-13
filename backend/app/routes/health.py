@@ -15,6 +15,7 @@ router = APIRouter(prefix="/api/health", tags=["health"])
 
 @router.post("/seed/{clerk_user_id}", response_model=SeedHealthResponse)
 def seed_health_data(clerk_user_id: str, body: SeedHealthRequest):
+    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
     db = SessionLocal()
     try:
         user = db.query(User).filter(User.clerk_user_id == clerk_user_id).first()
@@ -54,11 +55,11 @@ def seed_health_data(clerk_user_id: str, body: SeedHealthRequest):
     except HTTPException:
         db.rollback()
         raise
-    except Exception as e:
+    except Exception:
         db.rollback()
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to seed health data: {str(e)}",
+            detail="An unexpected error occurred while seeding health data",
         )
     finally:
         db.close()
@@ -66,6 +67,7 @@ def seed_health_data(clerk_user_id: str, body: SeedHealthRequest):
 
 @router.get("/{clerk_user_id}", response_model=HealthResponse)
 def get_health(clerk_user_id: str):
+    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
     db = SessionLocal()
     try:
         user = db.query(User).filter(User.clerk_user_id == clerk_user_id).first()
@@ -101,11 +103,11 @@ def get_health(clerk_user_id: str):
     except HTTPException:
         db.rollback()
         raise
-    except Exception as e:
+    except Exception:
         db.rollback()
         raise HTTPException(
             status_code=500,
-            detail=f"Failed to fetch health data: {str(e)}",
+            detail="An unexpected error occurred while fetching health data",
         )
     finally:
         db.close()
