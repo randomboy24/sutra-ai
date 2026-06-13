@@ -12,6 +12,18 @@ export interface HealthData {
   last_updated: string | null;
 }
 
+export interface ReadinessData {
+  student_id: string;
+  clerk_user_id: string;
+  readiness_score: number;
+  predicted_score: number;
+  weak_chapters: string[];
+  strong_chapters: string[];
+  syllabus_coverage: number;
+  confidence_level: string;
+  last_updated: string | null;
+}
+
 export interface SeedHealthData {
   health_score?: number;
   trend?: string;
@@ -21,6 +33,20 @@ export interface SeedHealthData {
 }
 
 export interface SeedHealthResponse {
+  success: boolean;
+  message: string;
+}
+
+export interface SeedReadinessData {
+  readiness_score?: number;
+  predicted_score?: number;
+  weak_chapters?: string[];
+  strong_chapters?: string[];
+  syllabus_coverage?: number;
+  confidence_level?: string;
+}
+
+export interface SeedReadinessResponse {
   success: boolean;
   message: string;
 }
@@ -48,6 +74,34 @@ export async function seedHealthData(
   });
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: "Failed to seed health data" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchReadinessData(clerkUserId: string): Promise<ReadinessData | null> {
+  const res = await fetch(`${API_BASE}/api/readiness/${encodeURIComponent(clerkUserId)}`);
+  if (res.status === 404) {
+    return null;
+  }
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch readiness data" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function seedReadinessData(
+  clerkUserId: string,
+  data: SeedReadinessData = {},
+): Promise<SeedReadinessResponse> {
+  const res = await fetch(`${API_BASE}/api/readiness/seed/${encodeURIComponent(clerkUserId)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to seed readiness data" }));
     throw new Error(error.detail || `HTTP ${res.status}`);
   }
   return res.json();

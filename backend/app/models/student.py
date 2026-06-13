@@ -40,3 +40,9 @@ class Student(Base):
     academic_health = relationship(
         "AcademicHealth", back_populates="student", uselist=False
     )
+
+    exam_readiness = relationship(
+        "ExamReadiness",
+        back_populates="student",
+        uselist=False
+    )

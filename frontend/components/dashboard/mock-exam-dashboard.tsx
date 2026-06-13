@@ -34,7 +34,9 @@ import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAcademicHealth } from "@/hooks/use-academic-health";
+import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
+import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 
 type Unit = {
   id: string;
@@ -444,7 +446,7 @@ const dashboardSections: {
   },
 ];
 
-const dashboardStats = [
+const staticDashboardStats = [
   { label: "Academic Health", value: "82", detail: "Stable", icon: HeartPulseIcon },
   { label: "Exam Readiness", value: "74%", detail: "Physics focus", icon: GaugeIcon },
   { label: "Weak Concepts", value: "3", detail: "Needs revision", icon: BrainCircuitIcon },
@@ -455,6 +457,19 @@ export function MockExamDashboard() {
   const router = useRouter();
   const { user } = useUser();
   const { data: healthData, loading: healthLoading, error: healthError, refetch: healthRefetch } = useAcademicHealth(user?.id);
+  const readiness = useExamReadiness(user?.id);
+
+  const dashboardStats = useMemo(() => {
+    if (readiness.data || healthData) {
+      return [
+        { label: "Academic Health", value: healthData ? `${Math.round(healthData.health_score)}` : "82", detail: healthData ? healthData.trend : "Stable", icon: HeartPulseIcon },
+        { label: "Exam Readiness", value: readiness.data ? `${Math.round(readiness.data.readiness_score)}%` : "74%", detail: readiness.data ? `${readiness.data.confidence_level} confidence` : "Physics focus", icon: GaugeIcon },
+        { label: "Weak Concepts", value: readiness.data ? String(readiness.data.weak_chapters.length) : "3", detail: "Needs revision", icon: BrainCircuitIcon },
+        { label: "Today's Plan", value: "5", detail: "Tasks queued", icon: CalendarClockIcon },
+      ];
+    }
+    return staticDashboardStats;
+  }, [readiness.data, healthData]);
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
@@ -1148,6 +1163,14 @@ export function MockExamDashboard() {
             </section>
           ) : null}
             </>
+          ) : activeSection === "readiness" ? (
+            <ExamReadinessPanel
+              readinessData={readiness.data}
+              loading={readiness.loading}
+              error={readiness.error}
+              clerkUserId={user?.id}
+              refetch={readiness.refetch}
+            />
           ) : (
             <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />
           )}
