@@ -1,15 +1,15 @@
 from datetime import datetime
-from typing import Optional
+from typing import Literal, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class SeedHealthRequest(BaseModel):
-    health_score: float = 82.5
-    trend: str = "up"
-    study_hours_week: float = 12.5
-    revision_frequency: int = 8
-    engagement_streak: int = 5
+    health_score: float = Field(default=82.5, ge=0, le=100)
+    trend: Literal["up", "down", "stable"] = "up"
+    study_hours_week: float = Field(default=12.5, ge=0)
+    revision_frequency: int = Field(default=8, ge=0)
+    engagement_streak: int = Field(default=5, ge=0)
 
 
 class HealthResponse(BaseModel):
