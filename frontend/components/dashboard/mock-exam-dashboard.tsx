@@ -1,6 +1,6 @@
 "use client";
 
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import {
   ActivityIcon,
   AlertTriangleIcon,
@@ -33,6 +33,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useAcademicHealth } from "@/hooks/use-academic-health";
+import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 
 type Unit = {
   id: string;
@@ -451,6 +453,8 @@ const dashboardStats = [
 
 export function MockExamDashboard() {
   const router = useRouter();
+  const { user } = useUser();
+  const { data: healthData, loading: healthLoading, error: healthError, refetch: healthRefetch } = useAcademicHealth(user?.id);
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
@@ -885,7 +889,32 @@ export function MockExamDashboard() {
           <DashboardHero activeSection={activeSectionConfig} />
 
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {dashboardStats.map((stat) => (
+            {[
+              {
+                label: "Academic Health",
+                value: healthLoading ? "..." : healthData ? String(Math.round(healthData.health_score)) : "—",
+                detail: healthLoading ? "Loading" : healthData ? healthData.trend.charAt(0).toUpperCase() + healthData.trend.slice(1) : "No data",
+                icon: HeartPulseIcon,
+              },
+              {
+                label: "Exam Readiness",
+                value: "74%",
+                detail: "Physics focus",
+                icon: GaugeIcon,
+              },
+              {
+                label: "Weak Concepts",
+                value: "3",
+                detail: "Needs revision",
+                icon: BrainCircuitIcon,
+              },
+              {
+                label: "Today's Plan",
+                value: "5",
+                detail: "Tasks queued",
+                icon: CalendarClockIcon,
+              },
+            ].map((stat) => (
               <Metric
                 key={stat.label}
                 icon={stat.icon}
@@ -907,7 +936,15 @@ export function MockExamDashboard() {
             ))}
           </div>
 
-          {activeSection === "mock" ? (
+          {activeSection === "academic-health" ? (
+            <AcademicHealthPanel
+              healthData={healthData}
+              loading={healthLoading}
+              error={healthError}
+              clerkUserId={user?.id}
+              refetch={healthRefetch}
+            />
+          ) : activeSection === "mock" ? (
             <>
               <FeatureWorkspaceHeader section={activeSectionConfig} />
 
