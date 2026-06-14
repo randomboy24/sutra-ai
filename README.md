@@ -19,7 +19,6 @@ The product direction is broader than mock tests: Sutra AI should observe studen
 | PYQ question bank with demo data | Built |
 | Academic Health API | Built |
 | Exam Readiness API | Built |
-| Clerk JWT verification (JWKS) | Built |
 | Agentic intelligence layer | Planned |
 
 ## Tech Stack
@@ -279,7 +278,7 @@ Implemented:
 - `GET /api/mock-exams/attempts` — List past attempts for the current student.
 - `GET /api/mock-exams/attempts/{attempt_id}` — Get a specific attempt with answers.
 - `POST /api/mock-exams/seed-demo` — Seed the question bank with demo PYQ data.
-- Clerk JWT session verification via JWKS (`app/auth/verify.py`).
+- Clerk session token verification via Clerk API with Secret Key (`app/auth/verify.py`).
 - All endpoints require a valid Clerk session token (Bearer auth).
 
 Important files:
@@ -518,9 +517,7 @@ Backend (`backend/.env`):
 DATABASE_URL=postgresql+psycopg://sutra_ai_user:abcd@localhost:5432/sutra_ai
 CLERK_WEBHOOK_SECRET=
 CLERK_SECRET_KEY=
-CLERK_JWKS_URL=https://your-clerk-frontend-api/.well-known/jwks.json
-CLERK_ISSUER=https://your-clerk-frontend-api
-CLERK_AUTHORIZED_PARTIES=http://localhost:3000,http://127.0.0.1:3000
+BACKEND_CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 ```
 
 ## Running Locally
