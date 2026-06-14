@@ -28,6 +28,7 @@ class QuestionResponse(BaseModel):
     frequency_score: float
     importance_score: float
     priority_score: float
+    personalized_score: Optional[float] = None
     source_year: Optional[int] = None
     options: list[QuestionOptionResponse] = Field(default_factory=list)
 
