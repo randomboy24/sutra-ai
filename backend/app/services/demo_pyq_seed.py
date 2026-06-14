@@ -3,7 +3,12 @@ from pathlib import Path
 
 from sqlalchemy.orm import Session
 
-from app.models.mock_exam import Question, QuestionOption, QuestionSource
+from app.models.mock_exam import (
+    MockAttemptAnswer,
+    Question,
+    QuestionOption,
+    QuestionSource,
+)
 
 
 PARSED_DATA_DIR = Path(__file__).resolve().parents[2] / "data" / "pyq" / "parsed"
@@ -95,6 +100,11 @@ def seed_demo_pyq_data(db: Session, data_dir: Path = PARSED_DATA_DIR) -> dict[st
 
 
 def _replace_options(db: Session, question: Question, options: list[dict]) -> None:
+    db.query(MockAttemptAnswer).filter(
+        MockAttemptAnswer.selected_option_id == QuestionOption.id,
+        QuestionOption.question_id == question.id,
+    ).update({"selected_option_id": None}, synchronize_session="fetch")
+    db.flush()
     db.query(QuestionOption).filter(QuestionOption.question_id == question.id).delete()
 
     for index, option in enumerate(options):
