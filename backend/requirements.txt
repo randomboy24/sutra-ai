@@ -5,3 +5,4 @@ psycopg2-binary>=2.9.0
 python-dotenv>=1.0.0
 httpx>=0.25.0
 clerk-backend-api>=5.0.0
+svix>=1.0.0
