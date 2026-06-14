@@ -373,7 +373,7 @@ def _build_daily_schedule(
                 int(remaining_study * _STRONG_CHAPTER_MAINTENANCE_PCT),
                 _STRONG_REVIEW_MINUTES,
             )
-            if strong_minutes >= _MIN_SLOT_MINUTES:
+            if strong_minutes >= 10:
                 strong_chapter = strong_chapters[day % len(strong_chapters)]
                 tasks.append({
                     "scheduled_date": day_date,
