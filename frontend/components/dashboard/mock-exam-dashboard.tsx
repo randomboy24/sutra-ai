@@ -92,6 +92,15 @@ type DashboardSection =
 type SetupStep = "intro" | "subject" | "chapter" | "units" | "length" | "confirm";
 type MockCancellationReason = "tab-switch" | "fullscreen-exit" | "manual";
 type FeatureStatus = "Active" | "Next" | "Planned";
+type AdaptiveResponse = "easy" | "effort" | "missed";
+
+type AdaptiveStep = {
+  question: Question;
+  response: AdaptiveResponse;
+  previousAbility: number;
+  nextAbility: number;
+  timeSpentSeconds: number;
+};
 
 const subjects: Subject[] = [
   {
@@ -496,12 +505,12 @@ const dashboardSections: {
     shortLabel: "Adaptive",
     description: "Adjust difficulty during tests to discover the student's true capability level.",
     owner: "Jatin",
-    status: "Planned",
+    status: "Active",
     stage: "Examination Feature #5",
     icon: WandSparklesIcon,
     accent: "from-purple-500/20 via-transparent to-cyan-500/10",
     signals: ["Difficulty shift", "Ability estimate", "Adaptive path"],
-    nextMilestone: "Add difficulty bands and next-question selection rules after mock APIs exist.",
+    nextMilestone: "Persist adaptive sessions and use attempts to personalize the next run.",
   },
 ];
 
@@ -1279,6 +1288,325 @@ export function MockExamDashboard() {
         />
       ) : null}
     </main>
+  );
+}
+
+
+function AdaptiveSimulatorPanel() {
+  const { getToken } = useAuth();
+  const [subjectId, setSubjectId] = useState(subjects[0].id);
+  const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
+  const [questionPool, setQuestionPool] = useState<Question[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [activeQuestion, setActiveQuestion] = useState<Question | null>(null);
+  const [askedQuestionIds, setAskedQuestionIds] = useState<Set<string>>(new Set());
+  const [history, setHistory] = useState<AdaptiveStep[]>([]);
+  const [ability, setAbility] = useState(50);
+  const [targetDifficulty, setTargetDifficulty] = useState<Question["difficulty"]>("Medium");
+  const [questionStartedAt, setQuestionStartedAt] = useState(Date.now());
+  const [completed, setCompleted] = useState(false);
+
+  const selectedSubject = subjects.find((subject) => subject.id === subjectId) ?? subjects[0];
+  const selectedChapter = selectedSubject.chapters.find((chapter) => chapter.id === chapterId) ?? selectedSubject.chapters[0];
+  const sessionLength = 8;
+  const availableCount = questionPool.length;
+  const answeredCount = history.length;
+  const progress = Math.round((answeredCount / sessionLength) * 100);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadAdaptivePool() {
+      setLoading(true);
+      setError("");
+      setActiveQuestion(null);
+      setCompleted(false);
+      setHistory([]);
+      setAskedQuestionIds(new Set());
+      setAbility(50);
+      setTargetDifficulty("Medium");
+
+      try {
+        const token = await getToken();
+        const authToken = token ?? undefined;
+        let response = await fetchMockQuestions(
+          {
+            subject: selectedSubject.id,
+            chapter: selectedChapter.name,
+            limit: 50,
+          },
+          authToken,
+        );
+
+        if (!response.questions.length) {
+          await seedMockQuestions(authToken);
+          response = await fetchMockQuestions(
+            {
+              subject: selectedSubject.id,
+              chapter: selectedChapter.name,
+              limit: 50,
+            },
+            authToken,
+          );
+        }
+
+        if (!cancelled) {
+          setQuestionPool(response.questions.map(mapMockQuestion));
+        }
+      } catch (loadError) {
+        if (!cancelled) {
+          setQuestionPool([]);
+          setError(loadError instanceof Error ? loadError.message : "Failed to load adaptive questions");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadAdaptivePool();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [getToken, selectedChapter.name, selectedSubject.id]);
+
+  const chooseSubject = (nextSubjectId: string) => {
+    const nextSubject = subjects.find((subject) => subject.id === nextSubjectId) ?? subjects[0];
+    setSubjectId(nextSubject.id);
+    setChapterId(nextSubject.chapters[0].id);
+  };
+
+  const startAdaptiveSession = () => {
+    const firstQuestion = chooseAdaptiveQuestion(questionPool, new Set(), "Medium");
+    if (!firstQuestion) return;
+
+    setActiveQuestion(firstQuestion);
+    setAskedQuestionIds(new Set([firstQuestion.id]));
+    setHistory([]);
+    setAbility(50);
+    setTargetDifficulty("Medium");
+    setQuestionStartedAt(Date.now());
+    setCompleted(false);
+  };
+
+  const handleAdaptiveResponse = (response: AdaptiveResponse) => {
+    if (!activeQuestion) return;
+
+    const timeSpentSeconds = Math.max(1, Math.round((Date.now() - questionStartedAt) / 1000));
+    const nextAbility = clampAbility(
+      ability + getAdaptiveDelta(response, activeQuestion.difficulty, timeSpentSeconds),
+    );
+    const step: AdaptiveStep = {
+      question: activeQuestion,
+      response,
+      previousAbility: ability,
+      nextAbility,
+      timeSpentSeconds,
+    };
+    const nextHistory = [...history, step];
+    const nextDifficulty = getAdaptiveDifficulty(nextAbility);
+
+    setHistory(nextHistory);
+    setAbility(nextAbility);
+    setTargetDifficulty(nextDifficulty);
+
+    if (nextHistory.length >= sessionLength) {
+      setCompleted(true);
+      setActiveQuestion(null);
+      return;
+    }
+
+    const nextQuestion = chooseAdaptiveQuestion(questionPool, askedQuestionIds, nextDifficulty);
+    if (!nextQuestion) {
+      setCompleted(true);
+      setActiveQuestion(null);
+      return;
+    }
+
+    setAskedQuestionIds((current) => new Set(current).add(nextQuestion.id));
+    setActiveQuestion(nextQuestion);
+    setQuestionStartedAt(Date.now());
+  };
+
+  const resetSession = () => {
+    setActiveQuestion(null);
+    setAskedQuestionIds(new Set());
+    setHistory([]);
+    setAbility(50);
+    setTargetDifficulty("Medium");
+    setCompleted(false);
+  };
+
+  return (
+    <section className="space-y-5">
+      <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="relative overflow-hidden rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/15 via-transparent to-cyan-500/10" />
+          <div className="relative">
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusPill status="Active" />
+              <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs backdrop-blur">
+                V1 rule engine
+              </span>
+            </div>
+            <h2 className="mt-4 font-bold text-2xl tracking-wide">Adaptive Exam Simulator</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground text-sm leading-6">
+              The simulator adjusts difficulty after every answer and estimates the student's capability level from accuracy, effort, and speed.
+            </p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <Metric icon={GaugeIcon} label="Ability estimate" value={`${ability}`} detail={getAbilityLabel(ability)} />
+              <Metric icon={ActivityIcon} label="Next difficulty" value={targetDifficulty} detail="Auto selected" />
+              <Metric icon={Layers3Icon} label="Question pool" value={loading ? "..." : String(availableCount)} detail={selectedChapter.name} />
+            </div>
+          </div>
+        </div>
+
+        <aside className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+          <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Adaptive controls</p>
+          <div className="mt-4 grid gap-3">
+            <label className="grid gap-1 text-sm">
+              <span className="text-muted-foreground">Subject</span>
+              <select
+                className="h-10 rounded-lg border bg-background px-3 text-foreground"
+                value={subjectId}
+                onChange={(event) => chooseSubject(event.target.value)}
+                disabled={!!activeQuestion}
+              >
+                {subjects.map((subject) => (
+                  <option key={subject.id} value={subject.id}>{subject.name}</option>
+                ))}
+              </select>
+            </label>
+            <label className="grid gap-1 text-sm">
+              <span className="text-muted-foreground">Chapter</span>
+              <select
+                className="h-10 rounded-lg border bg-background px-3 text-foreground"
+                value={chapterId}
+                onChange={(event) => setChapterId(event.target.value)}
+                disabled={!!activeQuestion}
+              >
+                {selectedSubject.chapters.map((chapter) => (
+                  <option key={chapter.id} value={chapter.id}>{chapter.name}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+          {error ? (
+            <p className="mt-4 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-destructive text-sm">{error}</p>
+          ) : null}
+          <Button
+            className="mt-4 h-10 w-full gap-2"
+            disabled={loading || !!error || !questionPool.length || !!activeQuestion}
+            onClick={startAdaptiveSession}
+          >
+            <PlayIcon className="h-4 w-4" />
+            Start adaptive test
+          </Button>
+          {(activeQuestion || completed || history.length) ? (
+            <Button className="mt-2 h-10 w-full" variant="outline" onClick={resetSession}>Reset session</Button>
+          ) : null}
+        </aside>
+      </div>
+
+      {activeQuestion ? (
+        <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+            <div className="flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">
+                  Adaptive question {answeredCount + 1} of {sessionLength}
+                </p>
+                <h3 className="mt-2 font-semibold text-xl leading-snug">{activeQuestion.prompt}</h3>
+              </div>
+              <div className="flex shrink-0 flex-wrap gap-2 text-xs">
+                <Badge>{activeQuestion.difficulty}</Badge>
+                <Badge>{activeQuestion.frequency}% frequency</Badge>
+              </div>
+            </div>
+
+            <div className="mt-5 rounded-lg border bg-background p-4">
+              <p className="font-medium text-sm">Expected answer</p>
+              <p className="mt-2 text-muted-foreground text-sm leading-6">{activeQuestion.explanation}</p>
+            </div>
+
+            <div className="mt-5 grid gap-2 sm:grid-cols-3">
+              <Button className="h-11" onClick={() => handleAdaptiveResponse("easy")}>I knew it easily</Button>
+              <Button className="h-11" variant="outline" onClick={() => handleAdaptiveResponse("effort")}>Solved with effort</Button>
+              <Button className="h-11" variant="outline" onClick={() => handleAdaptiveResponse("missed")}>Missed it</Button>
+            </div>
+          </div>
+
+          <aside className="rounded-lg border bg-card p-4 shadow-sm shadow-black/5">
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold">Adaptive path</h3>
+              <span className="text-muted-foreground text-sm">{answeredCount}/{sessionLength}</span>
+            </div>
+            <div className="mt-4 h-2 overflow-hidden rounded-full bg-muted">
+              <div className="h-full bg-primary transition-all" style={{ width: `${progress}%` }} />
+            </div>
+            <div className="mt-4 space-y-2">
+              {history.length ? history.map((step, index) => (
+                <AdaptivePathItem key={`${step.question.id}-${index}`} step={step} index={index} />
+              )) : (
+                <p className="rounded-lg border bg-background p-3 text-muted-foreground text-sm">
+                  Answer the first question to start building the adaptive path.
+                </p>
+              )}
+            </div>
+          </aside>
+        </div>
+      ) : null}
+
+      {completed ? (
+        <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+            <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Adaptive result</p>
+            <h3 className="mt-2 font-bold text-4xl tracking-wide">{ability}</h3>
+            <p className="mt-2 text-muted-foreground text-sm">{getAbilityLabel(ability)} capability estimate</p>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+              <ResultStat label="Questions answered" value={`${history.length}/${sessionLength}`} />
+              <ResultStat label="Final difficulty" value={targetDifficulty} />
+              <ResultStat label="Adjustment model" value="Rule-based" />
+            </div>
+          </div>
+          <div className="rounded-lg border bg-card p-5 shadow-sm shadow-black/5">
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-mono text-muted-foreground text-xs uppercase tracking-wide">Capability path</p>
+                <h3 className="font-semibold text-xl">How difficulty changed</h3>
+              </div>
+              <WandSparklesIcon className="h-5 w-5 text-muted-foreground" />
+            </div>
+            <div className="mt-5 space-y-2">
+              {history.map((step, index) => (
+                <AdaptivePathItem key={`${step.question.id}-summary-${index}`} step={step} index={index} expanded />
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
+function AdaptivePathItem({ step, index, expanded = false }: { step: AdaptiveStep; index: number; expanded?: boolean }) {
+  const direction = step.nextAbility > step.previousAbility ? "+" : "";
+  return (
+    <div className="rounded-lg border bg-background p-3 text-sm">
+      <div className="flex items-center justify-between gap-3">
+        <span className="font-medium">Q{index + 1} · {step.question.difficulty}</span>
+        <span className={step.nextAbility >= step.previousAbility ? "text-emerald-600 dark:text-emerald-300" : "text-destructive"}>
+          {direction}{step.nextAbility - step.previousAbility}
+        </span>
+      </div>
+      <p className="mt-1 text-muted-foreground text-xs">
+        {getAdaptiveResponseLabel(step.response)} · {step.timeSpentSeconds}s · ability {step.previousAbility} → {step.nextAbility}
+      </p>
+      {expanded ? <p className="mt-2 line-clamp-2 text-muted-foreground text-xs">{step.question.prompt}</p> : null}
+    </div>
   );
 }
 
@@ -2457,6 +2785,66 @@ function formatSeconds(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+
+function chooseAdaptiveQuestion(
+  questions: Question[],
+  askedQuestionIds: Set<string>,
+  targetDifficulty: Question["difficulty"],
+) {
+  const targetRank = difficultyRank(targetDifficulty);
+
+  return questions
+    .filter((question) => !askedQuestionIds.has(question.id))
+    .sort((a, b) => {
+      const aDistance = Math.abs(difficultyRank(a.difficulty) - targetRank);
+      const bDistance = Math.abs(difficultyRank(b.difficulty) - targetRank);
+      if (aDistance !== bDistance) return aDistance - bDistance;
+      return questionScore(b) - questionScore(a);
+    })[0] ?? null;
+}
+
+function difficultyRank(difficulty: Question["difficulty"]) {
+  if (difficulty === "Easy") return 1;
+  if (difficulty === "Hard") return 3;
+  return 2;
+}
+
+function getAdaptiveDelta(
+  response: AdaptiveResponse,
+  difficulty: Question["difficulty"],
+  timeSpentSeconds: number,
+) {
+  const difficultyBonus = difficulty === "Hard" ? 4 : difficulty === "Easy" ? -2 : 0;
+  const speedBonus = timeSpentSeconds <= 25 ? 3 : timeSpentSeconds >= 90 ? -3 : 0;
+
+  if (response === "easy") return 12 + difficultyBonus + speedBonus;
+  if (response === "effort") return 5 + Math.max(0, difficultyBonus) + Math.min(0, speedBonus);
+  return difficulty === "Easy" ? -16 : difficulty === "Hard" ? -8 : -12;
+}
+
+function clampAbility(value: number) {
+  return Math.max(0, Math.min(100, value));
+}
+
+function getAdaptiveDifficulty(ability: number): Question["difficulty"] {
+  if (ability >= 72) return "Hard";
+  if (ability >= 45) return "Medium";
+  return "Easy";
+}
+
+function getAbilityLabel(ability: number) {
+  if (ability >= 78) return "Advanced";
+  if (ability >= 60) return "Exam ready";
+  if (ability >= 42) return "Building confidence";
+  return "Needs foundation work";
+}
+
+function getAdaptiveResponseLabel(response: AdaptiveResponse) {
+  if (response === "easy") return "Answered easily";
+  if (response === "effort") return "Solved with effort";
+  return "Missed";
 }
 
 function mapMockQuestion(question: MockQuestionData): Question {
