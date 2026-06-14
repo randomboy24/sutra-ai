@@ -99,16 +99,17 @@ const subjects: Subject[] = [
         id: "electrostatics",
         name: "Electrostatics",
         units: [
-          { id: "Electric Charges and Fields", name: "Electric Charges and Fields" },
-          { id: "Electrostatic Potential and Capacitance", name: "Electrostatic Potential and Capacitance" },
+          { id: "charges-fields", name: "Electric Charges and Fields" },
+          { id: "potential", name: "Electrostatic Potential and Capacitance" },
+          { id: "capacitors", name: "Capacitors" },
         ],
       },
       {
         id: "current-electricity",
         name: "Current Electricity",
         units: [
-          { id: "Electric Current and Drift Velocity", name: "Electric Current and Drift Velocity" },
-          { id: "Circuits and Measuring Instruments", name: "Circuits and Measuring Instruments" },
+          { id: "ohms-law", name: "Electric Current and Drift Velocity" },
+          { id: "kirchhoff", name: "Circuits and Measuring Instruments" },
         ],
       },
       {
@@ -146,8 +147,8 @@ const subjects: Subject[] = [
         id: "solutions",
         name: "Solutions",
         units: [
-          { id: "Concentration of Solutions", name: "Concentration of Solutions" },
-          { id: "Colligative Properties", name: "Colligative Properties" },
+          { id: "concentration", name: "Concentration of Solutions" },
+          { id: "colligative", name: "Colligative Properties" },
         ],
       },
       {
@@ -180,6 +181,34 @@ const subjects: Subject[] = [
         units: [
           { id: "Preparation and Properties", name: "Preparation and Properties" },
           { id: "Chemical Reactions", name: "Chemical Reactions" },
+        ],
+      },
+      {
+        id: "organic-basics",
+        name: "Organic Chemistry Basics",
+        units: [
+          { id: "effects", name: "Electronic Effects" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "mathematics",
+    name: "Mathematics",
+    shortName: "MATH",
+    chapters: [
+      {
+        id: "calculus",
+        name: "Calculus",
+        units: [
+          { id: "derivatives", name: "Derivatives" },
+        ],
+      },
+      {
+        id: "probability",
+        name: "Probability",
+        units: [
+          { id: "bayes", name: "Bayes' Theorem" },
         ],
       },
     ],
