@@ -21,6 +21,7 @@ class QuestionResponse(BaseModel):
     question_number: str
     question_type: str
     text: str
+    expected_answer: Optional[str] = None
     marks: int
     difficulty: str
     frequency_score: float

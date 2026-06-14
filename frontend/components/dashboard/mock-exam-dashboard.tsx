@@ -1,6 +1,6 @@
 "use client";
 
-import { UserButton, useUser } from "@clerk/nextjs";
+import { UserButton, useAuth, useUser } from "@clerk/nextjs";
 import {
   ActivityIcon,
   AlertTriangleIcon,
@@ -35,6 +35,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
+import { fetchMockQuestions, seedMockQuestions, type MockQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 
@@ -69,6 +70,7 @@ type Question = {
   importance: number;
   difficulty: "Easy" | "Medium" | "Hard";
   sourceYears: number[];
+  expectedAnswer?: string | null;
 };
 
 type ExamMode = "setup" | "exam" | "results";
@@ -97,18 +99,40 @@ const subjects: Subject[] = [
         id: "electrostatics",
         name: "Electrostatics",
         units: [
-          { id: "charges-fields", name: "Charges and Electric Fields" },
-          { id: "potential", name: "Electric Potential" },
-          { id: "capacitors", name: "Capacitance" },
+          { id: "Electric Charges and Fields", name: "Electric Charges and Fields" },
+          { id: "Electrostatic Potential and Capacitance", name: "Electrostatic Potential and Capacitance" },
         ],
       },
       {
         id: "current-electricity",
         name: "Current Electricity",
         units: [
-          { id: "ohms-law", name: "Ohm's Law" },
-          { id: "kirchhoff", name: "Kirchhoff's Laws" },
-          { id: "cells", name: "Cells and Internal Resistance" },
+          { id: "Electric Current and Drift Velocity", name: "Electric Current and Drift Velocity" },
+          { id: "Circuits and Measuring Instruments", name: "Circuits and Measuring Instruments" },
+        ],
+      },
+      {
+        id: "magnetic-effects",
+        name: "Magnetic Effects of Current",
+        units: [
+          { id: "Magnetic Field and Forces", name: "Magnetic Field and Forces" },
+          { id: "Moving Charges and Magnetism", name: "Moving Charges and Magnetism" },
+        ],
+      },
+      {
+        id: "electromagnetic-induction",
+        name: "Electromagnetic Induction",
+        units: [
+          { id: "Faraday's and Lenz's Laws", name: "Faraday's and Lenz's Laws" },
+          { id: "Self and Mutual Induction", name: "Self and Mutual Induction" },
+        ],
+      },
+      {
+        id: "optics",
+        name: "Optics",
+        units: [
+          { id: "Ray Optics and Optical Instruments", name: "Ray Optics and Optical Instruments" },
+          { id: "Wave Optics", name: "Wave Optics" },
         ],
       },
     ],
@@ -122,43 +146,87 @@ const subjects: Subject[] = [
         id: "solutions",
         name: "Solutions",
         units: [
-          { id: "concentration", name: "Concentration Terms" },
-          { id: "colligative", name: "Colligative Properties" },
-          { id: "abnormal", name: "Abnormal Molar Mass" },
+          { id: "Concentration of Solutions", name: "Concentration of Solutions" },
+          { id: "Colligative Properties", name: "Colligative Properties" },
         ],
       },
       {
-        id: "organic-basics",
-        name: "Organic Chemistry Basics",
+        id: "electrochemistry",
+        name: "Electrochemistry",
         units: [
-          { id: "nomenclature", name: "Nomenclature" },
-          { id: "isomerism", name: "Isomerism" },
-          { id: "effects", name: "Electronic Effects" },
+          { id: "Electrochemical Cells", name: "Electrochemical Cells" },
+          { id: "Nernst Equation and Electrolysis", name: "Nernst Equation and Electrolysis" },
+        ],
+      },
+      {
+        id: "chemical-kinetics",
+        name: "Chemical Kinetics",
+        units: [
+          { id: "Rate of a Reaction", name: "Rate of a Reaction" },
+          { id: "Order and Molecularity", name: "Order and Molecularity" },
+        ],
+      },
+      {
+        id: "coordination-compounds",
+        name: "Coordination Compounds",
+        units: [
+          { id: "Nomenclature and Terminology", name: "Nomenclature and Terminology" },
+          { id: "Isomerism and Bonding", name: "Isomerism and Bonding" },
+        ],
+      },
+      {
+        id: "haloalkanes-haloarenes",
+        name: "Haloalkanes and Haloarenes",
+        units: [
+          { id: "Preparation and Properties", name: "Preparation and Properties" },
+          { id: "Chemical Reactions", name: "Chemical Reactions" },
         ],
       },
     ],
   },
   {
-    id: "mathematics",
-    name: "Mathematics",
-    shortName: "MATH",
+    id: "biology",
+    name: "Biology",
+    shortName: "BIO",
     chapters: [
       {
-        id: "calculus",
-        name: "Differential Calculus",
+        id: "reproduction",
+        name: "Reproduction in Organisms",
         units: [
-          { id: "limits", name: "Limits" },
-          { id: "continuity", name: "Continuity" },
-          { id: "derivatives", name: "Derivatives" },
+          { id: "Asexual Reproduction", name: "Asexual Reproduction" },
+          { id: "Sexual Reproduction", name: "Sexual Reproduction" },
         ],
       },
       {
-        id: "probability",
-        name: "Probability",
+        id: "genetics-evolution",
+        name: "Genetics and Evolution",
         units: [
-          { id: "conditional", name: "Conditional Probability" },
-          { id: "bayes", name: "Bayes' Theorem" },
-          { id: "random-variable", name: "Random Variables" },
+          { id: "Principles of Inheritance", name: "Principles of Inheritance" },
+          { id: "Molecular Basis of Inheritance", name: "Molecular Basis of Inheritance" },
+        ],
+      },
+      {
+        id: "human-welfare",
+        name: "Biology in Human Welfare",
+        units: [
+          { id: "Human Health and Disease", name: "Human Health and Disease" },
+          { id: "Microbes in Human Welfare", name: "Microbes in Human Welfare" },
+        ],
+      },
+      {
+        id: "biotechnology",
+        name: "Biotechnology",
+        units: [
+          { id: "Principles and Processes", name: "Principles and Processes" },
+          { id: "Biotechnology and its Applications", name: "Biotechnology and its Applications" },
+        ],
+      },
+      {
+        id: "ecology",
+        name: "Ecology",
+        units: [
+          { id: "Organisms and Populations", name: "Organisms and Populations" },
+          { id: "Biodiversity and Conservation", name: "Biodiversity and Conservation" },
         ],
       },
     ],
@@ -1189,6 +1257,7 @@ export function MockExamDashboard() {
 
 export function MockExamFlow() {
   const router = useRouter();
+  const { getToken } = useAuth();
   const [setupStep, setSetupStep] = useState<SetupStep>("subject");
   const [mode, setMode] = useState<ExamMode>("setup");
   const [subjectId, setSubjectId] = useState(subjects[0].id);
@@ -1199,6 +1268,9 @@ export function MockExamFlow() {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [seenQuestionIds, setSeenQuestionIds] = useState<Set<string>>(new Set());
   const [remainingSeconds, setRemainingSeconds] = useState(0);
+  const [backendQuestions, setBackendQuestions] = useState<Question[]>([]);
+  const [questionLoading, setQuestionLoading] = useState(false);
+  const [questionError, setQuestionError] = useState("");
   const modeRef = useRef(mode);
   const allowFullscreenExitRef = useRef(false);
 
@@ -1208,15 +1280,10 @@ export function MockExamFlow() {
   const rankedQuestions = useMemo(() => {
     const unitFilter = selectedUnitIds.length ? selectedUnitIds : selectedChapter.units.map((unit) => unit.id);
 
-    return questions
-      .filter(
-        (question) =>
-          question.subjectId === selectedSubject.id &&
-          question.chapterId === selectedChapter.id &&
-          unitFilter.includes(question.unitId),
-      )
+    return backendQuestions
+      .filter((question) => unitFilter.includes(question.unitId))
       .sort((a, b) => questionScore(b) - questionScore(a));
-  }, [selectedChapter, selectedSubject.id, selectedUnitIds]);
+  }, [backendQuestions, selectedChapter.units, selectedUnitIds]);
 
   const examQuestions = rankedQuestions.slice(0, examLengthConfig[examLength].questions);
   const activeQuestion = examQuestions[activeQuestionIndex];
@@ -1227,6 +1294,60 @@ export function MockExamFlow() {
   useEffect(() => {
     modeRef.current = mode;
   }, [mode]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadQuestions() {
+      setQuestionLoading(true);
+      setQuestionError("");
+
+      try {
+        const token = await getToken();
+        const authToken = token ?? undefined;
+        let response = await fetchMockQuestions(
+          {
+            subject: selectedSubject.id,
+            chapter: selectedChapter.name,
+            limit: 50,
+          },
+          authToken,
+        );
+
+        if (!response.questions.length) {
+          await seedMockQuestions(authToken);
+          response = await fetchMockQuestions(
+            {
+              subject: selectedSubject.id,
+              chapter: selectedChapter.name,
+              limit: 50,
+            },
+            authToken,
+          );
+        }
+
+        if (!cancelled) {
+          setBackendQuestions(response.questions.map(mapMockQuestion));
+          setActiveQuestionIndex(0);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setBackendQuestions([]);
+          setQuestionError(error instanceof Error ? error.message : "Failed to load mock questions");
+        }
+      } finally {
+        if (!cancelled) {
+          setQuestionLoading(false);
+        }
+      }
+    }
+
+    void loadQuestions();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [getToken, selectedChapter.name, selectedSubject.id]);
 
   useEffect(() => {
     if (mode !== "exam") return;
@@ -1456,6 +1577,8 @@ export function MockExamFlow() {
           examLength={examLength}
           examQuestions={examQuestions}
           rankedQuestions={rankedQuestions}
+          questionLoading={questionLoading}
+          questionError={questionError}
           onChooseSubject={chooseSubject}
           onChooseChapter={chooseChapter}
           onToggleUnit={toggleUnit}
@@ -1530,6 +1653,8 @@ function MockSetupQuestion({
   examLength,
   examQuestions,
   rankedQuestions,
+  questionLoading = false,
+  questionError = "",
   onChooseSubject,
   onChooseChapter,
   onToggleUnit,
@@ -1546,6 +1671,8 @@ function MockSetupQuestion({
   examLength: ExamLength;
   examQuestions: Question[];
   rankedQuestions: Question[];
+  questionLoading?: boolean;
+  questionError?: string;
   onChooseSubject: (subjectId: string) => void;
   onChooseChapter: (chapterId: string) => void;
   onToggleUnit: (unitId: string) => void;
@@ -1623,9 +1750,17 @@ function MockSetupQuestion({
         <p><span className="text-muted-foreground">Chapter:</span> {selectedChapter.name}</p>
         <p><span className="text-muted-foreground">Units:</span> {selectedUnitNames}</p>
         <p><span className="text-muted-foreground">Length:</span> {examLengthConfig[examLength].label}</p>
-        <p><span className="text-muted-foreground">Questions:</span> {examQuestions.length} from {rankedQuestions.length} matching PYQs</p>
+        <p>
+          <span className="text-muted-foreground">Questions:</span>{" "}
+          {questionLoading ? "Loading PYQs..." : `${examQuestions.length} from ${rankedQuestions.length} matching PYQs`}
+        </p>
       </div>
-      <Button className="mt-4 h-11 w-full" disabled={!examQuestions.length} onClick={onStartExam}>Start exam</Button>
+      {questionError ? (
+        <p className="mt-3 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-destructive text-sm">
+          {questionError}
+        </p>
+      ) : null}
+      <Button className="mt-4 h-11 w-full" disabled={questionLoading || !!questionError || !examQuestions.length} onClick={onStartExam}>Start exam</Button>
     </MinimalStep>
   );
 }
@@ -2286,6 +2421,30 @@ function formatSeconds(totalSeconds: number) {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
+
+function mapMockQuestion(question: MockQuestionData): Question {
+  const options = question.options.length
+    ? question.options
+        .sort((a, b) => a.display_order - b.display_order)
+        .map((option) => option.text)
+    : ["I can answer this", "Needs revision", "Skip for now"];
+
+  return {
+    id: question.id,
+    subjectId: question.subject,
+    chapterId: question.chapter,
+    unitId: question.unit,
+    prompt: question.text,
+    options,
+    answerIndex: 0,
+    explanation: question.expected_answer ?? "Review the chapter notes for the expected answer.",
+    frequency: Math.round(question.frequency_score),
+    importance: Math.round(question.importance_score),
+    difficulty: question.difficulty,
+    sourceYears: question.source_year ? [question.source_year] : [],
+    expectedAnswer: question.expected_answer,
+  };
 }
 
 function questionScore(question: Question) {

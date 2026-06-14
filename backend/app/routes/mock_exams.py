@@ -291,6 +291,7 @@ def _question_response(question: Question) -> QuestionResponse:
         question_number=question.question_number,
         question_type=question.question_type,
         text=question.text,
+        expected_answer=question.expected_answer,
         marks=question.marks,
         difficulty=question.difficulty,
         frequency_score=question.frequency_score,
