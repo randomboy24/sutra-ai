@@ -12,6 +12,7 @@ import {
   RotateCcwIcon,
   AlertCircleIcon,
 } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
 import { seedHealthForUser } from "@/hooks/use-academic-health";
@@ -76,6 +77,7 @@ export function AcademicHealthPanel({
   clerkUserId,
   refetch,
 }: AcademicHealthPanelProps) {
+  const { getToken } = useAuth();
   const [seeding, setSeeding] = useState(false);
   const [seeded, setSeeded] = useState(false);
   const [seedError, setSeedError] = useState<string | null>(null);
@@ -85,7 +87,9 @@ export function AcademicHealthPanel({
     setSeeding(true);
     setSeedError(null);
     try {
-      await seedHealthForUser(clerkUserId);
+      const token = await getToken();
+      if (!token) throw new Error("Authentication required to seed demo data");
+      await seedHealthForUser(token);
       setSeeded(true);
       refetch();
     } catch (err) {

@@ -1,7 +1,8 @@
 import json
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.auth.verify import get_current_user
 from app.database import SessionLocal
 from app.models.user import User
 from app.models.student import Student
@@ -15,14 +16,16 @@ from app.schemas.readiness import (
 router = APIRouter(prefix="/api/readiness", tags=["readiness"])
 
 
-@router.post("/seed/{clerk_user_id}", response_model=SeedReadinessResponse)
-def seed_readiness_data(clerk_user_id: str, body: SeedReadinessRequest):
-    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
+@router.post("/seed", response_model=SeedReadinessResponse)
+def seed_readiness_data(
+    body: SeedReadinessRequest,
+    verified_user_id: str = Depends(get_current_user),
+):
     db = SessionLocal()
     try:
         user = (
             db.query(User)
-            .filter(User.clerk_user_id == clerk_user_id)
+            .filter(User.clerk_user_id == verified_user_id)
             .first()
         )
         if not user:
@@ -80,14 +83,15 @@ def seed_readiness_data(clerk_user_id: str, body: SeedReadinessRequest):
         db.close()
 
 
-@router.get("/{clerk_user_id}", response_model=ReadinessResponse)
-def get_readiness(clerk_user_id: str):
-    # TODO: Add Clerk JWT authorization to verify the caller owns clerk_user_id (IDOR protection)
+@router.get("", response_model=ReadinessResponse)
+def get_readiness(
+    verified_user_id: str = Depends(get_current_user),
+):
     db = SessionLocal()
     try:
         user = (
             db.query(User)
-            .filter(User.clerk_user_id == clerk_user_id)
+            .filter(User.clerk_user_id == verified_user_id)
             .first()
         )
         if not user:
@@ -107,7 +111,7 @@ def get_readiness(clerk_user_id: str):
 
         return ReadinessResponse(
             student_id=readiness.student_id,
-            clerk_user_id=clerk_user_id,
+            clerk_user_id=verified_user_id,
             readiness_score=readiness.readiness_score,
             predicted_score=readiness.predicted_score,
             weak_chapters=json.loads(readiness.weak_chapters),
