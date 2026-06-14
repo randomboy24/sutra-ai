@@ -70,15 +70,11 @@ if [ ! -f backend/.env ]; then
 DATABASE_URL=postgresql+psycopg://sutra_ai_user:abcd@localhost:5432/sutra_ai
 CLERK_WEBHOOK_SECRET=
 CLERK_SECRET_KEY=
-CLERK_JWKS_URL=
-CLERK_ISSUER=
-CLERK_AUTHORIZED_PARTIES=http://localhost:3000,http://127.0.0.1:3000
+BACKEND_CORS_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
 EOF
     warn "backend/.env created — you must add Clerk keys for authentication to work"
     warn "  - CLERK_WEBHOOK_SECRET (from Clerk Dashboard > Webhooks)"
     warn "  - CLERK_SECRET_KEY    (from Clerk Dashboard > API Keys)"
-    warn "  - CLERK_JWKS_URL      (e.g. https://your-clerk-api/.well-known/jwks.json)"
-    warn "  - CLERK_ISSUER        (e.g. https://your-clerk-api)"
 else
     info "backend/.env already exists (skipped)"
 fi

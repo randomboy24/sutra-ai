@@ -394,6 +394,56 @@ export async function fetchRecommendedQuestions(
   return res.json();
 }
 
+
+export interface MockAttemptAnswerSubmissionData {
+  question_id: string;
+  selected_option_index?: number;
+  answer_text?: string;
+  is_correct?: boolean;
+  score_awarded?: number;
+  time_spent_seconds?: number;
+}
+
+export interface CreateMockAttemptData {
+  board?: string;
+  class_level?: string;
+  stream?: string | null;
+  subject: string;
+  chapter?: string | null;
+  unit?: string | null;
+  duration_seconds?: number;
+  answers: MockAttemptAnswerSubmissionData[];
+}
+
+export interface MockAttemptResponseData {
+  id: string;
+  total_questions: number;
+  attempted_count: number;
+  correct_count: number;
+  score_percentage: number;
+}
+
+export async function createMockAttempt(
+  data: CreateMockAttemptData,
+  token?: string,
+): Promise<MockAttemptResponseData> {
+  const res = await fetch(`${API_BASE}/api/mock-exams/attempts`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to save mock attempt" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
 // ── Weakness Analysis ─────────────────────────────────────────────────────
 
 export interface WeaknessItemData {
