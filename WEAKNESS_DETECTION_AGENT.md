@@ -376,7 +376,7 @@ For each (student, dimension):
 ```mermaid
 stateDiagram-v2
     [*] --> Loading: Hook fetches data
-    Loading --> Empty: 404 / no data
+    Loading --> Empty: 200 empty analysis (id="")
     Loading --> Error: Network / server error
     Loading --> Data: Analysis exists
     
