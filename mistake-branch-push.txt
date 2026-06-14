@@ -1,0 +1,50 @@
+
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (feat/exam-readiness-score)
+$ git log -15 --oneline
+44e3079 (HEAD -> feat/exam-readiness-score) Wire ExamReadinessPanel into dashboard stat cards and section routing
+b10a9ed Add ExamReadinessPanel component with 4 states and chapter lists
+8de3463 Add useExamReadiness React hook
+209c38b Add readiness API client functions to frontend lib/api.ts
+03eb602 Register readiness_router in main.py
+1f53360 Add readiness API routes (GET and seed endpoints)
+065db14 Add readiness Pydantic schemas (ReadinessResponse, SeedReadinessRequest)
+2c68d5c Register ExamReadiness export, add student relationship, create migration SQL
+bb13752 Add ExamReadiness SQLAlchemy model
+b5e56ce (origin/main, origin/HEAD, main) Merge branch 'main' of https://github.com/randomboy24/sutra-ai
+d8e2e57 task dependencies
+4e44fc4 (feat/frontend-v1) Merge pull request #7 from randomboy24/docs/project-readme
+ee20542 Update README.md
+99e2c83 Add project README documentation
+0a40816 Merge pull request #6 from randomboy24/feature/dashboard-feature-hub
+
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (feat/exam-readiness-score)
+$ git switch main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+gt
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (main)
+$ git banch
+git: 'banch' is not a git command. See 'git --help'.
+
+The most similar command is
+        branch
+
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (main)
+$ git branch
+  feat/academic-health-monitoring-agent
+  feat/exam-readiness-score
+  feat/frontend-v1
+* main
+
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (main)
+$ git switch feat/academic-health-monitoring-agent
+Switched to branch 'feat/academic-health-monitoring-agent'
+g
+DELL@DESKTOP-OUIMBPR MINGW64 /d/sutra-ai (feat/academic-health-monitoring-agent)
+$ git log -5 --oneline
+801786f (HEAD -> feat/academic-health-monitoring-agent, origin/feat/exam-readiness-score) Add test infrastructure and tests for health API and frontend panel
+6225d0f Add AcademicHealthPanel component and wire health data into dashboard
+20c4a0d Add frontend API client and useAcademicHealth hook
+42ae06b Add health API schemas, endpoints, and router registration
+e2e1280 Add AcademicHealth model, migration, and student relationship
+

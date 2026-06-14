@@ -1,0 +1,228 @@
+backend/app/services/weakness_analysis.py
+Comment on lines +81 to +82
+    overall_accuracy = round(correct_count / total_questions, 4) if total_questions else 0.0
+    overall_weakness_score = round(incorrect_count / total_questions, 4) if total_questions else 0.0
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P1: Overall accuracy/weakness use the wrong denominator when is_correct is null. This underreports both metrics for partial or ungraded answers.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/weakness_analysis.py, line 81:
+
+<comment>Overall accuracy/weakness use the wrong denominator when `is_correct` is null. This underreports both metrics for partial or ungraded answers.</comment>
+
+<file context>
+@@ -0,0 +1,301 @@
++    incorrect_count = sum(
++        1 for a in answer_data if a["is_correct"] is False
++    )
++    overall_accuracy = round(correct_count / total_questions, 4) if total_questions else 0.0
++    overall_weakness_score = round(incorrect_count / total_questions, 4) if total_questions else 0.0
++
+</file context>
+Suggested change
+    overall_accuracy = round(correct_count / total_questions, 4) if total_questions else 0.0
+    overall_weakness_score = round(incorrect_count / total_questions, 4) if total_questions else 0.0
+    scorable_total = correct_count + incorrect_count
+    overall_accuracy = round(correct_count / scorable_total, 4) if scorable_total else 0.0
+    overall_weakness_score = round(incorrect_count / scorable_total, 4) if scorable_total else 0.0
+@codeW-Krish	Reply...
+WEAKNESS_DETECTION_AGENT.md
+| 2 | **Unit-level** | `questions.unit` | "Which specific units within chapters are weak?" |
+| 3 | **Difficulty-level** | `questions.difficulty` | "Is the student struggling with Easy, Medium, or Hard questions?" |
+| 4 | **Question-type** | `questions.question_type` | "Are they better at MCQs vs theory questions?" |
+| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected, v1 shows in expandable panel) |
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P2: Docs claim v1 shows distractor analysis in the panel, but current API/UI do not expose distractor items. This can mislead downstream implementers and QA about expected output.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At WEAKNESS_DETECTION_AGENT.md, line 333:
+
+<comment>Docs claim v1 shows distractor analysis in the panel, but current API/UI do not expose distractor items. This can mislead downstream implementers and QA about expected output.</comment>
+
+<file context>
+@@ -0,0 +1,796 @@
++| 2 | **Unit-level** | `questions.unit` | "Which specific units within chapters are weak?" |
++| 3 | **Difficulty-level** | `questions.difficulty` | "Is the student struggling with Easy, Medium, or Hard questions?" |
++| 4 | **Question-type** | `questions.question_type` | "Are they better at MCQs vs theory questions?" |
++| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected, v1 shows in expandable panel) |
++| 6 | **Time efficiency** | `time_spent_seconds` | "Are they spending too long on certain question types?" |
++
+</file context>
+Suggested change
+| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected, v1 shows in expandable panel) |
+| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected in v1; surfaced in v2) |
+@codeW-Krish	Reply...
+backend/app/services/weakness_analysis.py
+        for entry in answer_data:
+            value = entry.get(key)
+            if value:
+                groups[value].append(entry)
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P2: Dimension grouping ignores subject, so categories with the same name across subjects can be merged incorrectly. This produces mislabeled and inaccurate weakness items.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/weakness_analysis.py, line 207:
+
+<comment>Dimension grouping ignores subject, so categories with the same name across subjects can be merged incorrectly. This produces mislabeled and inaccurate weakness items.</comment>
+
+<file context>
+@@ -0,0 +1,301 @@
++        for entry in answer_data:
++            value = entry.get(key)
++            if value:
++                groups[value].append(entry)
++
++        for category_name, entries in sorted(groups.items()):
+</file context>
+@codeW-Krish	Reply...
+backend/app/services/weakness_analysis.py
+    avg_time = round(sum(times) / len(times), 1) if times else None
+
+    # Average frequency and importance scores
+    freq_scores = [e["frequency_score"] for e in entries if e.get("frequency_score")]
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P2: Score averaging incorrectly excludes 0.0 values. Mixed zero/non-zero inputs will inflate frequency/importance averages.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/weakness_analysis.py, line 245:
+
+<comment>Score averaging incorrectly excludes 0.0 values. Mixed zero/non-zero inputs will inflate frequency/importance averages.</comment>
+
+<file context>
+@@ -0,0 +1,301 @@
++    avg_time = round(sum(times) / len(times), 1) if times else None
++
++    # Average frequency and importance scores
++    freq_scores = [e["frequency_score"] for e in entries if e.get("frequency_score")]
++    imp_scores = [e["importance_score"] for e in entries if e.get("importance_score")]
++    avg_freq = round(sum(freq_scores) / len(freq_scores), 2) if freq_scores else 0.0
+</file context>
+@codeW-Krish	Reply...
+backend/app/services/weakness_analysis.py
+    question_ids = list({a.question_id for a in answers if a.question_id})
+    questions = {
+        q.id: q
+        for q in db.query(Question).filter(Question.id.in_(question_ids)).all()
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P2: Inactive questions are not excluded from weakness analysis. This can skew weakness items with deprecated content.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/weakness_analysis.py, line 136:
+
+<comment>Inactive questions are not excluded from weakness analysis. This can skew weakness items with deprecated content.</comment>
+
+<file context>
+@@ -0,0 +1,301 @@
++    question_ids = list({a.question_id for a in answers if a.question_id})
++    questions = {
++        q.id: q
++        for q in db.query(Question).filter(Question.id.in_(question_ids)).all()
++    }
++
+</file context>
+Suggested change
+        for q in db.query(Question).filter(Question.id.in_(question_ids)).all()
+        for q in (
+            db.query(Question)
+            .filter(Question.id.in_(question_ids), Question.is_active.is_(True))
+            .all()
+        ):
+@codeW-Krish	Reply...
+backend/migrations/005_add_weakness_analysis.sql
+    total_questions_analyzed INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS ix_weakness_analyses_student_id ON weakness_analyses (student_id);
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P2: Latest-analysis reads are ordered by generated_at, but the migration only indexes student_id. This causes avoidable per-student sorting as history grows.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/migrations/005_add_weakness_analysis.sql, line 15:
+
+<comment>Latest-analysis reads are ordered by generated_at, but the migration only indexes student_id. This causes avoidable per-student sorting as history grows.</comment>
+
+<file context>
+@@ -0,0 +1,35 @@
++    total_questions_analyzed INTEGER NOT NULL DEFAULT 0
++);
++
++CREATE INDEX IF NOT EXISTS ix_weakness_analyses_student_id ON weakness_analyses (student_id);
++
++CREATE TABLE IF NOT EXISTS weakness_items (
+</file context>
+@codeW-Krish	Reply...
+krish-tasks-roadmap.md
+| Autonomous Study Planner | AI Intervention Engine | 🔜 Backend Question Bank API |
+| Exam Readiness Score | AI Paper Evaluator | 🔜 Mock Attempt API |
+| Personalized Question Bank | Adaptive Exam Simulator | |
+|---|---|---|---|
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P3: Feature Ownership table separator has wrong column count. This can break table rendering in Markdown viewers.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At krish-tasks-roadmap.md, line 13:
+
+<comment>Feature Ownership table separator has wrong column count. This can break table rendering in Markdown viewers.</comment>
+
+<file context>
+@@ -3,28 +3,29 @@
+-| Autonomous Study Planner | AI Intervention Engine | 🔜 Backend Question Bank API |
+-| Exam Readiness Score | AI Paper Evaluator | 🔜 Mock Attempt API |
+-| Personalized Question Bank | Adaptive Exam Simulator | |
++|---|---|---|---|
++| Academic Health Monitoring Agent | Weakness Detection Agent (Next) | ✅ Dynamic Mock Test Generator |
++| Autonomous Study Planner | AI Intervention Engine | ✅ Backend Question Bank API |
+</file context>
+Suggested change
+|---|---|---|---|
+|---|---|---|
+@codeW-Krish	Reply...
+WEAKNESS_DETECTION_AGENT.md
+```mermaid
+stateDiagram-v2
+    [*] --> Loading: Hook fetches data
+    Loading --> Empty: 404 / no data
+@cubic-dev-ai
+cubic-dev-ai Bot
+1 minute ago
+Contributor
+P3: Empty-state transition is documented as 404, but implementation uses a successful empty response. This mismatch can cause incorrect client/error handling assumptions.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At WEAKNESS_DETECTION_AGENT.md, line 379:
+
+<comment>Empty-state transition is documented as 404, but implementation uses a successful empty response. This mismatch can cause incorrect client/error handling assumptions.</comment>
+
+<file context>
+@@ -0,0 +1,796 @@
++```mermaid
++stateDiagram-v2
++    [*] --> Loading: Hook fetches data
++    Loading --> Empty: 404 / no data
++    Loading --> Error: Network / server error
++    Loading --> Data: Analysis exists
+</file context>
+Suggested change
+    Loading --> Empty: 404 / no data
+    Loading --> Empty: 200 empty analysis (id="")

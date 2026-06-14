@@ -313,7 +313,13 @@ def _compute_total_days(exam_dates: dict[str, str], start_date: date) -> int:
     if not parsed_dates:
         return _DEFAULT_TOTAL_DAYS
 
-    min_days = min((d - start_date).days for d in parsed_dates)
+    # Only consider future exam dates; past dates produce negative
+    # differences that would truncate the plan to 1 day.
+    future_dates = [d for d in parsed_dates if d >= start_date]
+    if not future_dates:
+        return _DEFAULT_TOTAL_DAYS
+
+    min_days = min((d - start_date).days for d in future_dates)
     return max(min_days, 1)
 
 

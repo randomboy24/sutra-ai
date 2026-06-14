@@ -1,0 +1,210 @@
+backend/app/services/study_planner.py
+    if not parsed_dates:
+        return _DEFAULT_TOTAL_DAYS
+
+    min_days = min((d - start_date).days for d in parsed_dates)
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P1: Plan duration uses the earliest exam date including past dates, which can truncate valid plans to 1 day.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/study_planner.py, line 316:
+
+<comment>Plan duration uses the earliest exam date including past dates, which can truncate valid plans to 1 day.</comment>
+
+<file context>
+@@ -0,0 +1,539 @@
++    if not parsed_dates:
++        return _DEFAULT_TOTAL_DAYS
++
++    min_days = min((d - start_date).days for d in parsed_dates)
++    return max(min_days, 1)
++
+</file context>
+@codeW-Krish	Reply...
+backend/app/routes/study_planner.py
+        )
+
+        result: list[StudyPlanSummary] = []
+        for plan in plans:
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: /plans performs two extra COUNT queries per plan. This scales poorly and increases latency/load for students with many plans.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/routes/study_planner.py, line 135:
+
+<comment>`/plans` performs two extra COUNT queries per plan. This scales poorly and increases latency/load for students with many plans.</comment>
+
+<file context>
+@@ -0,0 +1,446 @@
++        )
++
++        result: list[StudyPlanSummary] = []
++        for plan in plans:
++            task_count = (
++                db.query(StudyTask)
+</file context>
+@codeW-Krish	Reply...
+backend/app/routes/study_planner.py
+                StudyPlan.student_id == student.id,
+                StudyPlan.status == "active",
+            )
+            .first()
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: Only one active plan is archived before creating a new plan. Multiple active plans can persist and make active-plan reads non-deterministic.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/routes/study_planner.py, line 43:
+
+<comment>Only one active plan is archived before creating a new plan. Multiple active plans can persist and make active-plan reads non-deterministic.</comment>
+
+<file context>
+@@ -0,0 +1,446 @@
++                StudyPlan.student_id == student.id,
++                StudyPlan.status == "active",
++            )
++            .first()
++        )
++        if existing_active:
+</file context>
+@codeW-Krish	Reply...
+backend/app/services/study_planner.py
+                int(remaining_study * _STRONG_CHAPTER_MAINTENANCE_PCT),
+                _STRONG_REVIEW_MINUTES,
+            )
+            if strong_minutes >= _MIN_SLOT_MINUTES:
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: Strong-chapter maintenance branch is unreachable, so strong chapters never get review tasks.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/study_planner.py, line 370:
+
+<comment>Strong-chapter maintenance branch is unreachable, so strong chapters never get review tasks.</comment>
+
+<file context>
+@@ -0,0 +1,539 @@
++                int(remaining_study * _STRONG_CHAPTER_MAINTENANCE_PCT),
++                _STRONG_REVIEW_MINUTES,
++            )
++            if strong_minutes >= _MIN_SLOT_MINUTES:
++                strong_chapter = strong_chapters[day % len(strong_chapters)]
++                tasks.append({
+</file context>
+@codeW-Krish	Reply...
+backend/app/services/study_planner.py
+            })
+
+        # 4. Mock exam task (every N days, Sunday preference)
+        if day_of_week == 6 and day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: Mock exam scheduling condition is over-constrained and skips mocks for most plan start days.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/services/study_planner.py, line 443:
+
+<comment>Mock exam scheduling condition is over-constrained and skips mocks for most plan start days.</comment>
+
+<file context>
+@@ -0,0 +1,539 @@
++            })
++
++        # 4. Mock exam task (every N days, Sunday preference)
++        if day_of_week == 6 and day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
++            mock_subject = (
++                today_chapters[0]["subject"] if today_chapters
+</file context>
+Suggested change
+        if day_of_week == 6 and day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
+        if day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
+@codeW-Krish	Reply...
+frontend/components/dashboard/study-planner-panel.tsx
+      <button
+        type="button"
+        className="mt-0.5 shrink-0"
+        onClick={() => onToggle(task.id, !task.completed)}
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: Task toggles are not guarded while a PATCH is in flight, so users can fire duplicate updates/refetches by rapid clicking. Use togglingIds to disable the button or short-circuit duplicate requests per task.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At frontend/components/dashboard/study-planner-panel.tsx, line 53:
+
+<comment>Task toggles are not guarded while a PATCH is in flight, so users can fire duplicate updates/refetches by rapid clicking. Use `togglingIds` to disable the button or short-circuit duplicate requests per task.</comment>
+
+<file context>
+@@ -0,0 +1,450 @@
++      <button
++        type="button"
++        className="mt-0.5 shrink-0"
++        onClick={() => onToggle(task.id, !task.completed)}
++        aria-label={task.completed ? "Mark incomplete" : "Mark complete"}
++      >
+</file context>
+@codeW-Krish	Reply...
+frontend/components/dashboard/study-planner-panel.tsx
+}: StudyPlannerPanelProps) {
+  const { getToken } = useAuth();
+  const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
+  const today = new Date().toISOString().slice(0, 10);
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P2: UTC date formatting can shift the day and misclassify today’s tasks for non-UTC timezones. Build the date string in local time before filtering.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At frontend/components/dashboard/study-planner-panel.tsx, line 352:
+
+<comment>UTC date formatting can shift the day and misclassify today’s tasks for non-UTC timezones. Build the date string in local time before filtering.</comment>
+
+<file context>
+@@ -0,0 +1,450 @@
++}: StudyPlannerPanelProps) {
++  const { getToken } = useAuth();
++  const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
++  const today = new Date().toISOString().slice(0, 10);
++
++  const todayTasks =
+</file context>
+@codeW-Krish	Reply...
+backend/app/models/study_planner.py
+    plan_id: Mapped[str] = mapped_column(
+        ForeignKey("study_plans.id"), nullable=False, index=True
+    )
+    scheduled_date: Mapped[datetime] = mapped_column(Date, nullable=False)
+@cubic-dev-ai
+cubic-dev-ai Bot
+now
+Contributor
+P3: scheduled_date is typed as datetime but mapped to a SQL Date column. Use a date annotation to match actual persisted values.
+
+Prompt for AI agents
+Check if this issue is valid — if so, understand the root cause and fix it. At backend/app/models/study_planner.py, line 54:
+
+<comment>`scheduled_date` is typed as `datetime` but mapped to a SQL `Date` column. Use a `date` annotation to match actual persisted values.</comment>
+
+<file context>
+@@ -0,0 +1,77 @@
++    plan_id: Mapped[str] = mapped_column(
++        ForeignKey("study_plans.id"), nullable=False, index=True
++    )
++    scheduled_date: Mapped[datetime] = mapped_column(Date, nullable=False)
++    day_number: Mapped[int] = mapped_column(Integer, nullable=False)
++    subject: Mapped[str] = mapped_column(String, nullable=False)
+</file context>

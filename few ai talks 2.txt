@@ -1,0 +1,24 @@
+https://github.com/fossunited
+
+
+p: then can you make a new branch and start implementing it out properly also make tasks list and then subtasks list and make sure to have context and before editing any be 100% sure that data type and things and everything logic matches perfectly we should not have any gaps also make sure to do git add and commit (single line of message no co authered by phrases) and then only move to the next subtask or a task, also make sure not to assume anything even tho in plan if there is code snipppe you have to must check the actual codebase relevant files to be 100% confident before editing anything, (never commit the .md files yet we will think about it later at the end)
+
+
+p: make one explantion of this feature and v2 of this in future too make .md file of it and include diagrams too and how it will interact with other modules too 
+
+
+___
+
+mermaid diagram prompt: I am in dark mode so add appropriate colours in these <paste the code>
+
+
+extra tips
+
+For dark mode, use high-contrast fills with light text. A good palette is:
+
+Actions: blue (#2563EB)
+User actions: teal (#0F766E)
+Decision nodes: amber (#D97706)
+Success/results: green (#15803D)
+Text: #F8FAFC
+Borders: slightly lighter than fill
