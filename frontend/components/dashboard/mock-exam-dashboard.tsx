@@ -1472,7 +1472,7 @@ export function MockExamFlow() {
   };
 
   const completeExam = () => {
-    if (!window.confirm("Are you sure you want to submit the exam?")) return;
+    if (remainingSeconds > 0 && !window.confirm("Are you sure you want to submit the exam?")) return;
 
     allowFullscreenExitRef.current = true;
     setMode("results");
