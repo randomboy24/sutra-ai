@@ -1584,9 +1584,9 @@ export function AdaptiveExamFlow() {
           answers: nextHistory.map((step) => ({
             question_id: step.question.id,
             selected_option_index: step.selectedIndex,
-            answer_text: step.selectedIndex === undefined ? "Skipped in adaptive exam" : undefined,
-            is_correct: step.isCorrect,
-            score_awarded: step.isCorrect ? undefined : 0,
+            answer_text: undefined,
+            is_correct: step.selectedIndex === undefined ? undefined : step.isCorrect,
+            score_awarded: step.selectedIndex === undefined || step.isCorrect ? undefined : 0,
             time_spent_seconds: step.timeSpentSeconds,
           })),
         },
