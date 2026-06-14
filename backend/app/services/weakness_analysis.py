@@ -134,7 +134,11 @@ def _collect_answer_data(
     question_ids = list({a.question_id for a in answers if a.question_id})
     questions = {
         q.id: q
-        for q in db.query(Question).filter(Question.id.in_(question_ids)).all()
+        for q in (
+            db.query(Question)
+            .filter(Question.id.in_(question_ids), Question.is_active.is_(True))
+            .all()
+        )
     }
 
     # Also fetch wrong-option labels for distractor analysis
