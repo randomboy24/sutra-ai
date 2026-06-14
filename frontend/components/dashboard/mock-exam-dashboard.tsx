@@ -1295,7 +1295,35 @@ export function MockExamDashboard() {
 }
 
 
+
 function AdaptiveSimulatorPanel() {
+  const router = useRouter();
+
+  return (
+    <section className="rounded-lg border bg-card p-5 text-card-foreground shadow-sm shadow-black/5">
+      <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <StatusPill status="Active" />
+            <span className="rounded-md border bg-background/70 px-2 py-1 text-muted-foreground text-xs">
+              Personalized Question Bank
+            </span>
+          </div>
+          <h2 className="mt-3 font-bold text-2xl tracking-wide">Adaptive Exam Simulator</h2>
+          <p className="mt-2 max-w-2xl text-muted-foreground text-sm leading-6">
+            Start a focused adaptive exam that pulls personalized questions, changes difficulty after every answer, and estimates your capability level.
+          </p>
+        </div>
+        <Button className="h-11 gap-2 md:w-56" onClick={() => router.push("/dashboard/adaptive-exam")}>
+          <PlayIcon className="h-4 w-4" />
+          Start Adaptive Exam
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+export function AdaptiveExamFlow() {
   const { getToken } = useAuth();
   const [subjectId, setSubjectId] = useState(subjects[0].id);
   const [chapterId, setChapterId] = useState(subjects[0].chapters[0].id);
