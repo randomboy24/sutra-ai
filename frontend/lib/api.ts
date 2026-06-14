@@ -212,3 +212,116 @@ export async function seedMockQuestions(token?: string): Promise<SeedMockQuestio
 
   return res.json();
 }
+
+// ── Weakness Analysis ─────────────────────────────────────────────────────
+
+export interface WeaknessItemData {
+  category_type: string;
+  category_name: string;
+  subject: string;
+  total_questions: number;
+  incorrect_count: number;
+  error_rate: number;
+  avg_time_spent: number | null;
+  severity: string;
+  frequency_score: number;
+  importance_score: number;
+  recommendation: string | null;
+}
+
+export interface WeaknessAnalysisData {
+  id: string;
+  generated_at: string;
+  total_attempts_analyzed: number;
+  overall_accuracy: number;
+  overall_weakness_score: number;
+  total_questions_analyzed: number;
+  items: WeaknessItemData[];
+}
+
+export interface WeaknessTrendPoint {
+  attempt_id: string;
+  subject: string;
+  chapter: string | null;
+  score_percentage: number;
+  correct_count: number;
+  total_questions: number;
+  submitted_at: string;
+}
+
+export interface WeaknessTrendResponse {
+  trends: WeaknessTrendPoint[];
+}
+
+export async function fetchWeaknessAnalysis(token?: string): Promise<WeaknessAnalysisData> {
+  const res = await fetch(`${API_BASE}/api/weakness`, {
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch weakness analysis" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function triggerWeaknessAnalysis(token?: string): Promise<WeaknessAnalysisData> {
+  const res = await fetch(`${API_BASE}/api/weakness/analyze`, {
+    method: "POST",
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to trigger weakness analysis" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchWeaknessItems(
+  filters: { severity?: string; category_type?: string } = {},
+  token?: string,
+): Promise<WeaknessItemData[]> {
+  const params = new URLSearchParams();
+  if (filters.severity) params.set("severity", filters.severity);
+  if (filters.category_type) params.set("category_type", filters.category_type);
+
+  const query = params.toString();
+  const url = `${API_BASE}/api/weakness/items${query ? `?${query}` : ""}`;
+
+  const res = await fetch(url, {
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch weakness items" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function fetchWeaknessTrends(
+  filters: { subject?: string; limit?: number } = {},
+  token?: string,
+): Promise<WeaknessTrendResponse> {
+  const params = new URLSearchParams();
+  if (filters.subject) params.set("subject", filters.subject);
+  if (filters.limit) params.set("limit", String(filters.limit));
+
+  const query = params.toString();
+  const url = `${API_BASE}/api/weakness/trends${query ? `?${query}` : ""}`;
+
+  const res = await fetch(url, {
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch weakness trends" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
