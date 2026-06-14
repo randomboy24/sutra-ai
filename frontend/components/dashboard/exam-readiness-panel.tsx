@@ -116,12 +116,12 @@ export function ExamReadinessPanel({
 
   const handleSeed = async () => {
     if (!clerkUserId) return;
-    const token = await getToken();
-    if (!token) return;
     setSeeding(true);
     setSeedError(null);
     setSeeded(false);
     try {
+      const token = await getToken();
+      if (!token) throw new Error("Authentication required to seed demo data");
       await seedReadinessForUser(token);
       setSeeded(true);
       refetch();

@@ -84,11 +84,11 @@ export function AcademicHealthPanel({
 
   const handleSeed = async () => {
     if (!clerkUserId) return;
-    const token = await getToken();
-    if (!token) return;
     setSeeding(true);
     setSeedError(null);
     try {
+      const token = await getToken();
+      if (!token) throw new Error("Authentication required to seed demo data");
       await seedHealthForUser(token);
       setSeeded(true);
       refetch();
