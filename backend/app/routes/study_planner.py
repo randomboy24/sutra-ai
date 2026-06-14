@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy import case, func
 
 from app.auth.verify import get_current_user
 from app.database import SessionLocal
@@ -131,21 +132,27 @@ def list_plans(
             .all()
         )
 
+        # Bulk fetch task counts for all plans in a single query
+        plan_ids = [plan.id for plan in plans]
+        count_map: dict[str, tuple[int, int]] = {}
+        if plan_ids:
+            rows = (
+                db.query(
+                    StudyTask.plan_id,
+                    func.count(StudyTask.id).label("total"),
+                    func.sum(
+                        case((StudyTask.completed.is_(True), 1), else_=0)
+                    ).label("completed"),
+                )
+                .filter(StudyTask.plan_id.in_(plan_ids))
+                .group_by(StudyTask.plan_id)
+                .all()
+            )
+            count_map = {row.plan_id: (int(row.total), int(row.completed)) for row in rows}
+
         result: list[StudyPlanSummary] = []
         for plan in plans:
-            task_count = (
-                db.query(StudyTask)
-                .filter(StudyTask.plan_id == plan.id)
-                .count()
-            )
-            completed_count = (
-                db.query(StudyTask)
-                .filter(
-                    StudyTask.plan_id == plan.id,
-                    StudyTask.completed.is_(True),
-                )
-                .count()
-            )
+            total_count, completed_count = count_map.get(plan.id, (0, 0))
             result.append(
                 StudyPlanSummary(
                     id=plan.id,
@@ -156,7 +163,7 @@ def list_plans(
                     else "",
                     status=plan.status,
                     tasks_completed=completed_count,
-                    tasks_total=task_count,
+                    tasks_total=total_count,
                 )
             )
 
