@@ -7,6 +7,7 @@ class QuestionOptionResponse(BaseModel):
     id: str
     label: str
     text: str
+    is_correct: bool
     display_order: int
 
 

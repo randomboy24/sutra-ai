@@ -55,6 +55,7 @@ export interface MockQuestionOptionData {
   id: string;
   label: string;
   text: string;
+  is_correct: boolean;
   display_order: number;
 }
 

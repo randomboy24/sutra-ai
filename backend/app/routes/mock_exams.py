@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 
 from app.auth.verify import get_current_user
 from app.database import SessionLocal
-from app.models.mock_exam import MockAttempt, MockAttemptAnswer, Question, QuestionOption
+from app.models.mock_exam import (
+    MockAttempt,
+    MockAttemptAnswer,
+    Question,
+    QuestionOption,
+)
 from app.models.student import Student
 from app.models.user import User
 from app.schemas.mock_exam import (
@@ -102,7 +107,9 @@ def create_attempt(
     try:
         student = _get_current_student(db, verified_user_id)
         if not body.answers:
-            raise HTTPException(status_code=400, detail="At least one answer is required")
+            raise HTTPException(
+                status_code=400, detail="At least one answer is required"
+            )
 
         question_ids = [answer.question_id for answer in body.answers]
         questions = (
@@ -214,14 +221,12 @@ def list_attempts(
         if subject:
             query = query.filter(MockAttempt.subject == subject)
 
-        attempts = (
-            query.order_by(MockAttempt.submitted_at.desc())
-            .limit(limit)
-            .all()
-        )
+        attempts = query.order_by(MockAttempt.submitted_at.desc()).limit(limit).all()
 
         return MockAttemptListResponse(
-            attempts=[_attempt_response(attempt, attempt.answers) for attempt in attempts]
+            attempts=[
+                _attempt_response(attempt, attempt.answers) for attempt in attempts
+            ]
         )
     except HTTPException:
         raise
@@ -303,14 +308,19 @@ def _question_response(question: Question) -> QuestionResponse:
                 id=option.id,
                 label=option.label,
                 text=option.text,
+                is_correct=option.is_correct,
                 display_order=option.display_order,
             )
-            for option in sorted(question.options, key=lambda option: option.display_order)
+            for option in sorted(
+                question.options, key=lambda option: option.display_order
+            )
         ],
     )
 
 
-def _resolve_selected_option(db, question: Question, submitted) -> QuestionOption | None:
+def _resolve_selected_option(
+    db, question: Question, submitted
+) -> QuestionOption | None:
     if submitted.selected_option_id:
         option = (
             db.query(QuestionOption)
