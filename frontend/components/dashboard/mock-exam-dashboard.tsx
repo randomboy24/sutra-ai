@@ -36,11 +36,13 @@ import { Button } from "@/components/ui/button";
 import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { useWeaknessAnalysis } from "@/hooks/use-weakness-analysis";
+import { useStudyPlanner } from "@/hooks/use-study-planner";
 import { useRecommendedQuestions } from "@/hooks/use-recommended-questions";
 import { fetchMockQuestions, seedMockQuestions, type MockQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 import { WeaknessAnalysisPanel } from "@/components/dashboard/weakness-analysis-panel";
+import { StudyPlannerPanel } from "@/components/dashboard/study-planner-panel";
 import { RecommendedQuestionsPanel } from "@/components/dashboard/recommended-questions-panel";
 
 type Unit = {
@@ -524,6 +526,12 @@ export function MockExamDashboard() {
     refetch: weaknessRefetch,
     runAnalysis,
   } = useWeaknessAnalysis(user?.id);
+  const {
+    data: planData,
+    loading: planLoading,
+    error: planError,
+    refetch: planRefetch,
+  } = useStudyPlanner(user?.id);
   const {
     data: recommendedQuestions,
     loading: recommendedLoading,
@@ -1258,6 +1266,14 @@ export function MockExamDashboard() {
               error={weaknessError}
               runAnalysis={runAnalysis}
               refetch={weaknessRefetch}
+            />
+          ) : activeSection === "study-plan" ? (
+            <StudyPlannerPanel
+              planData={planData}
+              loading={planLoading}
+              error={planError}
+              clerkUserId={user?.id}
+              refetch={planRefetch}
             />
           ) : activeSection === "question-bank" ? (
             <RecommendedQuestionsPanel

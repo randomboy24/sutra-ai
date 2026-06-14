@@ -8,6 +8,7 @@ from app.routes.health import router as health_router
 from app.routes.readiness import router as readiness_router
 from app.routes.mock_exams import router as mock_exams_router
 from app.routes.weakness import router as weakness_router
+from app.routes.study_planner import router as study_planner_router
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -35,6 +36,7 @@ app.include_router(health_router)
 app.include_router(readiness_router)
 app.include_router(mock_exams_router)
 app.include_router(weakness_router)
+app.include_router(study_planner_router)
 
 @app.get("/")
 def root():
