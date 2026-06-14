@@ -34,9 +34,11 @@ const TASK_TYPE_META: Record<string, { label: string; color: string }> = {
 function TaskRow({
   task,
   onToggle,
+  isToggling,
 }: {
   task: StudyTaskData;
   onToggle: (id: string, completed: boolean) => void;
+  isToggling?: boolean;
 }) {
   const meta = TASK_TYPE_META[task.task_type] ?? {
     label: task.task_type,
@@ -50,10 +52,13 @@ function TaskRow({
       <button
         type="button"
         className="mt-0.5 shrink-0"
+        disabled={isToggling}
         onClick={() => onToggle(task.id, !task.completed)}
         aria-label={task.completed ? "Mark incomplete" : "Mark complete"}
       >
-        {task.completed ? (
+        {isToggling ? (
+          <Loader2Icon className="h-5 w-5 animate-spin text-muted-foreground" />
+        ) : task.completed ? (
           <CheckCircle2Icon className="h-5 w-5 text-emerald-500" />
         ) : (
           <CircleIcon className="h-5 w-5 text-muted-foreground" />
@@ -297,9 +302,11 @@ function PlanOverview({ plan }: { plan: StudyPlanData }) {
 function TodayTasks({
   tasks,
   onToggle,
+  togglingIds,
 }: {
   tasks: StudyTaskData[];
   onToggle: (id: string, completed: boolean) => void;
+  togglingIds: Set<string>;
 }) {
   if (tasks.length === 0) {
     return (
@@ -322,9 +329,14 @@ function TodayTasks({
         Today&apos;s Tasks
       </h3>
       <div className="grid gap-2">
-        {tasks.map((task) => (
-          <TaskRow key={task.id} task={task} onToggle={onToggle} />
-        ))}
+          {tasks.map((task) => (
+            <TaskRow
+              key={task.id}
+              task={task}
+              onToggle={onToggle}
+              isToggling={togglingIds.has(task.id)}
+            />
+          ))}
       </div>
     </section>
   );
@@ -356,6 +368,7 @@ export function StudyPlannerPanel({
 
   const handleToggle = useCallback(
     async (taskId: string, completed: boolean) => {
+      if (togglingIds.has(taskId)) return; // Already in flight
       setTogglingIds((prev) => new Set(prev).add(taskId));
       try {
         const token = await getToken();
@@ -371,7 +384,7 @@ export function StudyPlannerPanel({
         });
       }
     },
-    [getToken, refetch],
+    [getToken, refetch, togglingIds],
   );
 
   const handleGenerated = useCallback(() => {
@@ -432,7 +445,7 @@ export function StudyPlannerPanel({
   return (
     <section className="space-y-6">
       <PlanOverview plan={planData} />
-      <TodayTasks tasks={todayTasks} onToggle={handleToggle} />
+      <TodayTasks tasks={todayTasks} onToggle={handleToggle} togglingIds={togglingIds} />
 
       {/* All tasks collapsible */}
       <details className="rounded-lg border bg-card shadow-sm shadow-black/5">
@@ -441,7 +454,12 @@ export function StudyPlannerPanel({
         </summary>
         <div className="grid gap-2 border-t px-5 py-4">
           {planData.tasks.map((task) => (
-            <TaskRow key={task.id} task={task} onToggle={handleToggle} />
+            <TaskRow
+              key={task.id}
+              task={task}
+              onToggle={handleToggle}
+              isToggling={togglingIds.has(task.id)}
+            />
           ))}
         </div>
       </details>
