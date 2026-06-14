@@ -209,13 +209,14 @@ def _compute_dimension_analysis(
         for entry in answer_data:
             value = entry.get(key)
             if value:
-                groups[value].append(entry)
+                subject = entry.get("subject", "unknown")
+                groups[(subject, value)].append(entry)
 
-        for category_name, entries in sorted(groups.items()):
+        for (subject_val, category_name), entries in sorted(groups.items()):
             item = _build_weakness_item(
                 category_type=category_type,
                 category_name=str(category_name),
-                subject=entries[0]["subject"],
+                subject=subject_val,
                 entries=entries,
             )
             if item:
