@@ -248,8 +248,8 @@ def _build_weakness_item(
     avg_time = round(sum(times) / len(times), 1) if times else None
 
     # Average frequency and importance scores
-    freq_scores = [e["frequency_score"] for e in entries if e.get("frequency_score")]
-    imp_scores = [e["importance_score"] for e in entries if e.get("importance_score")]
+    freq_scores = [e["frequency_score"] for e in entries if e["frequency_score"] is not None]
+    imp_scores = [e["importance_score"] for e in entries if e["importance_score"] is not None]
     avg_freq = round(sum(freq_scores) / len(freq_scores), 2) if freq_scores else 0.0
     avg_imp = round(sum(imp_scores) / len(imp_scores), 2) if imp_scores else 0.0
 
