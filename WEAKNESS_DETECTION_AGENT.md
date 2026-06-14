@@ -330,7 +330,7 @@ The engine computes six dimensions of weakness:
 | 2 | **Unit-level** | `questions.unit` | "Which specific units within chapters are weak?" |
 | 3 | **Difficulty-level** | `questions.difficulty` | "Is the student struggling with Easy, Medium, or Hard questions?" |
 | 4 | **Question-type** | `questions.question_type` | "Are they better at MCQs vs theory questions?" |
-| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected, v1 shows in expandable panel) |
+| 5 | **Distractor analysis** | `question_options.label` | "Which wrong options are most commonly picked?" (data collected, v2 will show in expandable panel) |
 | 6 | **Time efficiency** | `time_spent_seconds` | "Are they spending too long on certain question types?" |
 
 ### Computation Logic (per dimension)
