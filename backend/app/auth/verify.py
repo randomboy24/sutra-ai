@@ -1,6 +1,7 @@
 import os
 
 from clerk import Client
+from clerk.errors import ClerkAPIException, NoActiveSessionException
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
@@ -9,11 +10,11 @@ if not CLERK_SECRET_KEY:
     raise RuntimeError("CLERK_SECRET_KEY environment variable is not set")
 
 clerk = Client(token=CLERK_SECRET_KEY)
-security_scheme = HTTPBearer()
+security_scheme = HTTPBearer(auto_error=False)
 
 
 async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Security(security_scheme),
+    credentials: HTTPAuthorizationCredentials | None = Security(security_scheme),
 ) -> str:
     """Verify the Clerk session token and return the clerk_user_id.
 
@@ -25,5 +26,5 @@ async def get_current_user(
     try:
         session = await clerk.verification.verify(credentials.credentials)
         return session.user_id
-    except Exception:
+    except (ClerkAPIException, NoActiveSessionException):
         raise HTTPException(status_code=401, detail="Invalid or expired token")
