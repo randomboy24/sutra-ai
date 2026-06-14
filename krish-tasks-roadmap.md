@@ -3,18 +3,18 @@
 > **Document Type:** Contributor Task Planning  
 > **Audience:** Krish  
 > **Based On:** `sutra-ai-work-progress.md` + Codebase Analysis  
-> **Last Updated:** 2026-06-13  
+> **Last Updated:** 2026-06-14  
 
 ---
 
 ## Feature Ownership
 
 | Krish (4 features) | Jatin (4 features) | Shared / Already Started |
-|---|---|---|
-| Academic Health Monitoring Agent | Weakness Detection Agent | ✅ Dynamic Mock Test Generator |
-| Autonomous Study Planner | AI Intervention Engine | 🔜 Backend Question Bank API |
-| Exam Readiness Score | AI Paper Evaluator | 🔜 Mock Attempt API |
-| Personalized Question Bank | Adaptive Exam Simulator | |
+|---|---|---|---|
+| Academic Health Monitoring Agent | Weakness Detection Agent (Next) | ✅ Dynamic Mock Test Generator |
+| Autonomous Study Planner | AI Intervention Engine | ✅ Backend Question Bank API |
+| Exam Readiness Score | AI Paper Evaluator | ✅ Mock Attempts API |
+| Personalized Question Bank | Adaptive Exam Simulator | ✅ Migration 004 (5 tables) |
 
 ---
 
@@ -22,9 +22,10 @@
 
 ```mermaid
 flowchart TB
-    subgraph Shared["Shared Foundation"]
+    subgraph Shared["Shared Foundation ✓ Complete"]
         Mock["Mock Exam UI ✅"]
-        Attempts["Mock Attempts API 🔜<br/>(question_bank + mock_attempts tables)"]
+        QuestionBank["Question Bank API ✅<br/>(question_sources + questions + options)"]
+        Attempts["Mock Attempts API ✅<br/>(mock_attempts + mock_attempt_answers)"]
     end
     
     subgraph Krish["Krish's Features"]
@@ -42,10 +43,12 @@ flowchart TB
     end
     
     Mock --> Attempts
+    Mock --> QuestionBank
     
     Attempts --> Health
     Attempts --> Readiness
     Attempts --> Weakness
+    QuestionBank --> Weakness
     
     Weakness --> QB
     Weakness --> Planner
@@ -143,11 +146,11 @@ flowchart TB
 
 ## What Krish Can Build RIGHT NOW
 
-Since the shared mock attempt backend doesn't exist yet and Jatin's Weakness Detection isn't built, you can immediately:
+The shared mock attempt/question bank backend is **already built** (merged into `main`). Therefore:
 
-1. **Start the Academic Health Monitoring Agent** (Phase 1) — create backend table + API + dashboard widget with mock data
-2. **Design the Exam Readiness Score formula** — architect the scoring algorithm on paper/notion, build the schema, wire it up once mock attempts API lands
-3. **Design the Question Bank schema** — plan `question_sources`, `questions`, `question_options`, `question_tags` tables. This is actually **shared infrastructure** that both you and Jatin need. The README lists it as "Shared"
+1. **Academic Health Monitoring Agent** (Phase 1) — can start immediately, needs only mock data
+2. **Exam Readiness Score** (Phase 2) — 🟢 **No longer blocked!** Mock attempt data is available in the DB, can start now
+3. Design endpoints can proceed against real data
 
 ---
 
@@ -176,9 +179,13 @@ This is a **bidirectional dependency** — Jatin needs Krish's Readiness Score f
 Krish Tasks:
 
 [ ] 1. Academic Health Monitoring Agent   — 🟢 No blockers, start now
-[ ] 2. Exam Readiness Score               — 🟡 Needs shared mock attempts API
-[ ] 3. Personalized Question Bank         — 🔴 Blocked by Jatin (Weakness Detection)
-[ ] 4. Autonomous Study Planner           — 🔴 Blocked by Jatin + own Phase 2
+[ ] 2. Exam Readiness Score               — 🟢 No blockers (mock attempts API exists)
+[ ] 3. Personalized Question Bank         — 🔴 Blocked by Jatin's Weakness Detection
+[ ] 4. Autonomous Study Planner           — 🔴 Blocked by Weakness Detection + Readiness Score
+
+Jatin's Next Task:
+
+[x] Planning: Weakness Detection Agent   — 🟢 Task ticket created, starts after planning
 ```
 
 > **End of Krish Task Roadmap**
