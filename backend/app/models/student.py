@@ -46,3 +46,8 @@ class Student(Base):
         back_populates="student",
         uselist=False
     )
+
+    mock_attempts = relationship(
+        "MockAttempt",
+        back_populates="student"
+    )

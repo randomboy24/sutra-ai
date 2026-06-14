@@ -2,14 +2,12 @@ import os
 
 from clerk import Client
 from clerk.errors import ClerkAPIException, NoActiveSessionException
+from dotenv import load_dotenv
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
-if not CLERK_SECRET_KEY:
-    raise RuntimeError("CLERK_SECRET_KEY environment variable is not set")
+load_dotenv()
 
-clerk = Client(token=CLERK_SECRET_KEY)
 security_scheme = HTTPBearer(auto_error=False)
 
 
@@ -23,7 +21,12 @@ async def get_current_user(
     if not credentials:
         raise HTTPException(status_code=401, detail="Missing authorization header")
 
+    secret_key = os.getenv("CLERK_SECRET_KEY")
+    if not secret_key:
+        raise HTTPException(status_code=500, detail="Clerk auth is not configured")
+
     try:
+        clerk = Client(token=secret_key)
         session = await clerk.verification.verify(credentials.credentials)
         return session.user_id
     except (ClerkAPIException, NoActiveSessionException):
