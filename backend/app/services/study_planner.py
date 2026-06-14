@@ -360,9 +360,6 @@ def _build_daily_schedule(
         # Sort today's chapters by priority descending
         today_chapters.sort(key=lambda c: c["priority"], reverse=True)
 
-        # Day of week for mock exam scheduling
-        day_of_week = day_date.weekday()  # Monday=0, Sunday=6
-
         # Allocate time to each bucket
         remaining_study = buckets["study"]
 
@@ -445,8 +442,8 @@ def _build_daily_schedule(
                 "completed_at": None,
             })
 
-        # 4. Mock exam task (every N days, Sunday preference)
-        if day_of_week == 6 and day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
+        # 4. Mock exam task (every N days)
+        if day_number % _MOCK_EXAM_INTERVAL_DAYS == 0:
             mock_subject = (
                 today_chapters[0]["subject"] if today_chapters
                 else (all_subjects[day % len(all_subjects)] if all_subjects else "")
