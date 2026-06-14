@@ -17,7 +17,7 @@ router = APIRouter(prefix="/api/readiness", tags=["readiness"])
 
 
 @router.post("/seed", response_model=SeedReadinessResponse)
-async def seed_readiness_data(
+def seed_readiness_data(
     body: SeedReadinessRequest,
     verified_user_id: str = Depends(get_current_user),
 ):
@@ -84,7 +84,7 @@ async def seed_readiness_data(
 
 
 @router.get("", response_model=ReadinessResponse)
-async def get_readiness(
+def get_readiness(
     verified_user_id: str = Depends(get_current_user),
 ):
     db = SessionLocal()

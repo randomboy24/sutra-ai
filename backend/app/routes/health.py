@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/health", tags=["health"])
 
 
 @router.post("/seed", response_model=SeedHealthResponse)
-async def seed_health_data(
+def seed_health_data(
     body: SeedHealthRequest,
     verified_user_id: str = Depends(get_current_user),
 ):
@@ -69,7 +69,7 @@ async def seed_health_data(
 
 
 @router.get("", response_model=HealthResponse)
-async def get_health(
+def get_health(
     verified_user_id: str = Depends(get_current_user),
 ):
     db = SessionLocal()
