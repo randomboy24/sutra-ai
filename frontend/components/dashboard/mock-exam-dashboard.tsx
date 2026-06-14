@@ -1275,6 +1275,8 @@ export function MockExamDashboard() {
               error={recommendedError}
               refetch={recommendedRefetch}
             />
+          ) : activeSection === "adaptive" ? (
+            <AdaptiveSimulatorPanel />
           ) : (
             <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />
           )}
