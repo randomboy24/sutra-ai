@@ -347,20 +347,35 @@ Important files:
 
 ```mermaid
 flowchart TD
-  A[Dashboard Mock Exam Card] --> B[Start Mock Exam]
-  B --> C[/dashboard/mock-exam]
-  C --> D[Choose Subject]
-  D --> E[Choose Chapter]
-  E --> F[Choose Units]
-  F --> G[Choose Length]
-  G --> H[Confirm Mock]
-  H --> I[Fullscreen Exam]
-  I --> J{Student Action}
-  J -->|Submit or timer ends| K[Results + Review]
-  J -->|Switch Tab| L[Cancel Exam]
+  A["Dashboard Mock Exam Card"] --> B["Start Mock Exam"]
+  B --> C["/dashboard/mock-exam"]
+  C --> D["Choose Subject"]
+  D --> E["Choose Chapter"]
+  E --> F["Choose Units"]
+  F --> G["Choose Length"]
+  G --> H["Confirm Mock"]
+  H --> I["Fullscreen Exam"]
+
+  I --> J{"Student Action"}
+
+  J -->|Submit or timer ends| K["Results + Review"]
+  J -->|Switch Tab| L["Cancel Exam"]
   J -->|Exit Fullscreen| L
-  L --> M[/dashboard?section=mock]
-  M --> N[Cancellation Modal]
+
+  L --> M["/dashboard?section=mock"]
+  M --> N["Cancellation Modal"]
+
+  classDef user fill:#0F766E,stroke:#14B8A6,stroke-width:2px,color:#F8FAFC;
+  classDef screen fill:#2563EB,stroke:#60A5FA,stroke-width:2px,color:#F8FAFC;
+  classDef decision fill:#D97706,stroke:#FBBF24,stroke-width:2px,color:#F8FAFC;
+  classDef success fill:#15803D,stroke:#4ADE80,stroke-width:2px,color:#F8FAFC;
+  classDef danger fill:#991B1B,stroke:#EF4444,stroke-width:2px,color:#F8FAFC;
+
+  class A,B,D,E,F,G,H user;
+  class C,I,M screen;
+  class J decision;
+  class K success;
+  class L,N danger;
 ```
 
 ## Current Database Model
@@ -601,17 +616,44 @@ All migrations are in `backend/migrations/`:
 
 ```mermaid
 flowchart TB
-  Foundation[Auth + Onboarding + Dashboard Hub] --> Mock[Dynamic Mock Test Generator]
-  Mock --> Attempts[Mock Attempts + Answers API]
-  Attempts --> Weakness[Weakness Detection Agent]
-  Attempts --> Readiness[Exam Readiness Score]
-  Weakness --> QuestionBank[Personalized Question Bank]
-  Weakness --> Planner[Autonomous Study Planner]
+  Foundation["Auth + Onboarding + Dashboard Hub"] --> Mock["Dynamic Mock Test Generator"]
+
+  Mock --> Attempts["Mock Attempts + Answers API"]
+
+  Attempts --> Weakness["Weakness Detection Agent"]
+  Attempts --> Readiness["Exam Readiness Score"]
+
+  Weakness --> QuestionBank["Personalized Question Bank"]
+  Weakness --> Planner["Autonomous Study Planner"]
+
   Readiness --> Planner
-  Planner --> Intervention[AI Intervention Engine]
-  QuestionBank --> Adaptive[Adaptive Exam Simulator]
-  Paper[AI Paper Evaluator] --> Weakness
+
+  Planner --> Intervention["AI Intervention Engine"]
+
+  QuestionBank --> Adaptive["Adaptive Exam Simulator"]
+
+  Paper["AI Paper Evaluator"] --> Weakness
   Paper --> Readiness
+
+  classDef foundation fill:#4338CA,stroke:#818CF8,stroke-width:3px,color:#F8FAFC;
+
+  classDef assessment fill:#2563EB,stroke:#60A5FA,stroke-width:2px,color:#F8FAFC;
+
+  classDef analytics fill:#D97706,stroke:#FBBF24,stroke-width:2px,color:#F8FAFC;
+
+  classDef planning fill:#0F766E,stroke:#2DD4BF,stroke-width:2px,color:#F8FAFC;
+
+  classDef adaptive fill:#15803D,stroke:#4ADE80,stroke-width:2px,color:#F8FAFC;
+
+  class Foundation foundation;
+
+  class Mock,Attempts,Paper assessment;
+
+  class Weakness,Readiness analytics;
+
+  class Planner,Intervention,QuestionBank planning;
+
+  class Adaptive adaptive;
 ```
 
 ## Notes For Contributors
