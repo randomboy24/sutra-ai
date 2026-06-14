@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import uuid4
 
 from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text
@@ -51,7 +51,7 @@ class StudyTask(Base):
     plan_id: Mapped[str] = mapped_column(
         ForeignKey("study_plans.id"), nullable=False, index=True
     )
-    scheduled_date: Mapped[datetime] = mapped_column(Date, nullable=False)
+    scheduled_date: Mapped[date] = mapped_column(Date, nullable=False)
     day_number: Mapped[int] = mapped_column(Integer, nullable=False)
     subject: Mapped[str] = mapped_column(String, nullable=False)
     chapter: Mapped[str | None] = mapped_column(String, nullable=True)
