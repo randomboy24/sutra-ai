@@ -610,8 +610,11 @@ export function MockExamDashboard() {
     const section = params.get("section");
     const reason = params.get("mock_cancelled");
 
+    if (section === "mock" || section === "adaptive") {
+      setActiveSection(section);
+    }
+
     if (section === "mock") {
-      setActiveSection("mock");
       setSetupStep("intro");
       setMode("setup");
     }
@@ -621,7 +624,7 @@ export function MockExamDashboard() {
       setSessionNotice(getMockCancellationMessage(reason));
     }
 
-    if (section === "mock" || reason) {
+    if (section === "mock" || section === "adaptive" || reason) {
       window.history.replaceState(null, "", window.location.pathname);
     }
   }, []);
@@ -2184,14 +2187,14 @@ function isMockCancellationReason(value: string | null): value is MockCancellati
 
 function getMockCancellationMessage(reason: MockCancellationReason) {
   if (reason === "tab-switch") {
-    return "Your mock exam was cancelled because you switched tabs or left the exam window before submitting.";
+    return "Your exam was cancelled because you switched tabs or left the exam window before submitting.";
   }
 
   if (reason === "fullscreen-exit") {
-    return "Your mock exam was cancelled because fullscreen mode was exited before submitting.";
+    return "Your exam was cancelled because fullscreen mode was exited before submitting.";
   }
 
-  return "Your mock exam was cancelled before submission.";
+  return "Your exam was cancelled before submission.";
 }
 
 function MockCancellationModal({
@@ -2214,7 +2217,7 @@ function MockCancellationModal({
             <AlertTriangleIcon className="h-5 w-5" />
           </div>
           <div className="min-w-0">
-            <h2 id="mock-cancelled-title" className="font-semibold text-lg">Mock exam cancelled</h2>
+            <h2 id="mock-cancelled-title" className="font-semibold text-lg">Exam cancelled</h2>
             <p className="mt-2 text-muted-foreground text-sm">{getMockCancellationMessage(reason)}</p>
           </div>
         </div>
