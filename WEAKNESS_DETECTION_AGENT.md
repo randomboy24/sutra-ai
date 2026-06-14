@@ -1,6 +1,6 @@
 # Weakness Detection Agent
 
-> **Owner:** Jatin  
+> **Owner:** Krish
 > **Status:** v1 — Complete (branch: `feat/weakness-detection-agent`)  
 > **Next:** v2 — LLM-powered recommendations + auto-trigger + comparative analysis
 
