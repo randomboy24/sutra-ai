@@ -213,6 +213,161 @@ export async function seedMockQuestions(token?: string): Promise<SeedMockQuestio
   return res.json();
 }
 
+// ── Study Planner ──────────────────────────────────────────────────────────
+
+export interface StudyTaskData {
+  id: string;
+  scheduled_date: string;
+  day_number: number;
+  subject: string;
+  chapter: string | null;
+  unit: string | null;
+  task_type: string;
+  duration_minutes: number;
+  priority_score: number;
+  session_label: string;
+  description: string | null;
+  completed: boolean;
+  completed_at: string | null;
+}
+
+export interface StudyPlanData {
+  id: string;
+  name: string;
+  exam_dates: Record<string, string>;
+  daily_hours: number;
+  total_days: number;
+  generated_at: string;
+  status: string;
+  metrics_snapshot: Record<string, unknown>;
+  tasks: StudyTaskData[];
+}
+
+export interface StudyPlanSummaryData {
+  id: string;
+  name: string;
+  total_days: number;
+  generated_at: string;
+  status: string;
+  tasks_completed: number;
+  tasks_total: number;
+}
+
+export interface GeneratePlanRequest {
+  exam_dates?: Record<string, string>;
+  daily_hours?: number;
+  subject_focus?: string[];
+}
+
+export async function generateStudyPlan(
+  data: GeneratePlanRequest = {},
+  token?: string,
+): Promise<StudyPlanData> {
+  const res = await fetch(`${API_BASE}/api/study-planner/generate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to generate study plan" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchActivePlan(token?: string): Promise<StudyPlanData | null> {
+  const res = await fetch(`${API_BASE}/api/study-planner/active`, {
+    headers: authHeaders(token),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch active plan" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  // Backend returns {} when no active plan exists
+  const text = await res.text();
+  if (text === "{}") return null;
+  return JSON.parse(text);
+}
+
+export async function fetchPlans(token?: string): Promise<StudyPlanSummaryData[]> {
+  const res = await fetch(`${API_BASE}/api/study-planner/plans`, {
+    headers: authHeaders(token),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch plans" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchPlanDetail(planId: string, token?: string): Promise<StudyPlanData> {
+  const res = await fetch(`${API_BASE}/api/study-planner/plans/${planId}`, {
+    headers: authHeaders(token),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch plan detail" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function fetchTodayTasks(
+  planId: string,
+  token?: string,
+): Promise<StudyTaskData[]> {
+  const res = await fetch(
+    `${API_BASE}/api/study-planner/plans/${planId}/today`,
+    { headers: authHeaders(token) },
+  );
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch today's tasks" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function patchTask(
+  taskId: string,
+  completed: boolean,
+  token?: string,
+): Promise<StudyTaskData> {
+  const res = await fetch(`${API_BASE}/api/study-planner/tasks/${taskId}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
+    body: JSON.stringify({ completed }),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to patch task" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function regenerateStudyPlan(
+  data: GeneratePlanRequest = {},
+  token?: string,
+): Promise<StudyPlanData> {
+  const res = await fetch(`${API_BASE}/api/study-planner/regenerate`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...authHeaders(token),
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to regenerate study plan" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+  return res.json();
+}
+
 // ── Weakness Analysis ─────────────────────────────────────────────────────
 
 export interface WeaknessItemData {
