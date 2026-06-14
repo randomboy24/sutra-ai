@@ -213,6 +213,33 @@ export async function seedMockQuestions(token?: string): Promise<SeedMockQuestio
   return res.json();
 }
 
+// ── Personalized Question Bank ─────────────────────────────────────────────
+
+export interface RecommendedQuestionData extends MockQuestionData {
+  personalized_score?: number;
+}
+
+export async function fetchRecommendedQuestions(
+  token: string,
+  filters: { subject?: string; difficulty?: string; limit?: number } = {},
+): Promise<{ questions: RecommendedQuestionData[] }> {
+  const params = new URLSearchParams({ limit: String(filters.limit ?? 10) });
+  if (filters.subject) params.set("subject", filters.subject);
+  if (filters.difficulty) params.set("difficulty", filters.difficulty);
+
+  const res = await fetch(
+    `${API_BASE}/api/mock-exams/recommended?${params.toString()}`,
+    { headers: authHeaders(token) },
+  );
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch recommended questions" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
 // ── Weakness Analysis ─────────────────────────────────────────────────────
 
 export interface WeaknessItemData {
