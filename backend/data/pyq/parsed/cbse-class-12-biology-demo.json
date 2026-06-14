@@ -15,13 +15,34 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Asexual Reproduction",
       "text": "Define asexual reproduction.",
-      "expected_answer": "Asexual reproduction is production of offspring by a single parent without gamete fusion.",
+      "expected_answer": "The production of offspring by a single parent without the formation and fusion of gametes.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 85,
-      "importance_score": 90,
+      "frequency_score": 75,
+      "importance_score": 80,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The spread of cancerous cells from their original site to other parts of the body via blood or lymph, forming new tumors.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The production of offspring by a single parent without the formation and fusion of gametes.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "It measures the amount of organic matter in water; a higher value indicates a greater degree of organic pollution.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "2",
@@ -29,13 +50,34 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Asexual Reproduction",
       "text": "What are clones?",
-      "expected_answer": "Clones are individuals that are genetically and morphologically identical to each other and to the parent.",
+      "expected_answer": "Individuals that are morphologically and genetically identical to each other and their parent.",
       "marks": 2,
-      "difficulty": "Medium",
-      "frequency_score": 90,
-      "importance_score": 88,
+      "difficulty": "Easy",
+      "frequency_score": 80,
+      "importance_score": 82,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Individuals that are morphologically and genetically identical to each other and their parent.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "They can be used as models to study human diseases or to produce valuable biological products.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "To amplify specific DNA segments rapidly into millions of copies in vitro.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "3",
@@ -43,13 +85,34 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Asexual Reproduction",
       "text": "How does binary fission differ from multiple fission?",
-      "expected_answer": "Binary fission produces two daughter cells, while multiple fission produces many daughter cells simultaneously.",
+      "expected_answer": "In binary fission, the parent divides into two equal halves, whereas in multiple fission, it divides into many daughter cells simultaneously.",
       "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 78,
-      "importance_score": 85,
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The maximum population size of a species that a given environment can sustain indefinitely, given the food, habitat, water, and other necessities available.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "In binary fission, the parent divides into two equal halves, whereas in multiple fission, it divides into many daughter cells simultaneously.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "4",
@@ -57,27 +120,69 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Asexual Reproduction",
       "text": "What is vegetative propagation?",
-      "expected_answer": "Vegetative propagation is asexual reproduction in plants from roots, stems, leaves, or other vegetative parts.",
-      "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 82,
-      "importance_score": 92,
+      "expected_answer": "A form of asexual reproduction in plants where new plants are formed from vegetative parts like roots, stems, or leaves.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A form of asexual reproduction in plants where new plants are formed from vegetative parts like roots, stems, or leaves.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "5",
       "question_type": "theory",
       "chapter": "Reproduction in Organisms",
       "unit": "Asexual Reproduction",
-      "text": "Give an example of budding.",
-      "expected_answer": "Hydra and yeast reproduce by budding.",
-      "marks": 5,
+      "text": "Give an example of an organism that reproduces by budding.",
+      "expected_answer": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 94,
-      "importance_score": 95,
+      "frequency_score": 70,
+      "importance_score": 75,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "They can be used as models to study human diseases or to produce valuable biological products.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "6",
@@ -85,27 +190,69 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Sexual Reproduction",
       "text": "Why is sexual reproduction advantageous over asexual reproduction?",
-      "expected_answer": "It produces genetic variation, improving adaptability and survival in changing environments.",
-      "marks": 2,
-      "difficulty": "Easy",
-      "frequency_score": 75,
-      "importance_score": 80,
+      "expected_answer": "It brings about genetic variation in the offspring, which plays a major role in evolution and survival in changing environments.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 92,
+      "importance_score": 95,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The flow of genetic information from DNA to RNA to protein.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It brings about genetic variation in the offspring, which plays a major role in evolution and survival in changing environments.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "7",
       "question_type": "theory",
       "chapter": "Reproduction in Organisms",
       "unit": "Sexual Reproduction",
-      "text": "What is juvenile phase?",
-      "expected_answer": "Juvenile phase is the period of growth before an organism attains reproductive maturity.",
+      "text": "What is the juvenile phase in the life cycle of an organism?",
+      "expected_answer": "The period of growth from birth up to the attainment of reproductive maturity.",
       "marks": 2,
-      "difficulty": "Medium",
-      "frequency_score": 88,
-      "importance_score": 86,
+      "difficulty": "Easy",
+      "frequency_score": 78,
+      "importance_score": 80,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "They cut the DNA double helix at specific recognition nucleotide sequences known as restriction sites.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The period of growth from birth up to the attainment of reproductive maturity.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "8",
@@ -113,13 +260,34 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Sexual Reproduction",
       "text": "Differentiate between oestrus and menstrual cycles.",
-      "expected_answer": "Oestrus cycle occurs in non-primate mammals, while menstrual cycle occurs in primates and involves shedding of uterine lining.",
+      "expected_answer": "Oestrus cycle occurs in non-primate mammals with reabsorption of the uterine lining, while the menstrual cycle occurs in primates and involves shedding of the lining.",
       "marks": 3,
-      "difficulty": "Medium",
-      "frequency_score": 80,
-      "importance_score": 82,
+      "difficulty": "Hard",
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "They can be used as models to study human diseases or to produce valuable biological products.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Active immunity is produced by the host's own immune system upon exposure to antigens, whereas passive immunity involves receiving readymade antibodies.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Oestrus cycle occurs in non-primate mammals with reabsorption of the uterine lining, while the menstrual cycle occurs in primates and involves shedding of the lining.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "9",
@@ -127,13 +295,34 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Sexual Reproduction",
       "text": "What is embryogenesis?",
-      "expected_answer": "Embryogenesis is development of an embryo from the zygote through cell division and differentiation.",
-      "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 92,
-      "importance_score": 94,
+      "expected_answer": "The process of development of an embryo from the zygote through cell division and differentiation.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "In binary fission, the parent divides into two equal halves, whereas in multiple fission, it divides into many daughter cells simultaneously.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The process of development of an embryo from the zygote through cell division and differentiation.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "Species that are strictly confined to a specific geographical region and found nowhere else.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It brings about genetic variation in the offspring, which plays a major role in evolution and survival in changing environments.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "10",
@@ -141,27 +330,69 @@
       "chapter": "Reproduction in Organisms",
       "unit": "Sexual Reproduction",
       "text": "Distinguish between oviparous and viviparous animals.",
-      "expected_answer": "Oviparous animals lay eggs, while viviparous animals give birth to young ones.",
-      "marks": 5,
+      "expected_answer": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 70,
-      "importance_score": 78,
+      "frequency_score": 80,
+      "importance_score": 82,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "It brings about genetic variation in the offspring, which plays a major role in evolution and survival in changing environments.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "11",
       "question_type": "theory",
       "chapter": "Genetics and Evolution",
       "unit": "Principles of Inheritance",
-      "text": "State Mendel's law of dominance.",
-      "expected_answer": "In a heterozygote, one allele expresses itself as dominant while the other remains recessive.",
-      "marks": 2,
-      "difficulty": "Easy",
-      "frequency_score": 85,
-      "importance_score": 90,
+      "text": "State Mendel's Law of Dominance.",
+      "expected_answer": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 90,
+      "importance_score": 92,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Oestrus cycle occurs in non-primate mammals with reabsorption of the uterine lining, while the menstrual cycle occurs in primates and involves shedding of the lining.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The phenomenon where a single gene controls two or more seemingly unrelated phenotypic traits.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "12",
@@ -169,13 +400,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Principles of Inheritance",
       "text": "What is a test cross?",
-      "expected_answer": "A test cross is a cross between an individual with dominant phenotype and a homozygous recessive individual.",
+      "expected_answer": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
       "marks": 2,
       "difficulty": "Medium",
-      "frequency_score": 90,
-      "importance_score": 88,
+      "frequency_score": 88,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It catalyzes the polymerization of deoxynucleotides along the template strand to form a new DNA strand.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "13",
@@ -183,13 +435,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Principles of Inheritance",
       "text": "Explain incomplete dominance with an example.",
-      "expected_answer": "Incomplete dominance occurs when neither allele is fully dominant, such as pink flowers in snapdragon.",
+      "expected_answer": "A phenomenon where neither allele is completely dominant, resulting in a blended phenotype, such as pink flowers in snapdragon.",
       "marks": 3,
-      "difficulty": "Medium",
-      "frequency_score": 78,
-      "importance_score": 85,
+      "difficulty": "Hard",
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A phenomenon where neither allele is completely dominant, resulting in a blended phenotype, such as pink flowers in snapdragon.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "They cut the DNA double helix at specific recognition nucleotide sequences known as restriction sites.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "14",
@@ -197,13 +470,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Principles of Inheritance",
       "text": "What are multiple alleles?",
-      "expected_answer": "Multiple alleles are more than two alternative forms of a gene in a population, such as ABO blood group alleles.",
-      "marks": 3,
-      "difficulty": "Hard",
+      "expected_answer": "The existence of more than two alternate forms of a gene controlling a single trait within a population, like ABO blood grouping in humans.",
+      "marks": 2,
+      "difficulty": "Medium",
       "frequency_score": 82,
-      "importance_score": 92,
+      "importance_score": 86,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The existence of more than two alternate forms of a gene controlling a single trait within a population, like ABO blood grouping in humans.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A nitrogenous base, a pentose sugar, and a phosphate group.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "15",
@@ -211,13 +505,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Principles of Inheritance",
       "text": "Define pleiotropy.",
-      "expected_answer": "Pleiotropy is when a single gene controls multiple phenotypic traits.",
-      "marks": 5,
+      "expected_answer": "The phenomenon where a single gene controls two or more seemingly unrelated phenotypic traits.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 94,
-      "importance_score": 95,
+      "frequency_score": 75,
+      "importance_score": 80,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The phenomenon where a single gene controls two or more seemingly unrelated phenotypic traits.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Because it is used in baking bread, causing the dough to rise through the production of carbon dioxide during fermentation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The spread of cancerous cells from their original site to other parts of the body via blood or lymph, forming new tumors.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "16",
@@ -225,13 +540,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Molecular Basis of Inheritance",
       "text": "What are the components of a nucleotide?",
-      "expected_answer": "A nucleotide consists of a nitrogenous base, pentose sugar, and phosphate group.",
+      "expected_answer": "A nitrogenous base, a pentose sugar, and a phosphate group.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 75,
-      "importance_score": 80,
+      "frequency_score": 80,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A nitrogenous base, a pentose sugar, and a phosphate group.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Proteins secreted by virus-infected cells that protect non-infected cells from further viral infection.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "17",
@@ -239,27 +575,69 @@
       "chapter": "Genetics and Evolution",
       "unit": "Molecular Basis of Inheritance",
       "text": "State the central dogma of molecular biology.",
-      "expected_answer": "Genetic information flows from DNA to RNA to protein.",
+      "expected_answer": "The flow of genetic information from DNA to RNA to protein.",
       "marks": 2,
-      "difficulty": "Medium",
+      "difficulty": "Easy",
       "frequency_score": 88,
-      "importance_score": 86,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The process of copying genetic information from one strand of the DNA into RNA.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The flow of genetic information from DNA to RNA to protein.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The process of development of an embryo from the zygote through cell division and differentiation.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Individuals that are morphologically and genetically identical to each other and their parent.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "18",
       "question_type": "theory",
       "chapter": "Genetics and Evolution",
       "unit": "Molecular Basis of Inheritance",
-      "text": "Why is DNA replication semi-conservative?",
-      "expected_answer": "Each new DNA molecule contains one parental strand and one newly synthesized strand.",
+      "text": "Why is DNA replication termed semi-conservative?",
+      "expected_answer": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
       "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 80,
-      "importance_score": 82,
+      "frequency_score": 90,
+      "importance_score": 94,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "19",
@@ -267,13 +645,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Molecular Basis of Inheritance",
       "text": "What is the role of DNA polymerase in replication?",
-      "expected_answer": "DNA polymerase catalyzes addition of deoxynucleotides to synthesize a new DNA strand.",
-      "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 92,
-      "importance_score": 94,
+      "expected_answer": "It catalyzes the polymerization of deoxynucleotides along the template strand to form a new DNA strand.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A technique that involves the insertion of genes into an individual's cells and tissues to treat a disease.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The existence of more than two alternate forms of a gene controlling a single trait within a population, like ABO blood grouping in humans.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It catalyzes the polymerization of deoxynucleotides along the template strand to form a new DNA strand.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Proteins secreted by virus-infected cells that protect non-infected cells from further viral infection.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "20",
@@ -281,13 +680,34 @@
       "chapter": "Genetics and Evolution",
       "unit": "Molecular Basis of Inheritance",
       "text": "Define transcription.",
-      "expected_answer": "Transcription is copying genetic information from DNA into RNA.",
-      "marks": 5,
+      "expected_answer": "The process of copying genetic information from one strand of the DNA into RNA.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 70,
-      "importance_score": 78,
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Individuals that are morphologically and genetically identical to each other and their parent.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The process of copying genetic information from one strand of the DNA into RNA.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The specific functional role or position of an organism within its ecosystem, including resource usage and interactions.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "21",
@@ -295,27 +715,69 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Human Health and Disease",
       "text": "What is an infectious disease?",
-      "expected_answer": "An infectious disease is caused by pathogens and can spread from one person to another.",
+      "expected_answer": "A disease that is easily transmitted from one person to another caused by pathogens.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 85,
-      "importance_score": 90,
+      "frequency_score": 75,
+      "importance_score": 80,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "In-situ is the conservation of species in their natural habitats, while ex-situ is the conservation outside their natural habitats.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It states that two closely related species competing for the same limiting resources cannot coexist indefinitely.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "22",
       "question_type": "theory",
       "chapter": "Biology in Human Welfare",
       "unit": "Human Health and Disease",
-      "text": "Name the causative organism of typhoid and its transmission mode.",
-      "expected_answer": "Typhoid is caused by Salmonella typhi and spreads through contaminated food and water.",
+      "text": "Name the causative organism of typhoid and its mode of transmission.",
+      "expected_answer": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
       "marks": 2,
       "difficulty": "Medium",
-      "frequency_score": 90,
-      "importance_score": 88,
+      "frequency_score": 88,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "It catalyzes the polymerization of deoxynucleotides along the template strand to form a new DNA strand.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It brings about genetic variation in the offspring, which plays a major role in evolution and survival in changing environments.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "23",
@@ -323,13 +785,34 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Human Health and Disease",
       "text": "What are interferons?",
-      "expected_answer": "Interferons are proteins produced by virus-infected cells that protect nearby cells from viral infection.",
+      "expected_answer": "Proteins secreted by virus-infected cells that protect non-infected cells from further viral infection.",
       "marks": 3,
-      "difficulty": "Medium",
-      "frequency_score": 78,
-      "importance_score": 85,
+      "difficulty": "Hard",
+      "frequency_score": 80,
+      "importance_score": 84,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Proteins secreted by virus-infected cells that protect non-infected cells from further viral infection.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "In binary fission, the parent divides into two equal halves, whereas in multiple fission, it divides into many daughter cells simultaneously.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "24",
@@ -337,13 +820,34 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Human Health and Disease",
       "text": "Differentiate between active and passive immunity.",
-      "expected_answer": "Active immunity is produced by the body after antigen exposure, while passive immunity is received as ready-made antibodies.",
+      "expected_answer": "Active immunity is produced by the host's own immune system upon exposure to antigens, whereas passive immunity involves receiving readymade antibodies.",
       "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 82,
-      "importance_score": 92,
+      "difficulty": "Medium",
+      "frequency_score": 92,
+      "importance_score": 95,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because it is used in baking bread, causing the dough to rise through the production of carbon dioxide during fermentation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Active immunity is produced by the host's own immune system upon exposure to antigens, whereas passive immunity involves receiving readymade antibodies.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "25",
@@ -351,13 +855,34 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Human Health and Disease",
       "text": "What is metastasis?",
-      "expected_answer": "Metastasis is spread of cancer cells from the original site to other body parts.",
-      "marks": 5,
-      "difficulty": "Easy",
-      "frequency_score": 94,
-      "importance_score": 95,
+      "expected_answer": "The spread of cancerous cells from their original site to other parts of the body via blood or lymph, forming new tumors.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The physical removal of large and small particles from sewage through sequential filtration and sedimentation.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The spread of cancerous cells from their original site to other parts of the body via blood or lymph, forming new tumors.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "26",
@@ -365,27 +890,69 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Microbes in Human Welfare",
       "text": "What role do lactic acid bacteria play in human life?",
-      "expected_answer": "They convert milk into curd and improve nutritional quality by increasing vitamin B12.",
+      "expected_answer": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 75,
-      "importance_score": 80,
+      "frequency_score": 82,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "It states that two closely related species competing for the same limiting resources cannot coexist indefinitely.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "27",
       "question_type": "theory",
       "chapter": "Biology in Human Welfare",
       "unit": "Microbes in Human Welfare",
-      "text": "Why is Saccharomyces cerevisiae called baker's yeast?",
-      "expected_answer": "It is used in baking because fermentation releases carbon dioxide that makes dough rise.",
+      "text": "Why is Saccharomyces cerevisiae referred to as baker's yeast?",
+      "expected_answer": "Because it is used in baking bread, causing the dough to rise through the production of carbon dioxide during fermentation.",
       "marks": 2,
       "difficulty": "Medium",
-      "frequency_score": 88,
-      "importance_score": 86,
+      "frequency_score": 78,
+      "importance_score": 80,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because it is used in baking bread, causing the dough to rise through the production of carbon dioxide during fermentation.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "In-situ is the conservation of species in their natural habitats, while ex-situ is the conservation outside their natural habitats.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "28",
@@ -393,41 +960,104 @@
       "chapter": "Biology in Human Welfare",
       "unit": "Microbes in Human Welfare",
       "text": "Define antibiotics.",
-      "expected_answer": "Antibiotics are substances produced by microbes that kill or inhibit disease-causing microbes.",
-      "marks": 3,
-      "difficulty": "Medium",
+      "expected_answer": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+      "marks": 2,
+      "difficulty": "Easy",
       "frequency_score": 80,
       "importance_score": 82,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The period of growth from birth up to the attainment of reproductive maturity.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A nitrogenous base, a pentose sugar, and a phosphate group.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "29",
       "question_type": "theory",
       "chapter": "Biology in Human Welfare",
       "unit": "Microbes in Human Welfare",
-      "text": "What is primary treatment of sewage?",
-      "expected_answer": "Primary treatment physically removes large and small particles by filtration and sedimentation.",
+      "text": "What is the primary treatment of sewage water?",
+      "expected_answer": "The physical removal of large and small particles from sewage through sequential filtration and sedimentation.",
       "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 92,
-      "importance_score": 94,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The totality of genes, species, and ecosystems in a given region.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A DNA molecule used as a vehicle to artificially carry foreign genetic material into another cell, where it can be replicated.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The physical removal of large and small particles from sewage through sequential filtration and sedimentation.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "30",
       "question_type": "theory",
       "chapter": "Biology in Human Welfare",
       "unit": "Microbes in Human Welfare",
-      "text": "Explain the significance of biological oxygen demand.",
-      "expected_answer": "BOD measures organic pollution; higher BOD indicates more organic matter in water.",
-      "marks": 5,
-      "difficulty": "Easy",
-      "frequency_score": 70,
-      "importance_score": 78,
+      "text": "Explain the significance of biological oxygen demand in water bodies.",
+      "expected_answer": "It measures the amount of organic matter in water; a higher value indicates a greater degree of organic pollution.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 90,
+      "importance_score": 92,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Proteins secreted by virus-infected cells that protect non-infected cells from further viral infection.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It measures the amount of organic matter in water; a higher value indicates a greater degree of organic pollution.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "In-situ is the conservation of species in their natural habitats, while ex-situ is the conservation outside their natural habitats.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "31",
@@ -435,13 +1065,34 @@
       "chapter": "Biotechnology",
       "unit": "Principles and Processes",
       "text": "What is recombinant DNA?",
-      "expected_answer": "Recombinant DNA is DNA formed by combining genetic material from different sources.",
+      "expected_answer": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 85,
+      "frequency_score": 88,
       "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The totality of genes, species, and ecosystems in a given region.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The specific functional role or position of an organism within its ecosystem, including resource usage and interactions.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "32",
@@ -449,13 +1100,34 @@
       "chapter": "Biotechnology",
       "unit": "Principles and Processes",
       "text": "How do restriction endonucleases function?",
-      "expected_answer": "They cut DNA at specific recognition sequences called restriction sites.",
-      "marks": 2,
+      "expected_answer": "They cut the DNA double helix at specific recognition nucleotide sequences known as restriction sites.",
+      "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 90,
-      "importance_score": 88,
+      "frequency_score": 92,
+      "importance_score": 94,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Oviparous animals lay eggs that hatch outside the body, whereas viviparous animals give birth to young ones.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "They cut the DNA double helix at specific recognition nucleotide sequences known as restriction sites.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "33",
@@ -463,41 +1135,104 @@
       "chapter": "Biotechnology",
       "unit": "Principles and Processes",
       "text": "What is a cloning vector?",
-      "expected_answer": "A cloning vector carries foreign DNA into a host cell where it can replicate.",
-      "marks": 3,
+      "expected_answer": "A DNA molecule used as a vehicle to artificially carry foreign genetic material into another cell, where it can be replicated.",
+      "marks": 2,
       "difficulty": "Medium",
-      "frequency_score": 78,
-      "importance_score": 85,
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A DNA molecule used as a vehicle to artificially carry foreign genetic material into another cell, where it can be replicated.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "In binary fission, the parent divides into two equal halves, whereas in multiple fission, it divides into many daughter cells simultaneously.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "34",
       "question_type": "theory",
       "chapter": "Biotechnology",
       "unit": "Principles and Processes",
-      "text": "Explain selectable markers in vectors.",
-      "expected_answer": "Selectable markers help identify transformants and eliminate non-transformants.",
+      "text": "Explain the role of selectable markers in vectors.",
+      "expected_answer": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
       "marks": 3,
       "difficulty": "Hard",
-      "frequency_score": 82,
-      "importance_score": 92,
+      "frequency_score": 80,
+      "importance_score": 84,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "To amplify specific DNA segments rapidly into millions of copies in vitro.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A technique that involves the insertion of genes into an individual's cells and tissues to treat a disease.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "35",
       "question_type": "theory",
       "chapter": "Biotechnology",
       "unit": "Principles and Processes",
-      "text": "What is polymerase chain reaction used for?",
-      "expected_answer": "PCR is used to amplify specific DNA segments into many copies in vitro.",
-      "marks": 5,
+      "text": "What is the polymerase chain reaction used for?",
+      "expected_answer": "To amplify specific DNA segments rapidly into millions of copies in vitro.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 94,
-      "importance_score": 95,
+      "frequency_score": 90,
+      "importance_score": 92,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "To amplify specific DNA segments rapidly into millions of copies in vitro.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "The spread of cancerous cells from their original site to other parts of the body via blood or lymph, forming new tumors.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Animals that have had their DNA manipulated to possess and express an extra or foreign gene.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "36",
@@ -505,13 +1240,34 @@
       "chapter": "Biotechnology",
       "unit": "Biotechnology and its Applications",
       "text": "What are transgenic animals?",
-      "expected_answer": "Transgenic animals have DNA manipulated to contain and express a foreign gene.",
+      "expected_answer": "Animals that have had their DNA manipulated to possess and express an extra or foreign gene.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 75,
-      "importance_score": 80,
+      "frequency_score": 82,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "They convert milk to curd and improve its nutritional quality by increasing vitamin B12.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Animals that have had their DNA manipulated to possess and express an extra or foreign gene.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "Species that are strictly confined to a specific geographical region and found nowhere else.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "37",
@@ -519,13 +1275,34 @@
       "chapter": "Biotechnology",
       "unit": "Biotechnology and its Applications",
       "text": "Give one application of transgenic animals.",
-      "expected_answer": "They are used as disease models or for producing useful biological products.",
+      "expected_answer": "They can be used as models to study human diseases or to produce valuable biological products.",
       "marks": 2,
       "difficulty": "Medium",
-      "frequency_score": 88,
-      "importance_score": 86,
+      "frequency_score": 75,
+      "importance_score": 78,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The existence of more than two alternate forms of a gene controlling a single trait within a population, like ABO blood grouping in humans.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "They can be used as models to study human diseases or to produce valuable biological products.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The production of offspring by a single parent without the formation and fusion of gametes.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Hydra and yeast are common examples of organisms that reproduce by budding.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "38",
@@ -533,27 +1310,69 @@
       "chapter": "Biotechnology",
       "unit": "Biotechnology and its Applications",
       "text": "What is gene therapy?",
-      "expected_answer": "Gene therapy treats disease by inserting functional genes into an individual's cells or tissues.",
+      "expected_answer": "A technique that involves the insertion of genes into an individual's cells and tissues to treat a disease.",
       "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 80,
-      "importance_score": 82,
+      "frequency_score": 88,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The flow of genetic information from DNA to RNA to protein.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The unauthorized use of bio-resources by multinational companies and other organizations without proper compensation to the indigenous people.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A technique that involves the insertion of genes into an individual's cells and tissues to treat a disease.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "39",
       "question_type": "theory",
       "chapter": "Biotechnology",
       "unit": "Biotechnology and its Applications",
-      "text": "Explain Bt cotton resistance to pests.",
-      "expected_answer": "Bt cotton expresses Bacillus thuringiensis toxin protein that kills certain pests when ingested.",
-      "marks": 3,
+      "text": "Explain the mechanism of Bt cotton resistance to pests.",
+      "expected_answer": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+      "marks": 5,
       "difficulty": "Hard",
-      "frequency_score": 92,
-      "importance_score": 94,
+      "frequency_score": 95,
+      "importance_score": 95,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The production of offspring by a single parent without the formation and fusion of gametes.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In a heterozygous condition, out of two contrasting alleles, only one expresses itself and is called dominant, while the other remains hidden and is recessive.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Bt cotton expresses a bacterial toxin gene from Bacillus thuringiensis that creates a toxic crystal protein, killing certain insect pests when ingested.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "40",
@@ -561,27 +1380,69 @@
       "chapter": "Biotechnology",
       "unit": "Biotechnology and its Applications",
       "text": "What is biopiracy?",
-      "expected_answer": "Biopiracy is unauthorized use of bio-resources without proper permission or compensation.",
-      "marks": 5,
+      "expected_answer": "The unauthorized use of bio-resources by multinational companies and other organizations without proper compensation to the indigenous people.",
+      "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 70,
-      "importance_score": 78,
+      "frequency_score": 80,
+      "importance_score": 82,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Oestrus cycle occurs in non-primate mammals with reabsorption of the uterine lining, while the menstrual cycle occurs in primates and involves shedding of the lining.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The process of development of an embryo from the zygote through cell division and differentiation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The unauthorized use of bio-resources by multinational companies and other organizations without proper compensation to the indigenous people.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "41",
       "question_type": "theory",
       "chapter": "Ecology",
       "unit": "Organisms and Populations",
-      "text": "Define carrying capacity.",
-      "expected_answer": "Carrying capacity is the maximum population size an environment can sustain with available resources.",
+      "text": "Define carrying capacity in relation to a population.",
+      "expected_answer": "The maximum population size of a species that a given environment can sustain indefinitely, given the food, habitat, water, and other necessities available.",
       "marks": 2,
-      "difficulty": "Easy",
+      "difficulty": "Medium",
       "frequency_score": 85,
-      "importance_score": 90,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A nitrogenous base, a pentose sugar, and a phosphate group.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The maximum population size of a species that a given environment can sustain indefinitely, given the food, habitat, water, and other necessities available.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The existence of more than two alternate forms of a gene controlling a single trait within a population, like ABO blood grouping in humans.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "42",
@@ -589,13 +1450,34 @@
       "chapter": "Ecology",
       "unit": "Organisms and Populations",
       "text": "What is mutualism?",
-      "expected_answer": "Mutualism is an interaction where both species benefit.",
+      "expected_answer": "An interaction between two species where both partners benefit from the relationship.",
       "marks": 2,
-      "difficulty": "Medium",
-      "frequency_score": 90,
-      "importance_score": 88,
+      "difficulty": "Easy",
+      "frequency_score": 80,
+      "importance_score": 82,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Individuals that are morphologically and genetically identical to each other and their parent.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A DNA molecule used as a vehicle to artificially carry foreign genetic material into another cell, where it can be replicated.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "An interaction between two species where both partners benefit from the relationship.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "43",
@@ -603,69 +1485,174 @@
       "chapter": "Ecology",
       "unit": "Organisms and Populations",
       "text": "How does parasitism differ from predation?",
-      "expected_answer": "In parasitism the host is harmed but usually not killed, while in predation prey is killed and consumed.",
+      "expected_answer": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
       "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 78,
-      "importance_score": 85,
+      "frequency_score": 75,
+      "importance_score": 78,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Chemical substances produced by certain microbes that can kill or retard the growth of other disease-causing microbes.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Animals that have had their DNA manipulated to possess and express an extra or foreign gene.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "44",
       "question_type": "theory",
       "chapter": "Ecology",
       "unit": "Organisms and Populations",
-      "text": "Define ecological niche.",
-      "expected_answer": "An ecological niche is the functional role and position of an organism in its ecosystem.",
-      "marks": 3,
-      "difficulty": "Hard",
+      "text": "Define an ecological niche.",
+      "expected_answer": "The specific functional role or position of an organism within its ecosystem, including resource usage and interactions.",
+      "marks": 2,
+      "difficulty": "Medium",
       "frequency_score": 82,
-      "importance_score": 92,
+      "importance_score": 85,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "A phenomenon where neither allele is completely dominant, resulting in a blended phenotype, such as pink flowers in snapdragon.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It measures the amount of organic matter in water; a higher value indicates a greater degree of organic pollution.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The specific functional role or position of an organism within its ecosystem, including resource usage and interactions.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Individuals that are morphologically and genetically identical to each other and their parent.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "45",
       "question_type": "theory",
       "chapter": "Ecology",
       "unit": "Organisms and Populations",
-      "text": "What is competitive exclusion principle?",
-      "expected_answer": "Two closely related species competing for the same limiting resources cannot coexist indefinitely.",
-      "marks": 5,
-      "difficulty": "Easy",
-      "frequency_score": 94,
-      "importance_score": 95,
+      "text": "What is the competitive exclusion principle?",
+      "expected_answer": "It states that two closely related species competing for the same limiting resources cannot coexist indefinitely.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 88,
+      "importance_score": 90,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The maximum population size of a species that a given environment can sustain indefinitely, given the food, habitat, water, and other necessities available.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The totality of genes, species, and ecosystems in a given region.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It states that two closely related species competing for the same limiting resources cannot coexist indefinitely.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "46",
       "question_type": "theory",
       "chapter": "Ecology",
       "unit": "Biodiversity and Conservation",
-      "text": "What does biodiversity signify?",
-      "expected_answer": "Biodiversity is the total variety of genes, species, and ecosystems in a region.",
+      "text": "What does the term biodiversity signify?",
+      "expected_answer": "The totality of genes, species, and ecosystems in a given region.",
       "marks": 2,
       "difficulty": "Easy",
-      "frequency_score": 75,
-      "importance_score": 80,
+      "frequency_score": 84,
+      "importance_score": 86,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Caused by Salmonella typhi, primarily transmitted through contaminated food and water.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The specific functional role or position of an organism within its ecosystem, including resource usage and interactions.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The totality of genes, species, and ecosystems in a given region.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "They help in identifying and eliminating non-transformants and selectively permitting the growth of the transformants.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "47",
       "question_type": "theory",
       "chapter": "Ecology",
       "unit": "Biodiversity and Conservation",
-      "text": "Name the major global cause of biodiversity loss.",
-      "expected_answer": "Habitat loss and fragmentation are major causes of biodiversity loss.",
+      "text": "Name the major cause of the loss of biodiversity globally.",
+      "expected_answer": "Habitat loss and fragmentation.",
       "marks": 2,
-      "difficulty": "Medium",
-      "frequency_score": 88,
-      "importance_score": 86,
+      "difficulty": "Easy",
+      "frequency_score": 90,
+      "importance_score": 92,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "Active immunity is produced by the host's own immune system upon exposure to antigens, whereas passive immunity involves receiving readymade antibodies.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because in the newly synthesized DNA molecule, one strand is newly formed while the other is conserved from the parent molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A form of asexual reproduction in plants where new plants are formed from vegetative parts like roots, stems, or leaves.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Habitat loss and fragmentation.",
+          "is_correct": true
+        }
+      ]
     },
     {
       "question_number": "48",
@@ -673,13 +1660,34 @@
       "chapter": "Ecology",
       "unit": "Biodiversity and Conservation",
       "text": "Differentiate between in-situ and ex-situ conservation.",
-      "expected_answer": "In-situ conserves species in natural habitats, while ex-situ conserves them outside natural habitats.",
+      "expected_answer": "In-situ is the conservation of species in their natural habitats, while ex-situ is the conservation outside their natural habitats.",
       "marks": 3,
       "difficulty": "Medium",
-      "frequency_score": 80,
-      "importance_score": 82,
+      "frequency_score": 92,
+      "importance_score": 95,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "In parasitism, the parasite harms but generally does not kill the host, whereas in predation, the predator kills and consumes the prey.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In-situ is the conservation of species in their natural habitats, while ex-situ is the conservation outside their natural habitats.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "A disease that is easily transmitted from one person to another caused by pathogens.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The flow of genetic information from DNA to RNA to protein.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "49",
@@ -687,13 +1695,34 @@
       "chapter": "Ecology",
       "unit": "Biodiversity and Conservation",
       "text": "What are endemic species?",
-      "expected_answer": "Endemic species are restricted to a particular geographical region and found nowhere else.",
-      "marks": 3,
-      "difficulty": "Hard",
-      "frequency_score": 92,
-      "importance_score": 94,
+      "expected_answer": "Species that are strictly confined to a specific geographical region and found nowhere else.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "The physical removal of large and small particles from sewage through sequential filtration and sedimentation.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "A cross between an organism with a dominant phenotype but unknown genotype and a homozygous recessive individual.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Species that are strictly confined to a specific geographical region and found nowhere else.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": false
+        }
+      ]
     },
     {
       "question_number": "50",
@@ -701,13 +1730,34 @@
       "chapter": "Ecology",
       "unit": "Biodiversity and Conservation",
       "text": "Explain the importance of sacred groves in conservation.",
-      "expected_answer": "Sacred groves protect rare and threatened species through traditional cultural protection.",
-      "marks": 5,
-      "difficulty": "Easy",
-      "frequency_score": 70,
-      "importance_score": 78,
+      "expected_answer": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 80,
+      "importance_score": 84,
       "source_year": 2025,
-      "options": []
+      "options": [
+        {
+          "label": "A",
+          "text": "They are tracts of forest dedicated to local deities, protecting many rare and threatened plant species through cultural beliefs.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "The period of growth from birth up to the attainment of reproductive maturity.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It measures the amount of organic matter in water; a higher value indicates a greater degree of organic pollution.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A synthesized molecule of DNA created by combining genetic material from two or more different sources.",
+          "is_correct": false
+        }
+      ]
     }
   ]
 }

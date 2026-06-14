@@ -21,7 +21,7 @@ class Student(Base):
 
     is_individual: Mapped[bool] = mapped_column(Boolean, default=True)
 
-    institute_id: Mapped[str | None] = mapped_column(nullable=True)
+    institute_id: Mapped[str | None] = mapped_column(String, nullable=True)
 
     class_level: Mapped[str | None] = mapped_column(String, nullable=True)
 
@@ -42,12 +42,7 @@ class Student(Base):
     )
 
     exam_readiness = relationship(
-        "ExamReadiness",
-        back_populates="student",
-        uselist=False
+        "ExamReadiness", back_populates="student", uselist=False
     )
 
-    mock_attempts = relationship(
-        "MockAttempt",
-        back_populates="student"
-    )
+    mock_attempts = relationship("MockAttempt", back_populates="student")

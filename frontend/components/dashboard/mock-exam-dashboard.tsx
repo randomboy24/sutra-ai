@@ -2430,6 +2430,8 @@ function mapMockQuestion(question: MockQuestionData): Question {
         .map((option) => option.text)
     : ["I can answer this", "Needs revision", "Skip for now"];
 
+  const correctIndex = question.options.findIndex((opt) => opt.is_correct);
+
   return {
     id: question.id,
     subjectId: question.subject,
@@ -2437,7 +2439,7 @@ function mapMockQuestion(question: MockQuestionData): Question {
     unitId: question.unit,
     prompt: question.text,
     options,
-    answerIndex: 0,
+    answerIndex: correctIndex >= 0 ? correctIndex : 0,
     explanation: question.expected_answer ?? "Review the chapter notes for the expected answer.",
     frequency: Math.round(question.frequency_score),
     importance: Math.round(question.importance_score),
