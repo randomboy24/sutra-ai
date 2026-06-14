@@ -361,7 +361,8 @@ export function StudyPlannerPanel({
 }: StudyPlannerPanelProps) {
   const { getToken } = useAuth();
   const [togglingIds, setTogglingIds] = useState<Set<string>>(new Set());
-  const today = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   const todayTasks =
     planData?.tasks.filter((t) => t.scheduled_date === today) ?? [];
