@@ -27,11 +27,13 @@ def _raw_priority_score(frequency_score: float, importance_score: float) -> floa
 
 def _build_weakness_chapter_map(
     db: Session, student_id: str
-) -> dict[str, float] | None:
-    """Build a map of chapter → weakness multiplier from the latest analysis.
+) -> dict[tuple[str, str], float] | None:
+    """Build a map of (subject, chapter) → weakness multiplier from the latest analysis.
 
     Returns None if no analysis exists, otherwise a dict like:
-        {"Electrostatics": 1.3, "Thermodynamics": 1.5}
+        {("physics", "Electrostatics"): 1.3, ("chemistry", "Thermodynamics"): 1.5}
+    Keys include subject to avoid collisions when the same chapter name
+    exists across different subjects.
     """
     latest_analysis = (
         db.query(WeaknessAnalysis)
@@ -54,7 +56,7 @@ def _build_weakness_chapter_map(
         return None
 
     return {
-        item.category_name: _WEAKNESS_MULTIPLIERS.get(item.severity, 1.0)
+        (item.subject, item.category_name): _WEAKNESS_MULTIPLIERS.get(item.severity, 1.0)
         for item in chapter_items
     }
 
@@ -98,7 +100,7 @@ def get_recommended_questions(
         raw = _raw_priority_score(question.frequency_score, question.importance_score)
 
         if chapter_multiplier_map is not None:
-            multiplier = chapter_multiplier_map.get(question.chapter, 1.0)
+            multiplier = chapter_multiplier_map.get((question.subject, question.chapter), 1.0)
         else:
             multiplier = 1.0
 

@@ -6,7 +6,7 @@ import { useAuth } from "@clerk/nextjs";
 import { useApiResource } from "@/hooks/use-api-resource";
 import {
   fetchRecommendedQuestions,
-  type MockQuestionData,
+  type RecommendedQuestionData,
 } from "@/lib/api";
 
 export function useRecommendedQuestions(
@@ -28,7 +28,7 @@ export function useRecommendedQuestions(
     [getToken, subject, difficulty],
   );
 
-  return useApiResource<MockQuestionData[]>(
+  return useApiResource<RecommendedQuestionData[]>(
     fetcher,
     clerkUserId,
     "Failed to load recommended questions",

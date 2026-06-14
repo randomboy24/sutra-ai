@@ -12,10 +12,10 @@ import {
 import { useAuth } from "@clerk/nextjs";
 
 import { Button } from "@/components/ui/button";
-import type { MockQuestionData } from "@/lib/api";
+import type { RecommendedQuestionData } from "@/lib/api";
 
 interface RecommendedQuestionsPanelProps {
-  questions: MockQuestionData[] | null;
+  questions: RecommendedQuestionData[] | null;
   loading: boolean;
   error: string | null;
   refetch: () => void;
@@ -65,8 +65,8 @@ function MatchScore({ score }: { score?: number }) {
   );
 }
 
-function QuestionCard({ question }: { question: MockQuestionData }) {
-  const score = (question as { personalized_score?: number }).personalized_score;
+function QuestionCard({ question }: { question: RecommendedQuestionData }) {
+  const score = question.personalized_score;
 
   return (
     <div className="rounded-lg border bg-card p-4 shadow-sm shadow-black/5 transition hover:-translate-y-0.5 hover:shadow-md">
@@ -155,8 +155,8 @@ export function RecommendedQuestionsPanel({
   }
 
   const sorted = [...questions].sort((a, b) => {
-    const sa = (a as { personalized_score?: number }).personalized_score ?? 0;
-    const sb = (b as { personalized_score?: number }).personalized_score ?? 0;
+    const sa = a.personalized_score ?? 0;
+    const sb = b.personalized_score ?? 0;
     return sb - sa;
   });
 

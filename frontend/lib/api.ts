@@ -222,7 +222,7 @@ export interface RecommendedQuestionData extends MockQuestionData {
 export async function fetchRecommendedQuestions(
   token: string,
   filters: { subject?: string; difficulty?: string; limit?: number } = {},
-): Promise<MockQuestionListResponse> {
+): Promise<{ questions: RecommendedQuestionData[] }> {
   const params = new URLSearchParams({ limit: String(filters.limit ?? 10) });
   if (filters.subject) params.set("subject", filters.subject);
   if (filters.difficulty) params.set("difficulty", filters.difficulty);
