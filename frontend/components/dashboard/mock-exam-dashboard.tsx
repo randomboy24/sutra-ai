@@ -267,7 +267,7 @@ const questions: Question[] = [
     id: "phy-1",
     subjectId: "physics",
     chapterId: "electrostatics",
-    unitId: "charges-fields",
+    unitId: "Electric Charges and Fields",
     prompt: "Two identical point charges are separated by distance r. If the distance is doubled, what happens to the electrostatic force?",
     options: ["It becomes twice", "It becomes one-fourth", "It becomes half", "It remains unchanged"],
     answerIndex: 1,
@@ -281,7 +281,7 @@ const questions: Question[] = [
     id: "phy-2",
     subjectId: "physics",
     chapterId: "electrostatics",
-    unitId: "potential",
+    unitId: "Electrostatic Potential and Capacitance",
     prompt: "The electric potential at a point due to a point charge depends on which quantity?",
     options: ["Only charge", "Only distance", "Charge and distance", "Mass of the charge"],
     answerIndex: 2,
@@ -295,7 +295,7 @@ const questions: Question[] = [
     id: "phy-3",
     subjectId: "physics",
     chapterId: "electrostatics",
-    unitId: "capacitors",
+    unitId: "Electrostatic Potential and Capacitance",
     prompt: "When a dielectric slab is inserted fully between capacitor plates, capacitance generally:",
     options: ["Decreases", "Increases", "Becomes zero", "Does not change"],
     answerIndex: 1,
@@ -309,7 +309,7 @@ const questions: Question[] = [
     id: "phy-4",
     subjectId: "physics",
     chapterId: "current-electricity",
-    unitId: "ohms-law",
+    unitId: "Electric Current and Drift Velocity",
     prompt: "For a metallic conductor at constant temperature, the V-I graph is:",
     options: ["A parabola", "A straight line through origin", "A circle", "A hyperbola"],
     answerIndex: 1,
@@ -323,7 +323,7 @@ const questions: Question[] = [
     id: "phy-5",
     subjectId: "physics",
     chapterId: "current-electricity",
-    unitId: "kirchhoff",
+    unitId: "Circuits and Measuring Instruments",
     prompt: "Kirchhoff's junction rule is based on conservation of:",
     options: ["Energy", "Charge", "Momentum", "Mass"],
     answerIndex: 1,
@@ -337,7 +337,7 @@ const questions: Question[] = [
     id: "chem-1",
     subjectId: "chemistry",
     chapterId: "solutions",
-    unitId: "colligative",
+    unitId: "Colligative Properties",
     prompt: "Which colligative property is used to determine molar mass of polymers most commonly?",
     options: ["Relative lowering of vapour pressure", "Elevation in boiling point", "Osmotic pressure", "Depression in freezing point"],
     answerIndex: 2,
@@ -351,7 +351,7 @@ const questions: Question[] = [
     id: "chem-2",
     subjectId: "chemistry",
     chapterId: "solutions",
-    unitId: "concentration",
+    unitId: "Concentration of Solutions",
     prompt: "Molarity is defined as moles of solute per:",
     options: ["kg of solvent", "litre of solution", "kg of solution", "mole of solvent"],
     answerIndex: 1,
@@ -360,48 +360,6 @@ const questions: Question[] = [
     importance: 82,
     difficulty: "Easy",
     sourceYears: [2017, 2019, 2021],
-  },
-  {
-    id: "chem-3",
-    subjectId: "chemistry",
-    chapterId: "organic-basics",
-    unitId: "effects",
-    prompt: "The -I effect is strongest in which substituent?",
-    options: ["-CH3", "-F", "-OH", "-NH2"],
-    answerIndex: 1,
-    explanation: "Fluorine is highly electronegative and shows a strong negative inductive effect.",
-    frequency: 78,
-    importance: 87,
-    difficulty: "Hard",
-    sourceYears: [2020, 2022, 2023],
-  },
-  {
-    id: "math-1",
-    subjectId: "mathematics",
-    chapterId: "calculus",
-    unitId: "derivatives",
-    prompt: "If y = x^n, then dy/dx is:",
-    options: ["nx^(n-1)", "x^(n+1)", "n/x", "x/n"],
-    answerIndex: 0,
-    explanation: "The power rule gives d(x^n)/dx = nx^(n-1).",
-    frequency: 95,
-    importance: 89,
-    difficulty: "Easy",
-    sourceYears: [2016, 2018, 2021, 2024],
-  },
-  {
-    id: "math-2",
-    subjectId: "mathematics",
-    chapterId: "probability",
-    unitId: "bayes",
-    prompt: "Bayes' theorem is primarily used to calculate:",
-    options: ["Independent events only", "Posterior probability", "Mean deviation", "Permutation count"],
-    answerIndex: 1,
-    explanation: "Bayes' theorem updates probability after new evidence, giving posterior probability.",
-    frequency: 81,
-    importance: 88,
-    difficulty: "Medium",
-    sourceYears: [2019, 2022, 2024],
   },
 ];
 
@@ -588,7 +546,12 @@ export function MockExamDashboard() {
   const selectedChapter = selectedSubject.chapters.find((chapter) => chapter.id === chapterId) ?? selectedSubject.chapters[0];
 
   const rankedQuestions = useMemo(() => {
-    const unitFilter = selectedUnitIds.length ? selectedUnitIds : selectedChapter.units.map((unit) => unit.id);
+    const unitFilter = selectedUnitIds.length
+      ? selectedUnitIds.map((id) => {
+          const unit = selectedChapter.units.find((u) => u.id === id);
+          return unit ? unit.name : id;
+        })
+      : selectedChapter.units.map((unit) => unit.name);
 
     return questions
       .filter(
@@ -1307,7 +1270,12 @@ export function MockExamFlow() {
   const selectedChapter = selectedSubject.chapters.find((chapter) => chapter.id === chapterId) ?? selectedSubject.chapters[0];
 
   const rankedQuestions = useMemo(() => {
-    const unitFilter = selectedUnitIds.length ? selectedUnitIds : selectedChapter.units.map((unit) => unit.id);
+    const unitFilter = selectedUnitIds.length
+      ? selectedUnitIds.map((id) => {
+          const unit = selectedChapter.units.find((u) => u.id === id);
+          return unit ? unit.name : id;
+        })
+      : selectedChapter.units.map((unit) => unit.name);
 
     return backendQuestions
       .filter((question) => unitFilter.includes(question.unitId))
