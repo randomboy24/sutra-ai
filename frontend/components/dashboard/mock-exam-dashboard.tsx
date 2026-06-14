@@ -37,11 +37,13 @@ import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { useWeaknessAnalysis } from "@/hooks/use-weakness-analysis";
 import { useStudyPlanner } from "@/hooks/use-study-planner";
+import { useRecommendedQuestions } from "@/hooks/use-recommended-questions";
 import { fetchMockQuestions, seedMockQuestions, type MockQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 import { WeaknessAnalysisPanel } from "@/components/dashboard/weakness-analysis-panel";
 import { StudyPlannerPanel } from "@/components/dashboard/study-planner-panel";
+import { RecommendedQuestionsPanel } from "@/components/dashboard/recommended-questions-panel";
 
 type Unit = {
   id: string;
@@ -483,12 +485,12 @@ const dashboardSections: {
     shortLabel: "Question Bank",
     description: "Recommend practice questions from mistakes, weak concepts, and board pattern.",
     owner: "Krish",
-    status: "Planned",
+    status: "Active",
     stage: "Examination Feature #4",
     icon: DatabaseIcon,
     accent: "from-emerald-500/20 via-transparent to-yellow-500/10",
-    signals: ["Mistakes", "Board pattern", "Practice queue"],
-    nextMilestone: "Create the PYQ schema and seed enough questions for recommendation demos.",
+    signals: ["Weakness data", "Ranked match score", "Practice queue"],
+    nextMilestone: "Add filter controls and practice-now button to start a custom mock from recommendations.",
   },
   {
     id: "adaptive",
@@ -530,6 +532,12 @@ export function MockExamDashboard() {
     error: planError,
     refetch: planRefetch,
   } = useStudyPlanner(user?.id);
+  const {
+    data: recommendedQuestions,
+    loading: recommendedLoading,
+    error: recommendedError,
+    refetch: recommendedRefetch,
+  } = useRecommendedQuestions(user?.id);
 
   const dashboardStats = useMemo(() => {
     if (readiness.data || healthData || weaknessData) {
@@ -1266,6 +1274,13 @@ export function MockExamDashboard() {
               error={planError}
               clerkUserId={user?.id}
               refetch={planRefetch}
+            />
+          ) : activeSection === "question-bank" ? (
+            <RecommendedQuestionsPanel
+              questions={recommendedQuestions}
+              loading={recommendedLoading}
+              error={recommendedError}
+              refetch={recommendedRefetch}
             />
           ) : (
             <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />

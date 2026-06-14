@@ -21,6 +21,7 @@ from app.schemas.mock_exam import (
     SeedDemoQuestionsResponse,
 )
 from app.services.demo_pyq_seed import seed_demo_pyq_data
+from app.services.recommended_questions import get_recommended_questions
 
 
 router = APIRouter(prefix="/api/mock-exams", tags=["mock-exams"])
@@ -93,6 +94,46 @@ def list_questions(
         raise HTTPException(
             status_code=500,
             detail="An unexpected error occurred while fetching mock questions",
+        )
+    finally:
+        db.close()
+
+
+@router.get("/recommended", response_model=QuestionListResponse)
+def list_recommended_questions(
+    subject: str | None = Query(default=None),
+    difficulty: str | None = Query(default=None),
+    limit: int = Query(default=10, ge=1, le=50),
+    verified_user_id: str = Depends(get_current_user),
+):
+    """Get personalized recommended questions based on weakness analysis."""
+    db = SessionLocal()
+    try:
+        student = _get_current_student(db, verified_user_id)
+
+        scored = get_recommended_questions(
+            db,
+            student_id=student.id,
+            board=student.board,
+            class_level=student.class_level,
+            stream=student.stream,
+            subject=subject,
+            difficulty=difficulty,
+            limit=limit,
+        )
+
+        return QuestionListResponse(
+            questions=[
+                _question_response(item["question"], personalized_score=item["personalized_score"])
+                for item in scored
+            ]
+        )
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(
+            status_code=500,
+            detail="An unexpected error occurred while fetching recommended questions",
         )
     finally:
         db.close()
@@ -284,7 +325,9 @@ def _priority_score(question: Question) -> float:
     return round(question.frequency_score * 0.6 + question.importance_score * 0.4, 2)
 
 
-def _question_response(question: Question) -> QuestionResponse:
+def _question_response(
+    question: Question, personalized_score: float | None = None
+) -> QuestionResponse:
     return QuestionResponse(
         id=question.id,
         board=question.board,
@@ -302,6 +345,7 @@ def _question_response(question: Question) -> QuestionResponse:
         frequency_score=question.frequency_score,
         importance_score=question.importance_score,
         priority_score=_priority_score(question),
+        personalized_score=personalized_score,
         source_year=question.source_year,
         options=[
             QuestionOptionResponse(
