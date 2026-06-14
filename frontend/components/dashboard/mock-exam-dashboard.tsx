@@ -37,7 +37,7 @@ import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { useWeaknessAnalysis } from "@/hooks/use-weakness-analysis";
 import { useRecommendedQuestions } from "@/hooks/use-recommended-questions";
-import { fetchMockQuestions, seedMockQuestions, type MockQuestionData } from "@/lib/api";
+import { fetchMockQuestions, fetchRecommendedQuestions, seedMockQuestions, type MockQuestionData, type RecommendedQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 import { WeaknessAnalysisPanel } from "@/components/dashboard/weakness-analysis-panel";
@@ -75,6 +75,7 @@ type Question = {
   difficulty: "Easy" | "Medium" | "Hard";
   sourceYears: number[];
   expectedAnswer?: string | null;
+  personalizedScore?: number;
 };
 
 type ExamMode = "setup" | "exam" | "results";
@@ -1332,29 +1333,25 @@ function AdaptiveSimulatorPanel() {
       try {
         const token = await getToken();
         const authToken = token ?? undefined;
-        let response = await fetchMockQuestions(
-          {
-            subject: selectedSubject.id,
-            chapter: selectedChapter.name,
-            limit: 50,
-          },
-          authToken,
-        );
+        let response = await fetchRecommendedQuestions(authToken ?? "", {
+          subject: selectedSubject.id,
+          limit: 50,
+        });
 
         if (!response.questions.length) {
           await seedMockQuestions(authToken);
-          response = await fetchMockQuestions(
-            {
-              subject: selectedSubject.id,
-              chapter: selectedChapter.name,
-              limit: 50,
-            },
-            authToken,
-          );
+          response = await fetchRecommendedQuestions(authToken ?? "", {
+            subject: selectedSubject.id,
+            limit: 50,
+          });
         }
 
         if (!cancelled) {
-          setQuestionPool(response.questions.map(mapMockQuestion));
+          setQuestionPool(
+            response.questions
+              .filter((question) => question.chapter === selectedChapter.name)
+              .map(mapMockQuestion),
+          );
         }
       } catch (loadError) {
         if (!cancelled) {
@@ -2803,6 +2800,9 @@ function chooseAdaptiveQuestion(
       const aDistance = Math.abs(difficultyRank(a.difficulty) - targetRank);
       const bDistance = Math.abs(difficultyRank(b.difficulty) - targetRank);
       if (aDistance !== bDistance) return aDistance - bDistance;
+      if ((a.personalizedScore ?? 0) !== (b.personalizedScore ?? 0)) {
+        return (b.personalizedScore ?? 0) - (a.personalizedScore ?? 0);
+      }
       return questionScore(b) - questionScore(a);
     })[0] ?? null;
 }
@@ -2849,7 +2849,7 @@ function getAdaptiveResponseLabel(response: AdaptiveResponse) {
   return "Missed";
 }
 
-function mapMockQuestion(question: MockQuestionData): Question {
+function mapMockQuestion(question: MockQuestionData | RecommendedQuestionData): Question {
   const options = question.options.length
     ? question.options
         .sort((a, b) => a.display_order - b.display_order)
@@ -2872,6 +2872,7 @@ function mapMockQuestion(question: MockQuestionData): Question {
     difficulty: question.difficulty,
     sourceYears: question.source_year ? [question.source_year] : [],
     expectedAnswer: question.expected_answer,
+    personalizedScore: "personalized_score" in question ? question.personalized_score : undefined,
   };
 }
 
