@@ -1,10 +1,11 @@
 "use client";
 
-import { SignIn } from "@clerk/nextjs";
+import { SignIn, useUser } from "@clerk/nextjs";
 import { useSignUp } from "@clerk/nextjs/legacy";
 import { ChevronLeftIcon, GraduationCapIcon, LandmarkIcon } from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 
 import { FloatingPaths } from "@/components/floating-paths";
 import { Logo } from "@/components/logo";
@@ -163,6 +164,14 @@ function AuthHeader({ title, description }: { title: string; description: string
 
 function SignupWizard({ onBackToChoice }: { onBackToChoice: () => void }) {
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { isSignedIn } = useUser();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/dashboard");
+    }
+  }, [isSignedIn, router]);
   const [step, setStep] = useState<WizardStep>("account");
   const [metadata, setMetadata] = useState<OnboardingState>(initialOnboarding);
   const [emailAddress, setEmailAddress] = useState("");
