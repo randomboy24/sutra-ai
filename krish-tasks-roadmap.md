@@ -10,7 +10,7 @@
 ## Feature Ownership
 
 | Krish (4 features) | Jatin (4 features) | Shared / Already Started |
-|---|---|---|---|
+|---|---|---|
 | Academic Health Monitoring Agent | Weakness Detection Agent (Next) | ✅ Dynamic Mock Test Generator |
 | Autonomous Study Planner | AI Intervention Engine | ✅ Backend Question Bank API |
 | Exam Readiness Score | AI Paper Evaluator | ✅ Mock Attempts API |
