@@ -78,8 +78,9 @@ def analyze_student_weaknesses(
     incorrect_count = sum(
         1 for a in answer_data if a["is_correct"] is False
     )
-    overall_accuracy = round(correct_count / total_questions, 4) if total_questions else 0.0
-    overall_weakness_score = round(incorrect_count / total_questions, 4) if total_questions else 0.0
+    scorable_total = correct_count + incorrect_count
+    overall_accuracy = round(correct_count / scorable_total, 4) if scorable_total else 0.0
+    overall_weakness_score = round(incorrect_count / scorable_total, 4) if scorable_total else 0.0
 
     # 4. Compute per-dimension metrics
     dimension_items = _compute_dimension_analysis(answer_data)
