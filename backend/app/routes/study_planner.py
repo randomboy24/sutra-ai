@@ -33,17 +33,17 @@ def trigger_generate(
     try:
         student = _get_current_student(db, verified_user_id)
 
-        # Deactivate any existing active plan
-        existing_active = (
+        # Deactivate any existing active plans (all of them, not just the first)
+        existing_actives = (
             db.query(StudyPlan)
             .filter(
                 StudyPlan.student_id == student.id,
                 StudyPlan.status == "active",
             )
-            .first()
+            .all()
         )
-        if existing_active:
-            existing_active.status = "archived"
+        for p in existing_actives:
+            p.status = "archived"
 
         plan = generate_plan(
             db=db,
@@ -352,17 +352,17 @@ def regenerate_plan(
     try:
         student = _get_current_student(db, verified_user_id)
 
-        # Same as generate — deactivate any active plan first
-        existing_active = (
+        # Same as generate — deactivate any active plans first (all of them)
+        existing_actives = (
             db.query(StudyPlan)
             .filter(
                 StudyPlan.student_id == student.id,
                 StudyPlan.status == "active",
             )
-            .first()
+            .all()
         )
-        if existing_active:
-            existing_active.status = "archived"
+        for p in existing_actives:
+            p.status = "archived"
 
         plan = generate_plan(
             db=db,
