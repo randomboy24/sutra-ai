@@ -51,6 +51,57 @@ export interface SeedReadinessResponse {
   message: string;
 }
 
+export interface MockQuestionOptionData {
+  id: string;
+  label: string;
+  text: string;
+  is_correct: boolean;
+  display_order: number;
+}
+
+export interface MockQuestionData {
+  id: string;
+  board: string;
+  class_level: string;
+  stream: string | null;
+  subject: string;
+  chapter: string;
+  unit: string;
+  question_number: string;
+  question_type: string;
+  text: string;
+  expected_answer: string | null;
+  marks: number;
+  difficulty: "Easy" | "Medium" | "Hard";
+  frequency_score: number;
+  importance_score: number;
+  priority_score: number;
+  source_year: number | null;
+  options: MockQuestionOptionData[];
+}
+
+export interface MockQuestionListResponse {
+  questions: MockQuestionData[];
+}
+
+export interface SeedMockQuestionsResponse {
+  success: boolean;
+  files_processed: number;
+  sources_created: number;
+  questions_created: number;
+  questions_updated: number;
+}
+
+export interface MockQuestionFilters {
+  board?: string;
+  classLevel?: string;
+  stream?: string;
+  subject?: string;
+  chapter?: string;
+  unit?: string;
+  limit?: number;
+}
+
 function authHeaders(token?: string): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
@@ -118,5 +169,46 @@ export async function seedReadinessData(
     const error = await res.json().catch(() => ({ detail: "Failed to seed readiness data" }));
     throw new Error(error.detail || `HTTP ${res.status}`);
   }
+  return res.json();
+}
+
+export async function fetchMockQuestions(
+  filters: MockQuestionFilters = {},
+  token?: string,
+): Promise<MockQuestionListResponse> {
+  const params = new URLSearchParams({
+    board: filters.board ?? "CBSE",
+    class_level: filters.classLevel ?? "12th",
+    stream: filters.stream ?? "science",
+    limit: String(filters.limit ?? 50),
+  });
+
+  if (filters.subject) params.set("subject", filters.subject);
+  if (filters.chapter) params.set("chapter", filters.chapter);
+  if (filters.unit) params.set("unit", filters.unit);
+
+  const res = await fetch(`${API_BASE}/api/mock-exams/questions?${params.toString()}`, {
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to fetch mock questions" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
+  return res.json();
+}
+
+export async function seedMockQuestions(token?: string): Promise<SeedMockQuestionsResponse> {
+  const res = await fetch(`${API_BASE}/api/mock-exams/seed-demo`, {
+    method: "POST",
+    headers: authHeaders(token),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({ detail: "Failed to seed mock questions" }));
+    throw new Error(error.detail || `HTTP ${res.status}`);
+  }
+
   return res.json();
 }

@@ -1,6 +1,6 @@
 # Sutra AI
 
-Sutra AI is an agentic learning and exam-preparation platform for students. The current MVP focuses on Clerk-based student onboarding, a protected dashboard, and a dynamic mock exam experience that will later connect to a real PYQ/question-bank backend.
+Sutra AI is an agentic learning and exam-preparation platform for students. The current MVP includes Clerk-based student onboarding, a protected dashboard, a dynamic mock exam experience with a real PYQ question bank, and backend APIs for academic health and exam readiness tracking.
 
 The product direction is broader than mock tests: Sutra AI should observe student performance, detect weak concepts, rebuild study plans, trigger interventions, and personalize exam preparation.
 
@@ -15,8 +15,11 @@ The product direction is broader than mock tests: Sutra AI should observe studen
 | Protected dashboard | Built |
 | Dashboard feature hub | Built |
 | Mock exam UI flow | Built |
-| Mock exam backend API | Planned |
-| PYQ ingestion/question bank | Planned |
+| Mock exam backend API | Built |
+| PYQ question bank with demo data | Built |
+| Academic Health API | Built |
+| Exam Readiness API | Built |
+| Clerk JWT verification (JWKS) | Built |
 | Agentic intelligence layer | Planned |
 
 ## Tech Stack
@@ -26,7 +29,7 @@ The product direction is broader than mock tests: Sutra AI should observe studen
 | Frontend | Next.js App Router, React, TypeScript, Tailwind CSS |
 | Authentication | Clerk |
 | Backend | FastAPI, SQLAlchemy |
-| Database | PostgreSQL |
+| Database | PostgreSQL (Docker) |
 | Webhooks | Clerk user lifecycle webhook verified with Svix |
 | Styling/UI | Tailwind tokens, lucide-react icons, custom dashboard components |
 
@@ -41,18 +44,51 @@ sutra-ai/
       dashboard/mock-exam/
     components/
       auth-page.tsx
-      dashboard/mock-exam-dashboard.tsx
+      dashboard/
+        mock-exam-dashboard.tsx
+        academic-health-panel.tsx
+        exam-readiness-panel.tsx
       theme-toggle.tsx
+    lib/
+      api.ts
     proxy.ts
   backend/
     app/
       main.py
       database.py
+      auth/
+        verify.py
       models/
+        user.py
+        student.py
+        academic_health.py
+        exam_readiness.py
+        mock_exam.py
       routes/
+        auth.py
+        webhooks.py
+        health.py
+        readiness.py
+        mock_exams.py
+        student.py
       schemas/
+        health.py
+        readiness.py
+        mock_exam.py
+      services/
+        demo_pyq_seed.py
+    data/pyq/parsed/
+      cbse-class-12-physics-demo.json
+      cbse-class-12-chemistry-demo.json
+      cbse-class-12-biology-demo.json
     migrations/
       001_add_student_onboarding_fields.sql
+      002_add_academic_health_table.sql
+      003_add_exam_readiness_table.sql
+      004_add_mock_exam_question_bank.sql
+    scripts/
+      seed_demo_pyq.py
+  setup.sh
 ```
 
 ## Architecture
@@ -68,8 +104,12 @@ flowchart LR
 
   Next --> Dashboard[Protected Dashboard]
   Dashboard --> MockUI[Mock Exam UI]
-  MockUI -. planned .-> MockAPI[Mock Exam API]
-  MockAPI -. planned .-> QuestionBank[(PYQ Question Bank)]
+  MockUI --> MockAPI[Mock Exam API]
+  MockAPI --> QuestionBank[(PYQ Question Bank)]
+  Dashboard --> HealthUI[Academic Health UI]
+  HealthUI --> HealthAPI[Academic Health API]
+  Dashboard --> ReadinessUI[Exam Readiness UI]
+  ReadinessUI --> ReadinessAPI[Exam Readiness API]
   QuestionBank -. planned .-> Agents[Agentic Intelligence Layer]
   Agents -. planned .-> Dashboard
 ```
@@ -99,7 +139,7 @@ sequenceDiagram
 
 ## Dashboard Feature Hub
 
-The dashboard now acts as the shared workspace for Jatin and Krish. It shows every planned feature as a high-level card with owner, status, signal inputs, and next milestone.
+The dashboard acts as the shared workspace. It shows every planned feature as a high-level card with owner, status, signal inputs, and next milestone.
 
 Implemented dashboard elements:
 
@@ -215,11 +255,11 @@ Implemented:
   - Exam length
   - Confirmation
 - Fullscreen mock exam session UI.
-- Question panel with options.
+- Question panel with MCQ options.
 - Question grid navigator.
 - Answered, seen, and unseen question states.
 - Timer.
-- Submit flow.
+- Persistent Submit exam button with confirmation dialog.
 - Result summary and answer review.
 - Tab-switch and fullscreen-exit cancellation handling.
 - Cancellation redirects back to `/dashboard` with the Mock Exam tab open.
@@ -229,6 +269,79 @@ Important files:
 
 - `frontend/app/dashboard/mock-exam/page.tsx`
 - `frontend/components/dashboard/mock-exam-dashboard.tsx`
+
+### 6. Mock Exam Backend API
+
+Implemented:
+
+- `GET /api/mock-exams/questions` — List questions filtered by board, class, stream, subject, chapter, unit with priority-based sorting.
+- `POST /api/mock-exams/attempts` — Submit a mock attempt with answers and get scored results.
+- `GET /api/mock-exams/attempts` — List past attempts for the current student.
+- `GET /api/mock-exams/attempts/{attempt_id}` — Get a specific attempt with answers.
+- `POST /api/mock-exams/seed-demo` — Seed the question bank with demo PYQ data.
+- Clerk JWT session verification via JWKS (`app/auth/verify.py`).
+- All endpoints require a valid Clerk session token (Bearer auth).
+
+Important files:
+
+- `backend/app/routes/mock_exams.py`
+- `backend/app/schemas/mock_exam.py`
+- `backend/app/models/mock_exam.py`
+- `backend/app/auth/verify.py`
+
+### 7. PYQ Question Bank with Demo Data
+
+Implemented:
+
+- Database tables: `question_sources`, `questions`, `question_options`.
+- 150 demo questions across Physics, Chemistry, and Biology (50 each).
+- Each question has 4 MCQ options with one correct answer marked.
+- Questions tagged with board, class, stream, subject, chapter, unit, difficulty, frequency score, and importance score.
+- Priority-based question ranking: `frequency_score * 0.6 + importance_score * 0.4`.
+- Seeding service at `app/services/demo_pyq_seed.py` with upsert logic.
+- JSON data files in `data/pyq/parsed/`.
+
+Important files:
+
+- `backend/data/pyq/parsed/cbse-class-12-physics-demo.json`
+- `backend/data/pyq/parsed/cbse-class-12-chemistry-demo.json`
+- `backend/data/pyq/parsed/cbse-class-12-biology-demo.json`
+- `backend/app/services/demo_pyq_seed.py`
+- `backend/scripts/seed_demo_pyq.py`
+
+### 8. Academic Health API
+
+Implemented:
+
+- Database table: `academic_health` with columns for health score, trend, study hours, revision frequency, engagement streak, and mock accuracy.
+- `POST /api/health/seed` — Seed academic health data for the current student (idempotent upsert).
+- `GET /api/health` — Fetch the current student's academic health data.
+- Frontend panel at `frontend/components/dashboard/academic-health-panel.tsx`.
+
+Important files:
+
+- `backend/app/routes/health.py`
+- `backend/app/schemas/health.py`
+- `backend/app/models/academic_health.py`
+- `backend/migrations/002_add_academic_health_table.sql`
+- `frontend/components/dashboard/academic-health-panel.tsx`
+
+### 9. Exam Readiness API
+
+Implemented:
+
+- Database table: `exam_readiness` with columns for readiness score, predicted score, weak/strong chapters, syllabus coverage, confidence level, and mock accuracy.
+- `POST /api/readiness/seed` — Seed exam readiness data for the current student (idempotent upsert).
+- `GET /api/readiness` — Fetch the current student's exam readiness data.
+- Frontend panel at `frontend/components/dashboard/exam-readiness-panel.tsx`.
+
+Important files:
+
+- `backend/app/routes/readiness.py`
+- `backend/app/schemas/readiness.py`
+- `backend/app/models/exam_readiness.py`
+- `backend/migrations/003_add_exam_readiness_table.sql`
+- `frontend/components/dashboard/exam-readiness-panel.tsx`
 
 ## Mock Exam Flow
 
@@ -243,7 +356,7 @@ flowchart TD
   G --> H[Confirm Mock]
   H --> I[Fullscreen Exam]
   I --> J{Student Action}
-  J -->|Submit| K[Results + Review]
+  J -->|Submit or timer ends| K[Results + Review]
   J -->|Switch Tab| L[Cancel Exam]
   J -->|Exit Fullscreen| L
   L --> M[/dashboard?section=mock]
@@ -255,6 +368,13 @@ flowchart TD
 ```mermaid
 erDiagram
   users ||--o| students : has
+  students ||--o| academic_health : has
+  students ||--o| exam_readiness : has
+  students ||--o| mock_attempts : has
+  question_sources ||--o{ questions : contains
+  questions ||--o{ question_options : has
+  questions ||--o{ mock_attempt_answers : referenced
+  mock_attempts ||--o{ mock_attempt_answers : contains
 
   users {
     string id PK
@@ -275,6 +395,97 @@ erDiagram
     string science_group
     boolean onboarding_complete
   }
+
+  academic_health {
+    string id PK
+    string student_id FK, UK
+    float health_score
+    string trend
+    float study_hours_week
+    int revision_frequency
+    int engagement_streak
+    float mock_accuracy
+  }
+
+  exam_readiness {
+    string id PK
+    string student_id FK, UK
+    float readiness_score
+    float predicted_score
+    text weak_chapters
+    text strong_chapters
+    float syllabus_coverage
+    string confidence_level
+    float mock_accuracy
+  }
+
+  question_sources {
+    string id PK
+    string board
+    string class_level
+    string stream
+    string subject
+    string source_type
+    string source_name UK
+  }
+
+  questions {
+    string id PK
+    string source_id FK
+    string board
+    string class_level
+    string stream
+    string subject
+    string chapter
+    string unit
+    string question_number
+    string question_type
+    text text
+    text expected_answer
+    int marks
+    string difficulty
+    float frequency_score
+    float importance_score
+    int source_year
+    boolean is_active
+  }
+
+  question_options {
+    string id PK
+    string question_id FK
+    string label
+    text text
+    boolean is_correct
+    int display_order
+  }
+
+  mock_attempts {
+    string id PK
+    string student_id FK
+    string board
+    string class_level
+    string subject
+    string chapter
+    string unit
+    string status
+    int total_questions
+    int attempted_count
+    int correct_count
+    float total_marks
+    float score_awarded
+    float score_percentage
+  }
+
+  mock_attempt_answers {
+    string id PK
+    string attempt_id FK
+    string question_id FK
+    string selected_option_id FK
+    int selected_option_index
+    boolean is_correct
+    float score_awarded
+    float max_score
+  }
 ```
 
 ## Planned Features
@@ -283,42 +494,16 @@ These are visible in the dashboard feature hub but not fully implemented yet.
 
 | Feature | Owner | Status | Notes |
 | --- | --- | --- | --- |
-| Academic Health Monitoring Agent | Krish | Planned | Track scores, attendance, study time, weak subjects, learning speed, revision frequency. |
 | Weakness Detection Agent | Jatin | Next | Detect mistake patterns and infer root causes from wrong answers. |
 | Autonomous Study Planner | Krish | Planned | Rebuild study plans from exam dates, performance, available hours, and learning speed. |
 | AI Intervention Engine | Jatin | Planned | Trigger reminders, easier tasks, workload reduction, and mentor alerts. |
-| Exam Readiness Score | Krish | Planned | Predict preparedness, expected score, weak chapters, and confidence. |
 | AI Paper Evaluator | Jatin | Planned | Evaluate uploaded handwritten/PDF answer sheets against marking schemes. |
 | Personalized Question Bank | Krish | Planned | Recommend questions based on mistakes, weaknesses, and board patterns. |
 | Adaptive Exam Simulator | Jatin | Planned | Adjust question difficulty during exams to estimate capability. |
-| PYQ Question Bank Backend | Shared | Planned | Store real PYQs, tags, sources, occurrences, difficulty, and importance scores. |
-
-## Recommended Next Backend Slice
-
-The next practical backend feature should be the Weakness Detection foundation because it builds directly on mock exam attempts.
-
-Suggested scope:
-
-1. Add question-bank tables.
-2. Add mock attempt and answer tables.
-3. Add submit mock result API.
-4. Add weakness summary API.
-5. Connect dashboard widgets to real mock result data.
-
-Future question-bank tables will likely include:
-
-- `question_sources`
-- `questions`
-- `question_options`
-- `question_occurrences`
-- `question_tags`
-- `mock_attempts`
-- `mock_attempt_answers`
-- `student_weaknesses`
 
 ## Environment Variables
 
-Frontend:
+Frontend (`frontend/.env.local`):
 
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
@@ -327,16 +512,50 @@ NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/dashboard
 NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/dashboard
 ```
 
-Backend:
+Backend (`backend/.env`):
 
 ```env
-DATABASE_URL=postgresql+psycopg://username:password@localhost:5432/dbname
+DATABASE_URL=postgresql+psycopg://sutra_ai_user:abcd@localhost:5432/sutra_ai
 CLERK_WEBHOOK_SECRET=
+CLERK_SECRET_KEY=
+CLERK_JWKS_URL=https://your-clerk-frontend-api/.well-known/jwks.json
+CLERK_ISSUER=https://your-clerk-frontend-api
+CLERK_AUTHORIZED_PARTIES=http://localhost:3000,http://127.0.0.1:3000
 ```
 
 ## Running Locally
 
-### Frontend
+### Automated Setup
+
+Run the setup script from the repo root:
+
+```bash
+./setup.sh
+```
+
+This will start PostgreSQL via Docker, install dependencies, apply migrations, and seed demo data. See `SETUP.md` for details.
+
+### Manual Backend Setup
+
+```bash
+cd backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Apply migrations
+for f in migrations/*.sql; do psql -U sutra_ai_user -d sutra_ai -h localhost -f "$f"; done
+
+# Seed demo data
+python scripts/seed_demo_pyq.py
+
+# Start the server
+uvicorn app.main:app --reload
+```
+
+Backend runs at `http://127.0.0.1:8000`.
+
+### Manual Frontend Setup
 
 ```bash
 cd frontend
@@ -344,11 +563,7 @@ npm install
 npm run dev
 ```
 
-Frontend runs at:
-
-```text
-http://localhost:3000
-```
+Frontend runs at `http://localhost:3000`.
 
 Useful frontend checks:
 
@@ -358,48 +573,16 @@ npm run lint
 npm run build
 ```
 
-### Backend
+## Database Migrations
 
-The backend uses a virtual environment at `backend/.venv`.
+All migrations are in `backend/migrations/`:
 
-```bash
-cd backend
-source .venv/bin/activate
-uvicorn app.main:app --reload
-```
-
-Backend runs at:
-
-```text
-http://127.0.0.1:8000
-```
-
-Useful backend check:
-
-```bash
-cd backend
-source .venv/bin/activate
-python -m compileall app
-```
-
-## Database Migration
-
-For existing local databases, apply:
-
-```sql
-ALTER TABLE students
-ADD COLUMN IF NOT EXISTS class_level VARCHAR,
-ADD COLUMN IF NOT EXISTS board VARCHAR,
-ADD COLUMN IF NOT EXISTS stream VARCHAR,
-ADD COLUMN IF NOT EXISTS science_group VARCHAR,
-ADD COLUMN IF NOT EXISTS onboarding_complete BOOLEAN NOT NULL DEFAULT FALSE;
-```
-
-Committed migration file:
-
-```text
-backend/migrations/001_add_student_onboarding_fields.sql
-```
+| File | Purpose |
+| --- | --- |
+| `001_add_student_onboarding_fields.sql` | Adds onboarding columns to `students` table |
+| `002_add_academic_health_table.sql` | Creates `academic_health` table |
+| `003_add_exam_readiness_table.sql` | Creates `exam_readiness` table |
+| `004_add_mock_exam_question_bank.sql` | Creates `question_sources`, `questions`, `question_options`, `mock_attempts`, `mock_attempt_answers` tables |
 
 ## Validation Completed So Far
 
@@ -410,13 +593,16 @@ backend/migrations/001_add_student_onboarding_fields.sql
 - User and student persistence was verified locally.
 - Student onboarding database migration was applied locally.
 - Mock exam dashboard and dedicated mock route build successfully.
+- PYQ question bank seeded with 150 MCQ demo questions.
+- Mock attempt submission, score calculation, and result retrieval tested.
+- Academic Health and Exam Readiness seed/fetch API endpoints tested.
 
-## Product Roadmap Diagram
+## Product Roadmap
 
 ```mermaid
 flowchart TB
   Foundation[Auth + Onboarding + Dashboard Hub] --> Mock[Dynamic Mock Test Generator]
-  Mock --> Attempts[Mock Attempts + Answers]
+  Mock --> Attempts[Mock Attempts + Answers API]
   Attempts --> Weakness[Weakness Detection Agent]
   Attempts --> Readiness[Exam Readiness Score]
   Weakness --> QuestionBank[Personalized Question Bank]
@@ -437,3 +623,4 @@ flowchart TB
 - Backend commands should activate `backend/.venv` first.
 - Do not treat Clerk `unsafeMetadata` as trusted authorization data.
 - Prefer building the real question-bank/attempt schema before adding complex AI behavior.
+- Run `./setup.sh` for a fresh local environment setup.

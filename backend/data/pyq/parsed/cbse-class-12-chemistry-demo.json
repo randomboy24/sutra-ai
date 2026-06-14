@@ -1,0 +1,1763 @@
+{
+  "metadata": {
+    "board": "CBSE",
+    "class_level": "12th",
+    "stream": "science",
+    "subject": "chemistry",
+    "source_type": "simulated_pdf_parse",
+    "source_name": "cbse-class-12-chemistry-expanded-demo-set",
+    "source_file": "cbse-class-12-chemistry-expanded-demo.pdf"
+  },
+  "questions": [
+    {
+      "question_number": "1",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Concentration of Solutions",
+      "text": "Define molarity of a solution.",
+      "expected_answer": "The number of moles of solute dissolved per liter of the solution.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 80,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The number of moles of solute dissolved per liter of the solution.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "2",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Concentration of Solutions",
+      "text": "Why is molality preferred over molarity in expressing the concentration of a solution?",
+      "expected_answer": "Molality involves mass, which is independent of temperature, whereas molarity involves volume, which changes with temperature.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 92,
+      "importance_score": 95,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Molality involves mass, which is independent of temperature, whereas molarity involves volume, which changes with temperature.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "An electrochemical cell that converts the chemical energy of a spontaneous redox reaction into electrical energy.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "3",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Concentration of Solutions",
+      "text": "State Henry's law.",
+      "expected_answer": "The partial pressure of a gas in vapor phase is proportional to the mole fraction of the gas in the solution.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Concentration of reactants, temperature, presence of a catalyst, surface area of reactants, and exposure to radiation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The partial pressure of a gas in vapor phase is proportional to the mole fraction of the gas in the solution.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "4",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Concentration of Solutions",
+      "text": "Give one application of Henry's law.",
+      "expected_answer": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 75,
+      "importance_score": 78,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "5",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Concentration of Solutions",
+      "text": "What is the condition for an ideal solution?",
+      "expected_answer": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "6",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Colligative Properties",
+      "text": "What are colligative properties?",
+      "expected_answer": "Properties of ideal solutions that depend only on the number of solute particles and not on their nature.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 82,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Properties of ideal solutions that depend only on the number of solute particles and not on their nature.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The mass of primary substance deposited at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "7",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Colligative Properties",
+      "text": "Define ebullioscopic constant.",
+      "expected_answer": "It is the elevation in boiling point produced when one mole of a non-volatile solute is dissolved in one kilogram of solvent.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 75,
+      "importance_score": 80,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The conducting power of all the ions produced by dissolving one mole of an electrolyte in a solution.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It is the elevation in boiling point produced when one mole of a non-volatile solute is dissolved in one kilogram of solvent.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "8",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Colligative Properties",
+      "text": "Why does adding salt to ice lower its melting point?",
+      "expected_answer": "Salt introduces solute particles that lower the vapor pressure of the liquid phase, requiring a lower temperature to establish equilibrium with the solid phase.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 80,
+      "importance_score": 82,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Salt introduces solute particles that lower the vapor pressure of the liquid phase, requiring a lower temperature to establish equilibrium with the solid phase.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "9",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Colligative Properties",
+      "text": "What is osmotic pressure?",
+      "expected_answer": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The charge the central metal atom would carry if all the ligands are removed along with the electron pairs that are shared with it.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "10",
+      "question_type": "theory",
+      "chapter": "Solutions",
+      "unit": "Colligative Properties",
+      "text": "Explain reverse osmosis.",
+      "expected_answer": "If a pressure higher than the osmotic pressure is applied to the solution side, solvent flows from the solution into the pure solvent.",
+      "marks": 3,
+      "difficulty": "Easy",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The property of a molecule that makes it non-superimposable on its mirror image.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Aliphatic hydrocarbons in which one or more hydrogen atoms are replaced by halogen atoms.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The mass of primary substance deposited at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "If a pressure higher than the osmotic pressure is applied to the solution side, solvent flows from the solution into the pure solvent.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "11",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Electrochemical Cells",
+      "text": "What is a galvanic cell?",
+      "expected_answer": "An electrochemical cell that converts the chemical energy of a spontaneous redox reaction into electrical energy.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 80,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "An electrochemical cell that converts the chemical energy of a spontaneous redox reaction into electrical energy.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "12",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Electrochemical Cells",
+      "text": "State the function of a salt bridge in a galvanic cell.",
+      "expected_answer": "It completes the electrical circuit and maintains the electrical neutrality of the half-cells.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 90,
+      "importance_score": 92,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It completes the electrical circuit and maintains the electrical neutrality of the half-cells.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "A di- or polydentate ligand that uses two or more donor atoms to bind to a single metal ion, forming a ring structure.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Aliphatic hydrocarbons in which one or more hydrogen atoms are replaced by halogen atoms.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "13",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Electrochemical Cells",
+      "text": "Define standard electrode potential.",
+      "expected_answer": "The potential of an electrode relative to the standard hydrogen electrode under standard conditions of 1 molar concentration and 298 Kelvin.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "If a pressure higher than the osmotic pressure is applied to the solution side, solvent flows from the solution into the pure solvent.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The change in concentration of a reactant or product per unit time.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The potential of an electrode relative to the standard hydrogen electrode under standard conditions of 1 molar concentration and 298 Kelvin.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The conducting power of all the ions produced by dissolving one mole of an electrolyte in a solution.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "14",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Electrochemical Cells",
+      "text": "How is the standard hydrogen electrode constructed?",
+      "expected_answer": "It consists of a platinum electrode coated with platinum black, dipped in a 1 molar acid solution with hydrogen gas bubbled through it at 1 bar pressure.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 75,
+      "importance_score": 78,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "It consists of a platinum electrode coated with platinum black, dipped in a 1 molar acid solution with hydrogen gas bubbled through it at 1 bar pressure.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "15",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Electrochemical Cells",
+      "text": "What does a positive standard electrode potential indicate?",
+      "expected_answer": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 78,
+      "importance_score": 82,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "During the addition of an unsymmetrical reagent to an unsymmetrical alkene, the negative part of the reagent attaches to the carbon atom with fewer hydrogen atoms.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "The property of a molecule that makes it non-superimposable on its mirror image.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "16",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Nernst Equation and Electrolysis",
+      "text": "What is the significance of the Nernst equation?",
+      "expected_answer": "It relates the electrode potential of a half-cell or the electromotive force of a full cell to the concentration of reacting species and temperature.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 94,
+      "importance_score": 95,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because the carbon-halogen bond is polar, leading to stronger dipole-dipole and van der Waals interactions between molecules.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "If a pressure higher than the osmotic pressure is applied to the solution side, solvent flows from the solution into the pure solvent.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "It relates the electrode potential of a half-cell or the electromotive force of a full cell to the concentration of reacting species and temperature.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "17",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Nernst Equation and Electrolysis",
+      "text": "State Faraday's first law of electrolysis.",
+      "expected_answer": "The mass of primary substance deposited at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The mass of primary substance deposited at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Concentration of reactants, temperature, presence of a catalyst, surface area of reactants, and exposure to radiation.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "18",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Nernst Equation and Electrolysis",
+      "text": "Define molar conductivity.",
+      "expected_answer": "The conducting power of all the ions produced by dissolving one mole of an electrolyte in a solution.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 86,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Concentration of reactants, temperature, presence of a catalyst, surface area of reactants, and exposure to radiation.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Salt introduces solute particles that lower the vapor pressure of the liquid phase, requiring a lower temperature to establish equilibrium with the solid phase.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The conducting power of all the ions produced by dissolving one mole of an electrolyte in a solution.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "19",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Nernst Equation and Electrolysis",
+      "text": "Why does molar conductivity of weak electrolytes increase steeply with dilution?",
+      "expected_answer": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Molality involves mass, which is independent of temperature, whereas molarity involves volume, which changes with temperature.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Aliphatic hydrocarbons in which one or more hydrogen atoms are replaced by halogen atoms.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "20",
+      "question_type": "theory",
+      "chapter": "Electrochemistry",
+      "unit": "Nernst Equation and Electrolysis",
+      "text": "State Kohlrausch's law of independent migration of ions.",
+      "expected_answer": "The limiting molar conductivity of an electrolyte can be represented as the sum of the individual contributions of the anion and cation of the electrolyte.",
+      "marks": 5,
+      "difficulty": "Medium",
+      "frequency_score": 92,
+      "importance_score": 94,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The limiting molar conductivity of an electrolyte can be represented as the sum of the individual contributions of the anion and cation of the electrolyte.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "21",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Rate of a Reaction",
+      "text": "Define the rate of a chemical reaction.",
+      "expected_answer": "The change in concentration of a reactant or product per unit time.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 75,
+      "importance_score": 80,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The change in concentration of a reactant or product per unit time.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "Salt introduces solute particles that lower the vapor pressure of the liquid phase, requiring a lower temperature to establish equilibrium with the solid phase.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "22",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Rate of a Reaction",
+      "text": "What is meant by the average rate of a reaction?",
+      "expected_answer": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 70,
+      "importance_score": 75,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The change in concentration of a reactant or product per unit time.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The property of a molecule that makes it non-superimposable on its mirror image.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The change in concentration of reactants or products divided by the total time interval over which the change occurs.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "23",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Rate of a Reaction",
+      "text": "How does instantaneous rate differ from average rate?",
+      "expected_answer": "Instantaneous rate is measured at a specific instant in time, whereas average rate is measured over a finite time interval.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The charge the central metal atom would carry if all the ligands are removed along with the electron pairs that are shared with it.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Instantaneous rate is measured at a specific instant in time, whereas average rate is measured over a finite time interval.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Because the number of molecules participating in an elementary collision must always be a positive integer.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "24",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Rate of a Reaction",
+      "text": "What are the factors that influence the rate of a chemical reaction?",
+      "expected_answer": "Concentration of reactants, temperature, presence of a catalyst, surface area of reactants, and exposure to radiation.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Concentration of reactants, temperature, presence of a catalyst, surface area of reactants, and exposure to radiation.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "Because the number of molecules participating in an elementary collision must always be a positive integer.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because the carbon-halogen bond is polar, leading to stronger dipole-dipole and van der Waals interactions between molecules.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "25",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Rate of a Reaction",
+      "text": "Define the rate law of a chemical reaction.",
+      "expected_answer": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 90,
+      "importance_score": 92,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "26",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Order and Molecularity",
+      "text": "What is the order of a chemical reaction?",
+      "expected_answer": "The sum of the powers to which the concentration terms are raised in the rate law equation.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 92,
+      "importance_score": 95,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The sum of the powers to which the concentration terms are raised in the rate law equation.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because strong field ligands cause large splitting energy, forcing electrons to pair up in the lower energy orbitals, leaving no unpaired electrons.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "27",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Order and Molecularity",
+      "text": "Define molecularity of a reaction.",
+      "expected_answer": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "It completes the electrical circuit and maintains the electrical neutrality of the half-cells.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "28",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Order and Molecularity",
+      "text": "Why can molecularity never be zero or fractional?",
+      "expected_answer": "Because the number of molecules participating in an elementary collision must always be a positive integer.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 80,
+      "importance_score": 84,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The mass of primary substance deposited at an electrode is directly proportional to the quantity of electricity passed through the electrolyte.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The partial pressure of a gas in vapor phase is proportional to the mole fraction of the gas in the solution.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because the number of molecules participating in an elementary collision must always be a positive integer.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "29",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Order and Molecularity",
+      "text": "What are pseudo first-order reactions?",
+      "expected_answer": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A series in which ligands are arranged in the order of their increasing field strength.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Instantaneous rate is measured at a specific instant in time, whereas average rate is measured over a finite time interval.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The total number of ligand donor atoms to which the central metal ion is directly bonded.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "30",
+      "question_type": "theory",
+      "chapter": "Chemical Kinetics",
+      "unit": "Order and Molecularity",
+      "text": "Give the unit of the rate constant for a zero-order reaction.",
+      "expected_answer": "Moles per liter per second.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 75,
+      "importance_score": 80,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It arises when an ambidentate ligand can coordinate to the metal center through two different atoms.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Moles per liter per second.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "31",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Nomenclature and Terminology",
+      "text": "What is a ligand in a coordination compound?",
+      "expected_answer": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+          "is_correct": true
+        },
+        {
+          "label": "C",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "32",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Nomenclature and Terminology",
+      "text": "Define coordination number.",
+      "expected_answer": "The total number of ligand donor atoms to which the central metal ion is directly bonded.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 90,
+      "importance_score": 92,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The limiting molar conductivity of an electrolyte can be represented as the sum of the individual contributions of the anion and cation of the electrolyte.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The total number of ligand donor atoms to which the central metal ion is directly bonded.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "It is the elevation in boiling point produced when one mole of a non-volatile solute is dissolved in one kilogram of solvent.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "33",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Nomenclature and Terminology",
+      "text": "What is a chelate ligand?",
+      "expected_answer": "A di- or polydentate ligand that uses two or more donor atoms to bind to a single metal ion, forming a ring structure.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "If a pressure higher than the osmotic pressure is applied to the solution side, solvent flows from the solution into the pure solvent.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A di- or polydentate ligand that uses two or more donor atoms to bind to a single metal ion, forming a ring structure.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "34",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Nomenclature and Terminology",
+      "text": "Explain the term ambidentate ligand.",
+      "expected_answer": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "During the addition of an unsymmetrical reagent to an unsymmetrical alkene, the negative part of the reagent attaches to the carbon atom with fewer hydrogen atoms.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "35",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Nomenclature and Terminology",
+      "text": "What is meant by the oxidation number of the central metal atom?",
+      "expected_answer": "The charge the central metal atom would carry if all the ligands are removed along with the electron pairs that are shared with it.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 75,
+      "importance_score": 78,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The sum of the powers to which the concentration terms are raised in the rate law equation.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The charge the central metal atom would carry if all the ligands are removed along with the electron pairs that are shared with it.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "36",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Isomerism and Bonding",
+      "text": "What is linkage isomerism in coordination compounds?",
+      "expected_answer": "It arises when an ambidentate ligand can coordinate to the metal center through two different atoms.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A type of isomerism occurring in compounds containing both cationic and anionic complex ions, where ligands are interchanged between the metal centers.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It arises when an ambidentate ligand can coordinate to the metal center through two different atoms.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "37",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Isomerism and Bonding",
+      "text": "Define coordination isomerism.",
+      "expected_answer": "A type of isomerism occurring in compounds containing both cationic and anionic complex ions, where ligands are interchanged between the metal centers.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 78,
+      "importance_score": 82,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The partial pressure of a gas in vapor phase is proportional to the mole fraction of the gas in the solution.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A type of isomerism occurring in compounds containing both cationic and anionic complex ions, where ligands are interchanged between the metal centers.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "38",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Isomerism and Bonding",
+      "text": "What causes color in transition metal complexes according to crystal field theory?",
+      "expected_answer": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 92,
+      "importance_score": 95,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "During the addition of an unsymmetrical reagent to an unsymmetrical alkene, the negative part of the reagent attaches to the carbon atom with fewer hydrogen atoms.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The total number of ligand donor atoms to which the central metal ion is directly bonded.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Salt introduces solute particles that lower the vapor pressure of the liquid phase, requiring a lower temperature to establish equilibrium with the solid phase.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "39",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Isomerism and Bonding",
+      "text": "Define spectrochemical series.",
+      "expected_answer": "A series in which ligands are arranged in the order of their increasing field strength.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 80,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The change in concentration of a reactant or product per unit time.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "A series in which ligands are arranged in the order of their increasing field strength.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "40",
+      "question_type": "theory",
+      "chapter": "Coordination Compounds",
+      "unit": "Isomerism and Bonding",
+      "text": "Why are low-spin complexes generally diamagnetic?",
+      "expected_answer": "Because strong field ligands cause large splitting energy, forcing electrons to pair up in the lower energy orbitals, leaving no unpaired electrons.",
+      "marks": 5,
+      "difficulty": "Hard",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Molality involves mass, which is independent of temperature, whereas molarity involves volume, which changes with temperature.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "In the production of carbonated beverages, higher pressure increases the solubility of carbon dioxide gas in the liquid.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because strong field ligands cause large splitting energy, forcing electrons to pair up in the lower energy orbitals, leaving no unpaired electrons.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "41",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Preparation and Properties",
+      "text": "What are haloalkanes?",
+      "expected_answer": "Aliphatic hydrocarbons in which one or more hydrogen atoms are replaced by halogen atoms.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 70,
+      "importance_score": 75,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The number of reacting species taking part in an elementary reaction that must collide simultaneously to bring about the reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It completes the electrical circuit and maintains the electrical neutrality of the half-cells.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Aliphatic hydrocarbons in which one or more hydrogen atoms are replaced by halogen atoms.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "Because the number of molecules participating in an elementary collision must always be a positive integer.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "42",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Preparation and Properties",
+      "text": "Why do haloalkanes have higher boiling points than the parent alkanes?",
+      "expected_answer": "Because the carbon-halogen bond is polar, leading to stronger dipole-dipole and van der Waals interactions between molecules.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 82,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "An experimental expression that relates the rate of a reaction to the molar concentrations of the reactants, each raised to some power.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The potential of an electrode relative to the standard hydrogen electrode under standard conditions of 1 molar concentration and 298 Kelvin.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Because the carbon-halogen bond is polar, leading to stronger dipole-dipole and van der Waals interactions between molecules.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The limiting molar conductivity of an electrolyte can be represented as the sum of the individual contributions of the anion and cation of the electrolyte.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "43",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Preparation and Properties",
+      "text": "State Markownikoff's rule.",
+      "expected_answer": "During the addition of an unsymmetrical reagent to an unsymmetrical alkene, the negative part of the reagent attaches to the carbon atom with fewer hydrogen atoms.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Because dilution increases the degree of dissociation of weak electrolytes, resulting in a higher total number of ions.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It consists of a platinum electrode coated with platinum black, dipped in a 1 molar acid solution with hydrogen gas bubbled through it at 1 bar pressure.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "During the addition of an unsymmetrical reagent to an unsymmetrical alkene, the negative part of the reagent attaches to the carbon atom with fewer hydrogen atoms.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "44",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Preparation and Properties",
+      "text": "What happens during Finkelstein reaction?",
+      "expected_answer": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 85,
+      "importance_score": 88,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "It must obey Raoult's law over the entire range of concentration and have zero enthalpy and volume of mixing.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Alkyl iodides are prepared by treating alkyl chlorides or bromides with sodium iodide in dry acetone.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "45",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Preparation and Properties",
+      "text": "Why is the boiling point of isomeric haloalkanes decreasing with branching?",
+      "expected_answer": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+      "marks": 3,
+      "difficulty": "Hard",
+      "frequency_score": 78,
+      "importance_score": 82,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It consists of a platinum electrode coated with platinum black, dipped in a 1 molar acid solution with hydrogen gas bubbled through it at 1 bar pressure.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Properties of ideal solutions that depend only on the number of solute particles and not on their nature.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "46",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Chemical Reactions",
+      "text": "What is a nucleophilic substitution reaction?",
+      "expected_answer": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 88,
+      "importance_score": 90,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "It completes the electrical circuit and maintains the electrical neutrality of the half-cells.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "A monodentate ligand that can bind through two different donor atoms, such as the thiocyanate ion.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A reaction where a stronger nucleophile displaces a weaker nucleophile from a molecule.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "An electrochemical cell that converts the chemical energy of a spontaneous redox reaction into electrical energy.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "47",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Chemical Reactions",
+      "text": "Distinguish between SN1 and SN2 mechanisms based on the number of steps.",
+      "expected_answer": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+      "marks": 3,
+      "difficulty": "Medium",
+      "frequency_score": 95,
+      "importance_score": 95,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "SN1 is a two-step reaction involving a carbocation intermediate, while SN2 is a single-step concerted reaction.",
+          "is_correct": true
+        },
+        {
+          "label": "B",
+          "text": "A di- or polydentate ligand that uses two or more donor atoms to bind to a single metal ion, forming a ring structure.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "The number of moles of solute dissolved per liter of the solution.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "Because the carbon-halogen bond is polar, leading to stronger dipole-dipole and van der Waals interactions between molecules.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "48",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Chemical Reactions",
+      "text": "Why are haloarenes extremely less reactive towards nucleophilic substitution reactions?",
+      "expected_answer": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+      "marks": 5,
+      "difficulty": "Hard",
+      "frequency_score": 92,
+      "importance_score": 94,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "The excitation of an electron from a lower energy d-orbital to a higher energy d-orbital, absorbing a specific wavelength of visible light.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "Moles per liter per second.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "Due to partial double bond character of the carbon-halogen bond arising from resonance and sp2 hybridization of the carbon atom.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "An ion or molecule that binds to the central metal atom or ion to form a coordination entity.",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_number": "49",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Chemical Reactions",
+      "text": "What is chirality?",
+      "expected_answer": "The property of a molecule that makes it non-superimposable on its mirror image.",
+      "marks": 2,
+      "difficulty": "Medium",
+      "frequency_score": 80,
+      "importance_score": 85,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Branching makes the molecule more spherical, decreasing the surface area and thereby decreasing the strength of van der Waals forces.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The excess pressure that must be applied to a solution to prevent osmosis when separated from the pure solvent by a semipermeable membrane.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "It indicates that the half-cell is a stronger oxidizing agent than the hydrogen ion.",
+          "is_correct": false
+        },
+        {
+          "label": "D",
+          "text": "The property of a molecule that makes it non-superimposable on its mirror image.",
+          "is_correct": true
+        }
+      ]
+    },
+    {
+      "question_number": "50",
+      "question_type": "theory",
+      "chapter": "Haloalkanes and Haloarenes",
+      "unit": "Chemical Reactions",
+      "text": "Define racemic mixture.",
+      "expected_answer": "A mixture containing equal amounts of two enantiomers, which is optically inactive due to external compensation.",
+      "marks": 2,
+      "difficulty": "Easy",
+      "frequency_score": 82,
+      "importance_score": 86,
+      "source_year": 2025,
+      "options": [
+        {
+          "label": "A",
+          "text": "Reactions that are not truly of first order but behave as first-order reactions under certain conditions, such as having one reactant in large excess.",
+          "is_correct": false
+        },
+        {
+          "label": "B",
+          "text": "The charge the central metal atom would carry if all the ligands are removed along with the electron pairs that are shared with it.",
+          "is_correct": false
+        },
+        {
+          "label": "C",
+          "text": "A mixture containing equal amounts of two enantiomers, which is optically inactive due to external compensation.",
+          "is_correct": true
+        },
+        {
+          "label": "D",
+          "text": "The potential of an electrode relative to the standard hydrogen electrode under standard conditions of 1 molar concentration and 298 Kelvin.",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}

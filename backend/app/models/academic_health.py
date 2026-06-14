@@ -1,7 +1,7 @@
 from uuid import uuid4
 from datetime import datetime
 
-from sqlalchemy import String, ForeignKey, Float, DateTime
+from sqlalchemy import Integer, String, ForeignKey, Float, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -24,7 +24,7 @@ class AcademicHealth(Base):
 
     study_hours_week: Mapped[float] = mapped_column(Float, default=0.0)
 
-    revision_frequency: Mapped[int] = mapped_column(default=0)
+    revision_frequency: Mapped[int] = mapped_column(Integer, default=0)
 
     engagement_streak: Mapped[int] = mapped_column(default=0)
 
