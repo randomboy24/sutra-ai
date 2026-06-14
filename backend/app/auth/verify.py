@@ -11,11 +11,14 @@ load_dotenv()
 
 CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
 CLERK_JWT_KEY = os.getenv("CLERK_JWT_KEY")
-AUTHORIZED_PARTIES = (
-    os.getenv("CLERK_AUTHORIZED_PARTIES", "http://localhost:3000").split(",")
-    if os.getenv("CLERK_AUTHORIZED_PARTIES")
-    else ["http://localhost:3000"]
-)
+AUTHORIZED_PARTIES = [
+    origin.strip()
+    for origin in (
+        os.getenv("CLERK_AUTHORIZED_PARTIES")
+        or os.getenv("BACKEND_CORS_ORIGINS", "http://localhost:3000")
+    ).split(",")
+    if origin.strip()
+]
 
 security_scheme = HTTPBearer(auto_error=False)
 
