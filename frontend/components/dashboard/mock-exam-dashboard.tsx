@@ -37,7 +37,7 @@ import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
 import { useWeaknessAnalysis } from "@/hooks/use-weakness-analysis";
 import { useRecommendedQuestions } from "@/hooks/use-recommended-questions";
-import { fetchMockQuestions, fetchRecommendedQuestions, seedMockQuestions, type MockQuestionData, type RecommendedQuestionData } from "@/lib/api";
+import { createMockAttempt, fetchMockQuestions, fetchRecommendedQuestions, seedMockQuestions, type MockQuestionData, type RecommendedQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
 import { WeaknessAnalysisPanel } from "@/components/dashboard/weakness-analysis-panel";
@@ -1341,6 +1341,8 @@ export function AdaptiveExamFlow() {
   const [questionStartedAt, setQuestionStartedAt] = useState(Date.now());
   const [mode, setMode] = useState<ExamMode>("setup");
   const [remainingSeconds, setRemainingSeconds] = useState(30 * 60);
+  const [attemptSaveStatus, setAttemptSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [attemptError, setAttemptError] = useState("");
   const modeRef = useRef(mode);
   const allowFullscreenExitRef = useRef(false);
 
@@ -1371,6 +1373,8 @@ export function AdaptiveExamFlow() {
       setAbility(50);
       setTargetDifficulty("Medium");
       setMode("setup");
+      setAttemptSaveStatus("idle");
+      setAttemptError("");
 
       try {
         const token = await getToken();
@@ -1478,6 +1482,8 @@ export function AdaptiveExamFlow() {
     setTargetDifficulty("Medium");
     setQuestionStartedAt(Date.now());
     setRemainingSeconds(30 * 60);
+    setAttemptSaveStatus("idle");
+    setAttemptError("");
     allowFullscreenExitRef.current = false;
 
     try {
@@ -1548,9 +1554,45 @@ export function AdaptiveExamFlow() {
     setTargetDifficulty(nextDifficulty);
     setActiveQuestion(null);
     setMode("results");
+    void saveAdaptiveAttempt(nextHistory);
 
     if (document.fullscreenElement) {
       void document.exitFullscreen();
+    }
+  };
+
+
+  const saveAdaptiveAttempt = async (nextHistory: AdaptiveStep[]) => {
+    if (!nextHistory.length) return;
+
+    setAttemptSaveStatus("saving");
+    setAttemptError("");
+
+    try {
+      const token = await getToken();
+      await createMockAttempt(
+        {
+          board: "CBSE",
+          class_level: "12th",
+          stream: "science",
+          subject: selectedSubject.id,
+          chapter: selectedChapter.name,
+          duration_seconds: 30 * 60 - remainingSeconds,
+          answers: nextHistory.map((step) => ({
+            question_id: step.question.id,
+            selected_option_index: step.selectedIndex,
+            answer_text: step.selectedIndex === undefined ? "Skipped in adaptive exam" : undefined,
+            is_correct: step.isCorrect,
+            score_awarded: step.isCorrect ? undefined : 0,
+            time_spent_seconds: step.timeSpentSeconds,
+          })),
+        },
+        token ?? undefined,
+      );
+      setAttemptSaveStatus("saved");
+    } catch (saveError) {
+      setAttemptSaveStatus("error");
+      setAttemptError(saveError instanceof Error ? saveError.message : "Failed to save adaptive attempt");
     }
   };
 
@@ -1562,6 +1604,8 @@ export function AdaptiveExamFlow() {
     setAbility(50);
     setTargetDifficulty("Medium");
     setRemainingSeconds(0);
+    setAttemptSaveStatus("idle");
+    setAttemptError("");
     setMode("setup");
 
     if (document.fullscreenElement) {
@@ -1581,6 +1625,8 @@ export function AdaptiveExamFlow() {
     setAbility(50);
     setTargetDifficulty("Medium");
     setRemainingSeconds(30 * 60);
+    setAttemptSaveStatus("idle");
+    setAttemptError("");
     setMode("setup");
 
     if (document.fullscreenElement) {
@@ -1604,6 +1650,12 @@ export function AdaptiveExamFlow() {
             <div className="mt-5 rounded-lg border bg-background p-4 text-sm">
               <p className="font-medium">Recommendation</p>
               <p className="mt-2 text-muted-foreground leading-6">{getAdaptiveRecommendation(ability, weakUnits)}</p>
+            </div>
+            <div className="mt-3 rounded-lg border bg-background p-3 text-sm">
+              <p className="font-medium">Attempt sync</p>
+              <p className="mt-1 text-muted-foreground">
+                {attemptSaveStatus === "saving" ? "Saving adaptive attempt..." : attemptSaveStatus === "saved" ? "Saved for weakness analysis and future recommendations." : attemptSaveStatus === "error" ? attemptError : "Ready to save."}
+              </p>
             </div>
             <Button className="mt-5 w-full" onClick={resetSession}>Create another adaptive exam</Button>
           </div>
