@@ -35,9 +35,11 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useAcademicHealth } from "@/hooks/use-academic-health";
 import { useExamReadiness } from "@/hooks/use-exam-readiness";
+import { useWeaknessAnalysis } from "@/hooks/use-weakness-analysis";
 import { fetchMockQuestions, seedMockQuestions, type MockQuestionData } from "@/lib/api";
 import { AcademicHealthPanel } from "@/components/dashboard/academic-health-panel";
 import { ExamReadinessPanel } from "@/components/dashboard/exam-readiness-panel";
+import { WeaknessAnalysisPanel } from "@/components/dashboard/weakness-analysis-panel";
 
 type Unit = {
   id: string;
@@ -513,18 +515,28 @@ export function MockExamDashboard() {
   const { user } = useUser();
   const { data: healthData, loading: healthLoading, error: healthError, refetch: healthRefetch } = useAcademicHealth(user?.id);
   const readiness = useExamReadiness(user?.id);
+  const {
+    data: weaknessData,
+    loading: weaknessLoading,
+    error: weaknessError,
+    refetch: weaknessRefetch,
+    runAnalysis,
+  } = useWeaknessAnalysis(user?.id);
 
   const dashboardStats = useMemo(() => {
-    if (readiness.data || healthData) {
+    if (readiness.data || healthData || weaknessData) {
+      const weaknessCount = weaknessData?.items
+        ? weaknessData.items.filter((i) => i.severity === "critical" || i.severity === "high").length
+        : null;
       return [
         { label: "Academic Health", value: healthData ? `${Math.round(healthData.health_score)}` : "82", detail: healthData ? healthData.trend : "Stable", icon: HeartPulseIcon },
         { label: "Exam Readiness", value: readiness.data ? `${Math.round(readiness.data.readiness_score)}%` : "74%", detail: readiness.data ? `${readiness.data.confidence_level} confidence` : "Physics focus", icon: GaugeIcon },
-        { label: "Weak Concepts", value: readiness.data ? String(readiness.data.weak_chapters.length) : "3", detail: "Needs revision", icon: BrainCircuitIcon },
+        { label: "Weak Concepts", value: weaknessCount !== null ? String(weaknessCount) : readiness.data ? String(readiness.data.weak_chapters.length) : "3", detail: weaknessCount !== null ? "Critical/high weaknesses" : "Needs revision", icon: BrainCircuitIcon },
         { label: "Today's Plan", value: "5", detail: "Tasks queued", icon: CalendarClockIcon },
       ];
     }
     return staticDashboardStats;
-  }, [readiness.data, healthData]);
+  }, [readiness.data, healthData, weaknessData]);
   const [activeSection, setActiveSection] = useState<DashboardSection>("mock");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mode, setMode] = useState<ExamMode>("setup");
@@ -1230,6 +1242,14 @@ export function MockExamDashboard() {
               error={readiness.error}
               clerkUserId={user?.id}
               refetch={readiness.refetch}
+            />
+          ) : activeSection === "weakness" ? (
+            <WeaknessAnalysisPanel
+              weaknessData={weaknessData}
+              loading={weaknessLoading}
+              error={weaknessError}
+              runAnalysis={runAnalysis}
+              refetch={weaknessRefetch}
             />
           ) : (
             <SectionPlaceholder section={dashboardSections.find((section) => section.id === activeSection) ?? dashboardSections[0]} />
