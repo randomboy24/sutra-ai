@@ -46,3 +46,5 @@ class Student(Base):
     )
 
     mock_attempts = relationship("MockAttempt", back_populates="student")
+
+    weakness_analyses = relationship("WeaknessAnalysis", back_populates="student")

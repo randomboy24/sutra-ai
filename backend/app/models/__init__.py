@@ -9,6 +9,7 @@ from app.models.mock_exam import (
     QuestionOption,
     QuestionSource,
 )
+from app.models.weakness import WeaknessAnalysis, WeaknessItem
 
 __all__ = [
     "User",
@@ -20,4 +21,6 @@ __all__ = [
     "QuestionOption",
     "MockAttempt",
     "MockAttemptAnswer",
+    "WeaknessAnalysis",
+    "WeaknessItem",
 ]
