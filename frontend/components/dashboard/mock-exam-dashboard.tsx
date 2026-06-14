@@ -1443,6 +1443,8 @@ export function MockExamFlow() {
   };
 
   const completeExam = () => {
+    if (!window.confirm("Are you sure you want to submit the exam?")) return;
+
     allowFullscreenExitRef.current = true;
     setMode("results");
 
@@ -1529,11 +1531,12 @@ export function MockExamFlow() {
               <Button variant="outline" disabled={activeQuestionIndex === 0} onClick={() => openQuestion(activeQuestionIndex - 1)}>
                 Back
               </Button>
-              {activeQuestionIndex === examQuestions.length - 1 ? (
-                <Button onClick={completeExam}>Submit</Button>
-              ) : (
-                <Button onClick={() => openQuestion(activeQuestionIndex + 1)}>Next</Button>
-              )}
+              <Button onClick={() => {
+                const nextIndex = activeQuestionIndex === examQuestions.length - 1 ? 0 : activeQuestionIndex + 1;
+                openQuestion(nextIndex);
+              }}>
+                {activeQuestionIndex === examQuestions.length - 1 ? "Back to first" : "Next"}
+              </Button>
             </div>
           </div>
 
@@ -1560,6 +1563,7 @@ export function MockExamFlow() {
               })}
             </div>
             <Button variant="outline" className="mt-5 w-full" onClick={() => cancelExam("manual")}>Cancel mock</Button>
+            <Button className="mt-2 w-full" onClick={completeExam}>Submit exam</Button>
           </aside>
         </section>
       </main>
